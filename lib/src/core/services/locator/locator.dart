@@ -6,6 +6,13 @@ import 'package:flutter_app_template/src/core/constants/env_config.dart';
 import 'package:flutter_app_template/src/core/network/client/dio_factory.dart';
 import 'package:flutter_app_template/src/core/network/client/interceptors/logger_interceptor.dart';
 import 'package:flutter_app_template/src/core/network/client/interceptors/mock_logger_interceptor.dart';
+import 'package:flutter_app_template/src/core/network/client/interceptors/auth_interceptor.dart';
+import 'package:flutter_app_template/src/data/llm/llm_client.dart';
+import 'package:flutter_app_template/src/data/llm/providers/openai_llm_client.dart';
+import 'package:flutter_app_template/src/data/search/adapters/stub_search_adapter.dart';
+import 'package:flutter_app_template/src/data/search/web_search_repository.dart';
+import 'package:flutter_app_template/src/features/export/services/export_service.dart';
+import 'package:flutter_app_template/src/features/documents/repository/documents_repository.dart';
 import 'package:flutter_app_template/src/features/auth/data/repos/auth_repo.dart';
 import 'package:flutter_app_template/src/features/auth/data/repos/mock_auth_repo.dart';
 import 'package:flutter_app_template/src/features/auth/presentation/cubit/auth_cubit.dart';
@@ -74,10 +81,18 @@ void setupLocator() {
   locator.registerLazySingleton<LanguageCubit>(() => LanguageCubit());
   locator.registerLazySingleton<AuthCubit>(() => AuthCubit(locator<AuthRepo>()));
 
-  // 5. Core Services (placeholders to be implemented)
-  // locator.registerLazySingleton<LlmClient>(() => OpenAiLlmClient(config: locator<ProviderConfig>()));
-  // locator.registerLazySingleton<WebSearchRepository>(() => WebSearchRepositoryStub(locator<ProviderConfig>()));
-  // locator.registerLazySingleton<ExportService>(() => ExportServiceImpl());
+  // 5. Core Services
+  locator.registerLazySingleton<LlmClient>(() {
+    final config = locator<ProviderConfig>();
+    final dio = DioFactory.create(baseUrl: config.llmBaseUrl, interceptors: [
+      LoggerInterceptor(),
+      AuthInterceptor(() => config.llmApiKey),
+    ]);
+    return OpenAiLlmClient(dio: dio);
+  });
+  locator.registerLazySingleton<WebSearchRepository>(() => WebSearchRepositoryStub(StubSearchAdapter()));
+  locator.registerLazySingleton<ExportService>(() => ExportServiceImpl());
+  locator.registerLazySingleton<DocumentsRepository>(() => DocumentsRepositoryHive());
 }
 
 void onLoggedIn(GetIt instance) async {
