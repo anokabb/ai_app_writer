@@ -32,4 +32,18 @@ class EnvConfig {
   static String get TEST_OTP => !kDebugMode ? '' : dotenv.get('TEST_OTP', fallback: '');
   static String get TEST_EMAIL => !kDebugMode ? '' : dotenv.get('TEST_EMAIL', fallback: '');
   static String get TEST_PASSWORD => !kDebugMode ? '' : dotenv.get('TEST_PASSWORD', fallback: '');
+
+  // LLM / Search / Detector keys (fallbacks to empty when not provided)
+  static String get LLM_BASE_URL => dotenv.get('LLM_BASE_URL', fallback: '');
+  static String get LLM_API_KEY => dotenv.get('LLM_API_KEY', fallback: '');
+
+  static String get SEARCH_BASE_URL => dotenv.get('SEARCH_BASE_URL', fallback: '');
+  static String get SEARCH_API_KEY => dotenv.get('SEARCH_API_KEY', fallback: '');
+
+  static String get DETECTOR_API_KEY => dotenv.get('DETECTOR_API_KEY', fallback: '');
+
+  static bool get TELEMETRY_ENABLED {
+    final value = dotenv.get('TELEMETRY_ENABLED', fallback: 'true');
+    return value.toLowerCase() == 'true';
+  }
 }

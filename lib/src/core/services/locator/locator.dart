@@ -19,7 +19,35 @@ bool isMockTesting = kDebugMode && true;
 
 final locator = GetIt.instance;
 
+class ProviderConfig {
+  final String llmBaseUrl;
+  final String llmApiKey;
+  final String searchBaseUrl;
+  final String searchApiKey;
+  final String detectorApiKey;
+  final bool telemetryEnabled;
+
+  const ProviderConfig({
+    required this.llmBaseUrl,
+    required this.llmApiKey,
+    required this.searchBaseUrl,
+    required this.searchApiKey,
+    required this.detectorApiKey,
+    required this.telemetryEnabled,
+  });
+}
+
 void setupLocator() {
+  // 0. Provider Config
+  locator.registerLazySingleton<ProviderConfig>(() => ProviderConfig(
+        llmBaseUrl: EnvConfig.LLM_BASE_URL,
+        llmApiKey: EnvConfig.LLM_API_KEY,
+        searchBaseUrl: EnvConfig.SEARCH_BASE_URL,
+        searchApiKey: EnvConfig.SEARCH_API_KEY,
+        detectorApiKey: EnvConfig.DETECTOR_API_KEY,
+        telemetryEnabled: EnvConfig.TELEMETRY_ENABLED,
+      ));
+
   // 1. Dio Client
   locator.registerLazySingleton<Dio>(
     () => DioFactory.create(
@@ -45,6 +73,11 @@ void setupLocator() {
   locator.registerLazySingleton<ThemeCubit>(() => ThemeCubit());
   locator.registerLazySingleton<LanguageCubit>(() => LanguageCubit());
   locator.registerLazySingleton<AuthCubit>(() => AuthCubit(locator<AuthRepo>()));
+
+  // 5. Core Services (placeholders to be implemented)
+  // locator.registerLazySingleton<LlmClient>(() => OpenAiLlmClient(config: locator<ProviderConfig>()));
+  // locator.registerLazySingleton<WebSearchRepository>(() => WebSearchRepositoryStub(locator<ProviderConfig>()));
+  // locator.registerLazySingleton<ExportService>(() => ExportServiceImpl());
 }
 
 void onLoggedIn(GetIt instance) async {
