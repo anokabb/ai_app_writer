@@ -6,6 +6,13 @@ import 'package:flutter_app_template/src/core/constants/env_config.dart';
 import 'package:flutter_app_template/src/core/network/client/dio_factory.dart';
 import 'package:flutter_app_template/src/core/network/client/interceptors/logger_interceptor.dart';
 import 'package:flutter_app_template/src/core/network/client/interceptors/mock_logger_interceptor.dart';
+import 'package:flutter_app_template/src/core/network/client/interceptors/auth_interceptor.dart';
+import 'package:flutter_app_template/src/data/llm/llm_client.dart';
+import 'package:flutter_app_template/src/data/llm/providers/openai_llm_client.dart';
+import 'package:flutter_app_template/src/data/search/adapters/stub_search_adapter.dart';
+import 'package:flutter_app_template/src/data/search/web_search_repository.dart';
+import 'package:flutter_app_template/src/features/export/services/export_service.dart';
+import 'package:flutter_app_template/src/features/documents/repository/documents_repository.dart';
 import 'package:flutter_app_template/src/features/auth/data/repos/auth_repo.dart';
 import 'package:flutter_app_template/src/features/auth/data/repos/mock_auth_repo.dart';
 import 'package:flutter_app_template/src/features/auth/presentation/cubit/auth_cubit.dart';
@@ -19,7 +26,35 @@ bool isMockTesting = kDebugMode && true;
 
 final locator = GetIt.instance;
 
+class ProviderConfig {
+  final String llmBaseUrl;
+  final String llmApiKey;
+  final String searchBaseUrl;
+  final String searchApiKey;
+  final String detectorApiKey;
+  final bool telemetryEnabled;
+
+  const ProviderConfig({
+    required this.llmBaseUrl,
+    required this.llmApiKey,
+    required this.searchBaseUrl,
+    required this.searchApiKey,
+    required this.detectorApiKey,
+    required this.telemetryEnabled,
+  });
+}
+
 void setupLocator() {
+  // 0. Provider Config
+  locator.registerLazySingleton<ProviderConfig>(() => ProviderConfig(
+        llmBaseUrl: EnvConfig.LLM_BASE_URL,
+        llmApiKey: EnvConfig.LLM_API_KEY,
+        searchBaseUrl: EnvConfig.SEARCH_BASE_URL,
+        searchApiKey: EnvConfig.SEARCH_API_KEY,
+        detectorApiKey: EnvConfig.DETECTOR_API_KEY,
+        telemetryEnabled: EnvConfig.TELEMETRY_ENABLED,
+      ));
+
   // 1. Dio Client
   locator.registerLazySingleton<Dio>(
     () => DioFactory.create(
@@ -45,6 +80,19 @@ void setupLocator() {
   locator.registerLazySingleton<ThemeCubit>(() => ThemeCubit());
   locator.registerLazySingleton<LanguageCubit>(() => LanguageCubit());
   locator.registerLazySingleton<AuthCubit>(() => AuthCubit(locator<AuthRepo>()));
+
+  // 5. Core Services
+  locator.registerLazySingleton<LlmClient>(() {
+    final config = locator<ProviderConfig>();
+    final dio = DioFactory.create(baseUrl: config.llmBaseUrl, interceptors: [
+      LoggerInterceptor(),
+      AuthInterceptor(() => config.llmApiKey),
+    ]);
+    return OpenAiLlmClient(dio: dio);
+  });
+  locator.registerLazySingleton<WebSearchRepository>(() => WebSearchRepositoryStub(StubSearchAdapter()));
+  locator.registerLazySingleton<ExportService>(() => ExportServiceImpl());
+  locator.registerLazySingleton<DocumentsRepository>(() => DocumentsRepositoryHive());
 }
 
 void onLoggedIn(GetIt instance) async {

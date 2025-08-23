@@ -52,6 +52,14 @@ dependencies:
   retrofit: ^4.4.2
   pin_code_fields: ^8.0.1
   freezed_annotation: ^2.4.4
+  # Added for MVP features
+  share_plus: ^10.1.1
+  path_provider: ^2.1.5
+  pdf: ^3.11.1
+  printing: ^5.14.0
+  diff_match_patch: ^0.4.1
+  flutter_markdown: ^0.7.6+3
+  uuid: ^4.5.1
 
 
 dev_dependencies:
@@ -66,6 +74,9 @@ dev_dependencies:
   json_serializable: ^6.9.0
   freezed: ^2.5.8
   retrofit_generator: ^4.4.2
+  # Added for tests
+  mocktail: ^1.0.4
+  http_mock_adapter: ^0.6.1
 
 flutter:
   generate: true

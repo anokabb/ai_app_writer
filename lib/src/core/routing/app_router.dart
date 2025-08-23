@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_app_template/src/core/routing/app_shell.dart';
 import 'package:flutter_app_template/src/core/routing/guards/auth_guard.dart';
 import 'package:flutter_app_template/src/core/routing/tabs/home_tab.dart';
+import 'package:flutter_app_template/src/core/routing/tabs/documents_tab.dart';
+import 'package:flutter_app_template/src/core/routing/tabs/settings_tab.dart';
 import 'package:flutter_app_template/src/core/services/logger/logger.dart';
 import 'package:flutter_app_template/src/features/auth/presentation/pages/forgot_password_page.dart';
 import 'package:flutter_app_template/src/features/auth/presentation/pages/login_page.dart';
@@ -36,11 +38,13 @@ class AppRouter {
     );
   }
 
-  StatefulShellRoute _statefulShellRoute() {
+        StatefulShellRoute _statefulShellRoute() {
     return StatefulShellRoute.indexedStack(
       builder: (context, state, navigationShell) => AppShell(navigationShell: navigationShell),
       branches: [
         homeTabBranch,
+        documentsTabBranch,
+        settingsTabBranch,
       ],
     );
   }

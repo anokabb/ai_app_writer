@@ -48,5 +48,12 @@
   "donTHaveAnAccount": "Don't have an account?",
   "signUp": "Sign up",
   "alreadyHaveAnAccount": "Already have an account?",
-  "home": "Home"
+  "home": "Home",
+  "documents": "المستندات",
+  "settings": "الإعدادات",
+  "humanizer": "المحوِّل",
+  "writer": "الكاتب",
+  "detector": "الكاشف",
+  "recentDocuments": "المستندات الأخيرة",
+  "export": "تصدير"
 }

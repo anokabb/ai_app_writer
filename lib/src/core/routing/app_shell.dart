@@ -56,12 +56,12 @@ class _AppShellState extends State<AppShell> with SingleTickerProviderStateMixin
               tooltip: '',
             ),
             BottomNavigationBarItem(
-              label: context.localization.home,
+              label: context.localization.documents,
               icon: NavigationBarIcon(Assets.svg.tabHome),
               tooltip: '',
             ),
             BottomNavigationBarItem(
-              label: context.localization.home,
+              label: context.localization.settings,
               icon: NavigationBarIcon(Assets.svg.tabHome),
               tooltip: '',
             ),
