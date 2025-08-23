@@ -20,10 +20,10 @@ class UserModel {
     this.firstName,
     this.lastName,
     this.email,
-    this.roles = const [],
+    List<UserRole>? roles,
     this.createdAt,
     this.updatedAt,
-  });
+  }) : roles = roles ?? const [];
 
   factory UserModel.fromJson(Map<String, dynamic> json) => _$UserModelFromJson(json);
 
