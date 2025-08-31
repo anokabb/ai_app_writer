@@ -1,16 +1,16 @@
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_app_template/src/core/routing/app_shell.dart';
 import 'package:flutter_app_template/src/core/routing/guards/auth_guard.dart';
+import 'package:flutter_app_template/src/core/routing/page_transitions.dart';
+import 'package:flutter_app_template/src/core/routing/tabs/documents_tab.dart';
 import 'package:flutter_app_template/src/core/routing/tabs/home_tab.dart';
+import 'package:flutter_app_template/src/core/routing/tabs/profile_tab.dart';
 import 'package:flutter_app_template/src/core/services/logger/logger.dart';
-import 'package:flutter_app_template/src/features/auth/presentation/pages/forgot_password_page.dart';
-import 'package:flutter_app_template/src/features/auth/presentation/pages/login_page.dart';
-import 'package:flutter_app_template/src/features/auth/presentation/pages/otp_verification_page.dart';
-import 'package:flutter_app_template/src/features/auth/presentation/pages/register_page.dart';
-import 'package:flutter_app_template/src/features/auth/presentation/pages/reset_password_page.dart';
+import 'package:flutter_app_template/src/features/detector/presentation/pages/detector_page.dart';
 import 'package:flutter_app_template/src/features/dev/presentation/views/dev_mode_view.dart';
+import 'package:flutter_app_template/src/features/generator/presentation/pages/generator_page.dart';
 import 'package:flutter_app_template/src/features/home/presentation/pages/home_page.dart';
+import 'package:flutter_app_template/src/features/humanizer/presentation/pages/humanizer_page.dart';
 import 'package:flutter_app_template/src/features/languages/presentation/pages/language_page.dart';
 import 'package:flutter_app_template/src/features/theme/presentation/pages/theme_page.dart';
 import 'package:go_router/go_router.dart';
@@ -30,7 +30,6 @@ class AppRouter {
       redirect: AuthGuard(_logger).redirect,
       routes: [
         _statefulShellRoute(),
-        ..._authenticationRoutes(),
         ..._otherRoutes(),
       ],
     );
@@ -40,49 +39,11 @@ class AppRouter {
     return StatefulShellRoute.indexedStack(
       builder: (context, state, navigationShell) => AppShell(navigationShell: navigationShell),
       branches: [
+        documentsTabBranch,
         homeTabBranch,
+        profileTabBranch,
       ],
     );
-  }
-
-  List<GoRoute> _authenticationRoutes() {
-    return [
-      GoRoute(
-        path: LoginPage.routeName,
-        pageBuilder: (context, state) => MaterialPage(
-          key: state.pageKey,
-          child: const LoginPage(),
-        ),
-      ),
-      GoRoute(
-        path: RegisterPage.routeName,
-        pageBuilder: (context, state) => MaterialPage(
-          key: state.pageKey,
-          child: const RegisterPage(),
-        ),
-      ),
-      GoRoute(
-        path: ForgotPasswordPage.routeName,
-        pageBuilder: (context, state) => MaterialPage(
-          key: state.pageKey,
-          child: const ForgotPasswordPage(),
-        ),
-      ),
-      GoRoute(
-        path: OtpVerificationPage.routeName,
-        pageBuilder: (context, state) => MaterialPage(
-          key: state.pageKey,
-          child: OtpVerificationPage(email: state.extra as String),
-        ),
-      ),
-      GoRoute(
-        path: ResetPasswordPage.routeName,
-        pageBuilder: (context, state) => MaterialPage(
-          key: state.pageKey,
-          child: ResetPasswordPage(email: state.extra as String),
-        ),
-      ),
-    ];
   }
 
   List<GoRoute> _otherRoutes() {
@@ -98,6 +59,24 @@ class AppRouter {
       GoRoute(
         path: LanguagePage.routeName,
         pageBuilder: (context, state) => CupertinoPage(child: LanguagePage()),
+      ),
+      GoRoute(
+        path: DetectorPage.routeName,
+        pageBuilder: (context, state) => PageTransitions.slideUpTransition(
+          child: const DetectorPage(),
+        ),
+      ),
+      GoRoute(
+        path: GeneratorPage.routeName,
+        pageBuilder: (context, state) => PageTransitions.slideUpTransition(
+          child: const GeneratorPage(),
+        ),
+      ),
+      GoRoute(
+        path: HumanizerPage.routeName,
+        pageBuilder: (context, state) => PageTransitions.slideUpTransition(
+          child: const HumanizerPage(),
+        ),
       ),
     ];
   }

@@ -1,11 +1,9 @@
-// ignore_for_file: use_build_context_synchronously
-
 import 'package:flutter/material.dart';
-import 'package:flutter_app_template/src/core/components/layouts/buttons/app_button.dart';
-import 'package:flutter_app_template/src/core/routing/app_router.dart';
-import 'package:flutter_app_template/src/core/services/locator/locator.dart';
-import 'package:flutter_app_template/src/features/auth/presentation/cubit/auth_cubit.dart';
-import 'package:go_router/go_router.dart';
+import 'package:flutter_app_template/src/core/routing/app_bottom_nav.dart';
+import 'package:flutter_app_template/src/features/home/presentation/widgets/ai_tools_section.dart';
+import 'package:flutter_app_template/src/features/home/presentation/widgets/recent_documents_section.dart';
+import 'package:flutter_app_template/src/features/home/presentation/widgets/stats_card.dart';
+import 'package:flutter_app_template/src/features/home/presentation/widgets/welcome_card.dart';
 
 class HomePage extends StatefulWidget {
   static const String routeName = '/home';
@@ -19,20 +17,26 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
+      body: SafeArea(
+        bottom: false,
+        child: ListView(
+          padding: AppBottomNavigationBar.scrollViewPadding.copyWith(left: 0, right: 0),
           children: [
-            Center(
-              child: Text('Home'),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16),
+              child: WelcomeCard(),
             ),
-            AppButton(
-              onPressed: () async {
-                await locator<AuthCubit>().logout();
-                context.go(AppRouter.baseRoute);
-              },
-              label: 'Logout',
+            SizedBox(height: 20),
+            StatsCard(),
+            SizedBox(height: 20),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16),
+              child: AItoolsSection(),
+            ),
+            SizedBox(height: 20),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16),
+              child: RecentDocumentsSection(),
             ),
           ],
         ),

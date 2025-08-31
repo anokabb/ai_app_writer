@@ -9,11 +9,9 @@ import 'package:flutter_app_template/src/core/constants/hive_config.dart';
 import 'package:flutter_app_template/src/core/extensions/context_extension.dart';
 import 'package:flutter_app_template/src/core/extensions/extensions.dart';
 import 'package:flutter_app_template/src/core/routing/app_router.dart';
-import 'package:flutter_app_template/src/core/services/locator/locator.dart';
 import 'package:flutter_app_template/src/core/services/notifications/notification_service.dart';
 import 'package:flutter_app_template/src/core/services/theme/app_colors.dart';
 import 'package:flutter_app_template/src/core/services/theme/app_theme.dart';
-import 'package:flutter_app_template/src/features/auth/presentation/cubit/auth_cubit.dart';
 import 'package:go_router/go_router.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:restart_app/restart_app.dart';
@@ -72,7 +70,7 @@ class _DevModeViewState extends State<DevModeView> {
           AppButton(
             isAsync: true,
             onPressed: () async {
-              await locator<AuthCubit>().logout();
+              // await locator<AuthCubit>().logout();
               context.go(AppRouter.baseRoute);
             },
             icon: Icon(
@@ -140,7 +138,7 @@ class _DevModeViewState extends State<DevModeView> {
                 if (e == null) return;
                 await devBox.put('env', e);
 
-                await locator<AuthCubit>().logout();
+                // await locator<AuthCubit>().logout();
                 Restart.restartApp();
               },
             ),

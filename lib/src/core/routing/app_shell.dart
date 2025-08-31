@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_app_template/src/core/extensions/context_extension.dart';
 import 'package:flutter_app_template/src/core/gen/assets.gen.dart';
+import 'package:flutter_app_template/src/core/routing/app_bottom_nav.dart';
 import 'package:flutter_app_template/src/core/services/theme/app_theme.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
@@ -36,63 +36,32 @@ class _AppShellState extends State<AppShell> with SingleTickerProviderStateMixin
     return Scaffold(
       body: widget.navigationShell,
       backgroundColor: context.theme.appColors.background,
-      bottomNavigationBar: Theme(
-        data: context.theme.copyWith(
-          splashColor: Colors.transparent,
-          highlightColor: Colors.transparent,
-        ),
-        child: BottomNavigationBar(
-          selectedItemColor: context.theme.appColors.primary,
-          currentIndex: widget.navigationShell.currentIndex,
-          selectedLabelStyle: context.theme.appTextTheme.body3.copyWith(fontSize: 10),
-          unselectedLabelStyle: context.theme.appTextTheme.body3.copyWith(fontSize: 10),
-          backgroundColor: Colors.white,
-          type: BottomNavigationBarType.fixed,
-          onTap: _onTap,
-          items: [
-            BottomNavigationBarItem(
-              label: context.localization.home,
-              icon: NavigationBarIcon(Assets.svg.tabHome),
-              tooltip: '',
-            ),
-            BottomNavigationBarItem(
-              label: context.localization.home,
-              icon: NavigationBarIcon(Assets.svg.tabHome),
-              tooltip: '',
-            ),
-            BottomNavigationBarItem(
-              label: context.localization.home,
-              icon: NavigationBarIcon(Assets.svg.tabHome),
-              tooltip: '',
-            ),
-          ],
+      extendBody: true,
+      bottomNavigationBar: AppBottomNavigationBar(
+        currentIndex: widget.navigationShell.currentIndex,
+        onTap: _onTap,
+      ),
+      floatingActionButton: PhysicalModel(
+        color: Colors.transparent,
+        elevation: 6,
+        shadowColor: context.appColors.primary.withOpacity(0.35),
+        shape: BoxShape.circle,
+        child: FloatingActionButton(
+          backgroundColor: context.appColors.primary,
+          shape: const CircleBorder(),
+          elevation: 0,
+          onPressed: () => _onTap(1),
+          child: SvgPicture.asset(
+            Assets.svg.home,
+            colorFilter: const ColorFilter.mode(Colors.white, BlendMode.srcIn),
+          ),
         ),
       ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
     );
   }
 
   void _onTap(int index) {
     widget.navigationShell.goBranch(index);
-  }
-}
-
-class NavigationBarIcon extends StatelessWidget {
-  final String svgAsset;
-
-  const NavigationBarIcon(
-    this.svgAsset, {
-    super.key,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    final color = IconTheme.of(context).color;
-    return Padding(
-      padding: const EdgeInsets.all(4.0),
-      child: SvgPicture.asset(
-        svgAsset,
-        colorFilter: color != null ? ColorFilter.mode(color, BlendMode.srcIn) : null,
-      ),
-    );
   }
 }

@@ -7,8 +7,7 @@ final homeTabBranch = StatefulShellBranch(
     GoRoute(
       path: HomePage.routeName,
       pageBuilder: (context, state) => const CupertinoPage(child: HomePage()),
-      routes: [
-      ],
+      routes: [],
     ),
   ],
 );

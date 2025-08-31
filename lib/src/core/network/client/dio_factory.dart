@@ -7,8 +7,8 @@ class DioFactory {
   }) {
     final options = BaseOptions(
       baseUrl: baseUrl,
-      connectTimeout: const Duration(seconds: 10),
-      receiveTimeout: const Duration(seconds: 10),
+      connectTimeout: const Duration(seconds: 30),
+      receiveTimeout: const Duration(seconds: 30),
     );
 
     final dio = Dio(options);

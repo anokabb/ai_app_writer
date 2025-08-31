@@ -26,6 +26,7 @@ class AppButton extends StatefulWidget {
   final bool isOutlined;
   final bool ignoreHeight;
   final TextAlign? textAlign;
+  final List<Color>? gradientColors;
 
   const AppButton({
     super.key,
@@ -36,7 +37,7 @@ class AppButton extends StatefulWidget {
     this.disabled = false,
     this.autoResize = false,
     this.icon,
-    this.borderRadius = 500,
+    this.borderRadius = 12,
     this.textStyle,
     this.textColor,
     this.backgroundColor,
@@ -52,6 +53,7 @@ class AppButton extends StatefulWidget {
     this.isOutlined = false,
     this.ignoreHeight = false,
     this.textAlign,
+    this.gradientColors,
   });
 
   @override

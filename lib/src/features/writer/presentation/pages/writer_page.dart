@@ -1,5 +1,26 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
+import 'package:flutter_app_template/src/core/components/layouts/buttons/app_button.dart';
+import 'package:flutter_app_template/src/core/constants/env_config.dart';
+import 'package:flutter_app_template/src/core/extensions/context_extension.dart';
+import 'package:flutter_app_template/src/core/services/locator/locator.dart';
+import 'package:flutter_app_template/src/features/documents/data/models/history_item.dart';
+import 'package:flutter_app_template/src/features/documents/presentation/cubit/history_cubit.dart';
+import 'package:flutter_app_template/src/features/writer/data/api/gemini_writer_api.dart';
+import 'package:flutter_app_template/src/features/writer/data/api/openai_writer_api.dart';
+import 'package:flutter_app_template/src/features/writer/data/models/text_analysis_model.dart';
+import 'package:flutter_app_template/src/features/writer/data/repos/gemini_writer_repo.dart';
+import 'package:flutter_app_template/src/features/writer/data/repos/mock_writer_repo.dart';
+import 'package:flutter_app_template/src/features/writer/data/repos/openai_writer_repo.dart';
+import 'package:flutter_app_template/src/features/writer/data/repos/writer_repo.dart';
+import 'package:flutter_app_template/src/features/writer/presentation/cubit/writer_cubit.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+
+import 'widgets/ai_provider_selector.dart';
+import 'widgets/analysis_result_modal.dart';
+import 'widgets/humanization_progress_modal.dart';
+import 'widgets/main_text_field.dart';
 
 class WriterPage extends StatefulWidget {
   static const String routeName = '/writer';
@@ -11,22 +32,47 @@ class WriterPage extends StatefulWidget {
 
 class _WriterPageState extends State<WriterPage> {
   final TextEditingController _controller = TextEditingController();
-  String? _lastText; // for revert capability
-  bool _isLoadingScan = false;
-  bool _isLoadingHumanize = false;
-  double? _score;
-  List<String>? _reasons;
+  AIProvider _selectedProvider = AIProvider.openai;
+  String _geminiApiKey = '';
+  late WriterCubit _writerCubit;
+  late WriterRepo writerRepo;
+
+  // For history tracking (no longer needed since we analyze on-demand)
 
   @override
   void initState() {
     super.initState();
     _controller.addListener(_onTextChanged);
+    _updateWriterCubit();
+  }
+
+  void _updateWriterCubit() {
+    switch (_selectedProvider) {
+      case AIProvider.mock:
+        writerRepo = MockWriterRepo();
+        break;
+      case AIProvider.gemini:
+        writerRepo = GeminiWriterRepo(
+          apiKey: _geminiApiKey,
+          api: locator<GeminiWriterApi>(),
+        );
+        break;
+      case AIProvider.openai:
+        writerRepo = OpenAIWriterRepo(
+          apiKey: EnvConfig.OPENAI_API_KEY,
+          api: locator<OpenAIWriterApi>(),
+        );
+        break;
+    }
+
+    _writerCubit = WriterCubit(writerRepo);
   }
 
   @override
   void dispose() {
     _controller.removeListener(_onTextChanged);
     _controller.dispose();
+    _writerCubit.close();
     super.dispose();
   }
 
@@ -34,150 +80,198 @@ class _WriterPageState extends State<WriterPage> {
     setState(() {});
   }
 
-  void _pasteFromClipboard() async {
-    final data = await Clipboard.getData('text/plain');
-    final text = data?.text ?? '';
-    _controller.text = text;
-  }
-
   Future<void> _scan() async {
-    setState(() {
-      _isLoadingScan = true;
-      _score = null;
-      _reasons = null;
-    });
+    // Check if text is empty
+    if (_controller.text.trim().isEmpty) {
+      showTopError('Please enter some text to scan');
+      return;
+    }
+
     try {
-      // TODO: integrate LlmClient classify
-      await Future.delayed(const Duration(seconds: 1));
-      setState(() {
-        _score = 0.42;
-        _reasons = ['Reason 1', 'Reason 2'];
-      });
+      await _writerCubit.analyzeText(_controller.text);
     } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Error: $e')),
-      );
-    } finally {
-      setState(() {
-        _isLoadingScan = false;
-      });
+      if (mounted) {
+        showTopError('Error: $e');
+      }
     }
   }
 
   Future<void> _humanize() async {
-    setState(() {
-      _isLoadingHumanize = true;
-    });
+    // Check if text is empty
+    if (_controller.text.trim().isEmpty) {
+      showTopError('Please enter some text to humanize');
+      return;
+    }
+
     final currentText = _controller.text;
-    _lastText = currentText;
+
     try {
-      // TODO: integrate LlmClient complete
-      await Future.delayed(const Duration(seconds: 1));
-      _controller.text = '$currentText\n\n(Humanized)';
-    } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Error: $e')),
+      // Show slide-up popup for humanization progress
+      HumanizationProgressModal.show(
+        context,
+        writerCubit: _writerCubit,
       );
-    } finally {
-      setState(() {
-        _isLoadingHumanize = false;
-      });
+
+      _writerCubit.humanizeText(currentText);
+    } catch (e) {
+      if (mounted) {
+        showTopError('Error: $e');
+      }
     }
   }
 
-  void _revert() {
-    if (_lastText != null) {
-      _controller.text = _lastText!;
-      _lastText = null;
-      setState(() {});
+  void _onProviderChanged(AIProvider? provider) {
+    if (provider != null) {
+      setState(() {
+        _selectedProvider = provider;
+      });
+      _updateWriterCubit();
     }
+  }
+
+  TextAnalysisResult? _lastAnalysisResult;
+  String? _lastAnalysisText;
+
+  Future<void> _saveToHistory(HumanizationResult humanizationResult) async {
+    TextAnalysisResult? analysisResult;
+    try {
+      // Only save if we have both analysis and humanization results
+
+      if (_lastAnalysisText == _controller.text.trim() && _lastAnalysisResult != null) {
+        analysisResult = _lastAnalysisResult!;
+      } else {
+        final result = await writerRepo.analyzeText(_controller.text.trim());
+        analysisResult = result.fold((l) => null, (r) => r);
+      }
+
+      final historyItem = HistoryItem(
+        id: DateTime.now().millisecondsSinceEpoch.toString(),
+        timestamp: DateTime.now(),
+        title: _generateTitle(_controller.text.trim()),
+        originalText: _controller.text.trim(),
+        humanizedText: humanizationResult.humanizedText,
+        analysisResult: analysisResult,
+        humanizationResult: humanizationResult,
+      );
+
+      await locator<HistoryCubit>().addHistoryItem(historyItem);
+    } catch (e) {
+      // Silently fail to avoid breaking the main flow
+      log('Error saving to history: $e');
+    }
+  }
+
+  String _generateTitle(String text) {
+    // Generate a title from the first few words of the text
+    final words = text.trim().split(RegExp(r'\s+'));
+    final titleWords = words.take(5).join(' ');
+
+    if (titleWords.length > 50) {
+      return '${titleWords.substring(0, 47)}...';
+    }
+
+    return titleWords.isNotEmpty ? titleWords : 'Humanized Text';
   }
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    final isTextEmpty = _controller.text.trim().isEmpty;
+    return BlocProvider.value(
+      value: _writerCubit,
+      child: BlocListener<WriterCubit, WriterState>(
+        listener: (context, state) {
+          state.when(
+            initial: () {},
+            analyzing: () {},
+            analysisComplete: (result) {
+              _lastAnalysisResult = result;
+              _lastAnalysisText = _controller.text.trim();
+              AnalysisResultModal.show(
+                context,
+                result: result,
+                scannedText: _controller.text,
+                onHumanize: _humanize,
+              );
+            },
+            analysisError: (error) {
+              String message = error.message;
+              if (error.message.contains('quota exceeded') ||
+                  error.message.contains('timeout') ||
+                  error.message.contains('Network connectivity issue')) {
+                message = 'Network or API issue. Try switching to Mock provider for testing.';
+              }
+              showTopError(message);
+            },
+            humanizing: () {},
+            humanizationProgress: (result) {},
+            humanizationComplete: (result) {
+              // Save to history when humanization is complete
+              _saveToHistory(result);
+            },
+            humanizationError: (error) {
+              String message = error.message;
+              if (error.message.contains('quota exceeded') ||
+                  error.message.contains('timeout') ||
+                  error.message.contains('Network connectivity issue')) {
+                message = 'Network or API issue. Try switching to Mock provider for testing.';
+              }
+              showTopError(message);
+            },
+          );
+        },
+        child: GestureDetector(
+          behavior: HitTestBehavior.opaque,
+          onTap: () => FocusScope.of(context).unfocus(),
+          child: Scaffold(
+            body: SafeArea(
+              child: Padding(
+                padding: const EdgeInsets.all(20.0),
+                child: Column(
+                  children: [
+                    // AI Provider Selection
+                    AIProviderSelector(
+                      selectedProvider: _selectedProvider,
+                      onChanged: _onProviderChanged,
+                      geminiApiKey: _geminiApiKey,
+                      onGeminiApiKeyApply: (value) {
+                        _geminiApiKey = value;
 
-    return Scaffold(
-      appBar: AppBar(title: const Text('AI Writer')),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          children: [
-            Expanded(
-              child: TextField(
-                controller: _controller,
-                maxLines: null,
-                expands: true,
-                decoration: const InputDecoration(
-                  hintText: 'Paste or type your text…',
-                  border: OutlineInputBorder(),
-                ),
-              ),
-            ),
-            const SizedBox(height: 16),
-            Row(
-              children: [
-                Expanded(
-                  child: ElevatedButton(
-                    onPressed: isTextEmpty || _isLoadingScan ? null : _scan,
-                    child: _isLoadingScan
-                        ? const SizedBox(height: 20, width: 20, child: CircularProgressIndicator())
-                        : const Text('Scan'),
-                  ),
-                ),
-                const SizedBox(width: 16),
-                Expanded(
-                  child: ElevatedButton(
-                    onPressed: isTextEmpty || _isLoadingHumanize ? null : _humanize,
-                    child: _isLoadingHumanize
-                        ? const SizedBox(height: 20, width: 20, child: CircularProgressIndicator())
-                        : const Text('Humanize'),
-                  ),
-                ),
-              ],
-            ),
-            if (_lastText != null)
-              Align(
-                alignment: Alignment.centerRight,
-                child: Padding(
-                  padding: const EdgeInsets.only(top: 8.0),
-                  child: ActionChip(
-                    label: const Text('Revert'),
-                    onPressed: _revert,
-                  ),
-                ),
-              ),
-            if (_score != null)
-              Card(
-                margin: const EdgeInsets.only(top: 16),
-                child: Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text('Score: ${_score!.toStringAsFixed(2)}', style: theme.textTheme.titleMedium),
-                      const SizedBox(height: 8),
-                      if (_reasons != null)
-                        ..._reasons!.map((r) => Text('• $r')).toList(),
-                      const SizedBox(height: 8),
-                      const Text(
-                        'Detection is indicative and may be inaccurate',
-                        style: TextStyle(fontSize: 12, fontStyle: FontStyle.italic),
+                        _updateWriterCubit();
+                        return null;
+                      },
+                    ),
+                    const SizedBox(height: 16),
+                    Expanded(
+                      child: MainTextField(
+                        controller: _controller,
                       ),
-                    ],
-                  ),
+                    ),
+                    const SizedBox(height: 16),
+                    Row(
+                      children: [
+                        Expanded(
+                          child: AppButton(
+                            onPressed: _scan,
+                            label: 'Scan',
+                            isAsync: true,
+                          ),
+                        ),
+                        const SizedBox(width: 16),
+                        Expanded(
+                          child: AppButton(
+                            onPressed: _humanize,
+                            label: 'Humanize',
+                            isAsync: true,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
                 ),
               ),
-          ],
+            ),
+          ),
         ),
       ),
-      floatingActionButton: isTextEmpty
-          ? FloatingActionButton(
-              onPressed: _pasteFromClipboard,
-              child: const Icon(Icons.paste),
-            )
-          : null,
     );
   }
 }
