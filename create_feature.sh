@@ -5,7 +5,7 @@ FEATURE_NAME=$1
 BUILD_RUNNER=${2:-null}
 
 #TODO: Set the project name 
-PROJECT_NAME='one_lock_center'
+PROJECT_NAME='flutter_app_template'
 
 if [ -z "$FEATURE_NAME" ]; then
   echo "❌ Usage: ./create_feature.sh feature_name [pass 'build' to run build_runner]"

@@ -95,47 +95,29 @@ abstract class AppLocalizations {
     Locale('en')
   ];
 
-  /// No description provided for @noDataAvailable.
+  /// No description provided for @alreadyHaveAnAccount.
   ///
   /// In en, this message translates to:
-  /// **'No data available'**
-  String get noDataAvailable;
+  /// **'Already have an account?'**
+  String get alreadyHaveAnAccount;
 
-  /// No description provided for @today.
+  /// No description provided for @cancel.
   ///
   /// In en, this message translates to:
-  /// **'Today'**
-  String get today;
+  /// **'Cancel'**
+  String get cancel;
 
-  /// No description provided for @yesterday.
+  /// No description provided for @confirm.
   ///
   /// In en, this message translates to:
-  /// **'Yesterday'**
-  String get yesterday;
+  /// **'Confirm'**
+  String get confirm;
 
-  /// No description provided for @thisWeek.
+  /// No description provided for @confirmPassword.
   ///
   /// In en, this message translates to:
-  /// **'This Week'**
-  String get thisWeek;
-
-  /// No description provided for @lastWeek.
-  ///
-  /// In en, this message translates to:
-  /// **'Last Week'**
-  String get lastWeek;
-
-  /// No description provided for @lastMonth.
-  ///
-  /// In en, this message translates to:
-  /// **'Last Month'**
-  String get lastMonth;
-
-  /// No description provided for @last90Days.
-  ///
-  /// In en, this message translates to:
-  /// **'Last 90 Days'**
-  String get last90Days;
+  /// **'Confirm Password'**
+  String get confirmPassword;
 
   /// No description provided for @customDate.
   ///
@@ -143,89 +125,29 @@ abstract class AppLocalizations {
   /// **'Custom Date'**
   String get customDate;
 
-  /// No description provided for @version.
+  /// No description provided for @documents.
   ///
   /// In en, this message translates to:
-  /// **'Version'**
-  String get version;
+  /// **'Documents'**
+  String get documents;
 
-  /// No description provided for @theme.
+  /// No description provided for @donTHaveAnAccount.
   ///
   /// In en, this message translates to:
-  /// **'Theme'**
-  String get theme;
+  /// **'Don\'t have an account?'**
+  String get donTHaveAnAccount;
 
-  /// No description provided for @logout.
+  /// No description provided for @emailAddress.
   ///
   /// In en, this message translates to:
-  /// **'Logout'**
-  String get logout;
-
-  /// No description provided for @updateNow.
-  ///
-  /// In en, this message translates to:
-  /// **'Update Now'**
-  String get updateNow;
-
-  /// No description provided for @later.
-  ///
-  /// In en, this message translates to:
-  /// **'Later'**
-  String get later;
-
-  /// No description provided for @thisFieldIsRequired.
-  ///
-  /// In en, this message translates to:
-  /// **'This field is required'**
-  String get thisFieldIsRequired;
+  /// **'Email address'**
+  String get emailAddress;
 
   /// No description provided for @enterAValidEmail.
   ///
   /// In en, this message translates to:
   /// **'Please enter a valid email'**
   String get enterAValidEmail;
-
-  /// No description provided for @passwordsDoNotMatch.
-  ///
-  /// In en, this message translates to:
-  /// **'Passwords do not match'**
-  String get passwordsDoNotMatch;
-
-  /// No description provided for @passwordMustBeAtLeast8Characters.
-  ///
-  /// In en, this message translates to:
-  /// **'Password must be at least 8 characters'**
-  String get passwordMustBeAtLeast8Characters;
-
-  /// No description provided for @passwordMustContainAtLeastOneUppercaseLetter.
-  ///
-  /// In en, this message translates to:
-  /// **'Password must contain at least one uppercase letter'**
-  String get passwordMustContainAtLeastOneUppercaseLetter;
-
-  /// No description provided for @passwordMustContainAtLeastOneLowercaseLetter.
-  ///
-  /// In en, this message translates to:
-  /// **'Password must contain at least one lowercase letter'**
-  String get passwordMustContainAtLeastOneLowercaseLetter;
-
-  /// No description provided for @passwordMustContainAtLeastOneNumberOrSpecialCharacter.
-  ///
-  /// In en, this message translates to:
-  /// **'Password must contain at least one number or special character'**
-  String get passwordMustContainAtLeastOneNumberOrSpecialCharacter;
-
-  /// No description provided for @pleaseEnterAValidCellphoneNumber.
-  ///
-  /// In en, this message translates to:
-  /// **'Please enter a valid cellphone number'**
-  String get pleaseEnterAValidCellphoneNumber;
-
-  /// No description provided for @pleaseEnterAValidNumber.
-  ///
-  /// In en, this message translates to:
-  /// **'Please enter a valid number'**
-  String get pleaseEnterAValidNumber;
 
   /// No description provided for @enterAValidPostalCode.
   ///
@@ -239,89 +161,11 @@ abstract class AppLocalizations {
   /// **'Please enter a valid price'**
   String get enterAValidPrice;
 
-  /// No description provided for @fromGallery.
+  /// No description provided for @enterNewPassword.
   ///
   /// In en, this message translates to:
-  /// **'From Gallery'**
-  String get fromGallery;
-
-  /// No description provided for @takePhoto.
-  ///
-  /// In en, this message translates to:
-  /// **'Take Photo'**
-  String get takePhoto;
-
-  /// No description provided for @noImageSelected.
-  ///
-  /// In en, this message translates to:
-  /// **'No Image Selected'**
-  String get noImageSelected;
-
-  /// No description provided for @confirm.
-  ///
-  /// In en, this message translates to:
-  /// **'Confirm'**
-  String get confirm;
-
-  /// No description provided for @cancel.
-  ///
-  /// In en, this message translates to:
-  /// **'Cancel'**
-  String get cancel;
-
-  /// No description provided for @languages.
-  ///
-  /// In en, this message translates to:
-  /// **'Languages'**
-  String get languages;
-
-  /// No description provided for @pageNotFound.
-  ///
-  /// In en, this message translates to:
-  /// **'Page Not Found'**
-  String get pageNotFound;
-
-  /// No description provided for @thePageYouAreLookingForDoesNotExist.
-  ///
-  /// In en, this message translates to:
-  /// **'The page you are looking for does not exist'**
-  String get thePageYouAreLookingForDoesNotExist;
-
-  /// No description provided for @emailAddress.
-  ///
-  /// In en, this message translates to:
-  /// **'Email address'**
-  String get emailAddress;
-
-  /// No description provided for @password.
-  ///
-  /// In en, this message translates to:
-  /// **'Password'**
-  String get password;
-
-  /// No description provided for @login.
-  ///
-  /// In en, this message translates to:
-  /// **'Login'**
-  String get login;
-
-  /// No description provided for @register.
-  ///
-  /// In en, this message translates to:
-  /// **'Register'**
-  String get register;
-
-  /// No description provided for @fullName.
-  ///
-  /// In en, this message translates to:
-  /// **'Full Name'**
-  String get fullName;
-
-  /// No description provided for @confirmPassword.
-  ///
-  /// In en, this message translates to:
-  /// **'Confirm Password'**
-  String get confirmPassword;
+  /// **'Enter New Password'**
+  String get enterNewPassword;
 
   /// No description provided for @forgotPassword.
   ///
@@ -329,17 +173,167 @@ abstract class AppLocalizations {
   /// **'Forgot Password?'**
   String get forgotPassword;
 
-  /// No description provided for @sendResetCode.
+  /// No description provided for @freePlan.
   ///
   /// In en, this message translates to:
-  /// **'Send Reset Code'**
-  String get sendResetCode;
+  /// **'Free Plan'**
+  String get freePlan;
 
-  /// No description provided for @verifyOtp.
+  /// No description provided for @fromGallery.
   ///
   /// In en, this message translates to:
-  /// **'Verify OTP'**
-  String get verifyOtp;
+  /// **'From Gallery'**
+  String get fromGallery;
+
+  /// No description provided for @fullName.
+  ///
+  /// In en, this message translates to:
+  /// **'Full Name'**
+  String get fullName;
+
+  /// No description provided for @home.
+  ///
+  /// In en, this message translates to:
+  /// **'Home'**
+  String get home;
+
+  /// No description provided for @hoursSaved.
+  ///
+  /// In en, this message translates to:
+  /// **'Hours Saved'**
+  String get hoursSaved;
+
+  /// No description provided for @languages.
+  ///
+  /// In en, this message translates to:
+  /// **'Languages'**
+  String get languages;
+
+  /// No description provided for @last90Days.
+  ///
+  /// In en, this message translates to:
+  /// **'Last 90 Days'**
+  String get last90Days;
+
+  /// No description provided for @lastMonth.
+  ///
+  /// In en, this message translates to:
+  /// **'Last Month'**
+  String get lastMonth;
+
+  /// No description provided for @lastWeek.
+  ///
+  /// In en, this message translates to:
+  /// **'Last Week'**
+  String get lastWeek;
+
+  /// No description provided for @later.
+  ///
+  /// In en, this message translates to:
+  /// **'Later'**
+  String get later;
+
+  /// No description provided for @login.
+  ///
+  /// In en, this message translates to:
+  /// **'Login'**
+  String get login;
+
+  /// No description provided for @logout.
+  ///
+  /// In en, this message translates to:
+  /// **'Logout'**
+  String get logout;
+
+  /// No description provided for @noDataAvailable.
+  ///
+  /// In en, this message translates to:
+  /// **'No data available'**
+  String get noDataAvailable;
+
+  /// No description provided for @noImageSelected.
+  ///
+  /// In en, this message translates to:
+  /// **'No Image Selected'**
+  String get noImageSelected;
+
+  /// No description provided for @pageNotFound.
+  ///
+  /// In en, this message translates to:
+  /// **'Page Not Found'**
+  String get pageNotFound;
+
+  /// No description provided for @password.
+  ///
+  /// In en, this message translates to:
+  /// **'Password'**
+  String get password;
+
+  /// No description provided for @passwordMustBeAtLeast8Characters.
+  ///
+  /// In en, this message translates to:
+  /// **'Password must be at least 8 characters'**
+  String get passwordMustBeAtLeast8Characters;
+
+  /// No description provided for @passwordMustContainAtLeastOneLowercaseLetter.
+  ///
+  /// In en, this message translates to:
+  /// **'Password must contain at least one lowercase letter'**
+  String get passwordMustContainAtLeastOneLowercaseLetter;
+
+  /// No description provided for @passwordMustContainAtLeastOneNumberOrSpecialCharacter.
+  ///
+  /// In en, this message translates to:
+  /// **'Password must contain at least one number or special character'**
+  String get passwordMustContainAtLeastOneNumberOrSpecialCharacter;
+
+  /// No description provided for @passwordMustContainAtLeastOneUppercaseLetter.
+  ///
+  /// In en, this message translates to:
+  /// **'Password must contain at least one uppercase letter'**
+  String get passwordMustContainAtLeastOneUppercaseLetter;
+
+  /// No description provided for @passwordsDoNotMatch.
+  ///
+  /// In en, this message translates to:
+  /// **'Passwords do not match'**
+  String get passwordsDoNotMatch;
+
+  /// No description provided for @pleaseEnterAValidCellphoneNumber.
+  ///
+  /// In en, this message translates to:
+  /// **'Please enter a valid cellphone number'**
+  String get pleaseEnterAValidCellphoneNumber;
+
+  /// No description provided for @pleaseEnterAValidNumber.
+  ///
+  /// In en, this message translates to:
+  /// **'Please enter a valid number'**
+  String get pleaseEnterAValidNumber;
+
+  /// No description provided for @pleaseEnterAValidOtp.
+  ///
+  /// In en, this message translates to:
+  /// **'Please enter a valid OTP'**
+  String get pleaseEnterAValidOtp;
+
+  /// No description provided for @pleaseEnterTheVerificationCode.
+  ///
+  /// In en, this message translates to:
+  /// **'Please enter the verification code'**
+  String get pleaseEnterTheVerificationCode;
+
+  /// No description provided for @profile.
+  ///
+  /// In en, this message translates to:
+  /// **'Profile'**
+  String get profile;
+
+  /// No description provided for @register.
+  ///
+  /// In en, this message translates to:
+  /// **'Register'**
+  String get register;
 
   /// No description provided for @resendCode.
   ///
@@ -353,29 +347,11 @@ abstract class AppLocalizations {
   /// **'Reset Password'**
   String get resetPassword;
 
-  /// No description provided for @enterNewPassword.
+  /// No description provided for @sendResetCode.
   ///
   /// In en, this message translates to:
-  /// **'Enter New Password'**
-  String get enterNewPassword;
-
-  /// No description provided for @pleaseEnterTheVerificationCode.
-  ///
-  /// In en, this message translates to:
-  /// **'Please enter the verification code'**
-  String get pleaseEnterTheVerificationCode;
-
-  /// No description provided for @pleaseEnterAValidOtp.
-  ///
-  /// In en, this message translates to:
-  /// **'Please enter a valid OTP'**
-  String get pleaseEnterAValidOtp;
-
-  /// No description provided for @donTHaveAnAccount.
-  ///
-  /// In en, this message translates to:
-  /// **'Don\'t have an account?'**
-  String get donTHaveAnAccount;
+  /// **'Send Reset Code'**
+  String get sendResetCode;
 
   /// No description provided for @signUp.
   ///
@@ -383,17 +359,65 @@ abstract class AppLocalizations {
   /// **'Sign up'**
   String get signUp;
 
-  /// No description provided for @alreadyHaveAnAccount.
+  /// No description provided for @takePhoto.
   ///
   /// In en, this message translates to:
-  /// **'Already have an account?'**
-  String get alreadyHaveAnAccount;
+  /// **'Take Photo'**
+  String get takePhoto;
 
-  /// No description provided for @home.
+  /// No description provided for @theme.
   ///
   /// In en, this message translates to:
-  /// **'Home'**
-  String get home;
+  /// **'Theme'**
+  String get theme;
+
+  /// No description provided for @thePageYouAreLookingForDoesNotExist.
+  ///
+  /// In en, this message translates to:
+  /// **'The page you are looking for does not exist'**
+  String get thePageYouAreLookingForDoesNotExist;
+
+  /// No description provided for @thisFieldIsRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'This field is required'**
+  String get thisFieldIsRequired;
+
+  /// No description provided for @thisWeek.
+  ///
+  /// In en, this message translates to:
+  /// **'This Week'**
+  String get thisWeek;
+
+  /// No description provided for @today.
+  ///
+  /// In en, this message translates to:
+  /// **'Today'**
+  String get today;
+
+  /// No description provided for @updateNow.
+  ///
+  /// In en, this message translates to:
+  /// **'Update Now'**
+  String get updateNow;
+
+  /// No description provided for @verifyOtp.
+  ///
+  /// In en, this message translates to:
+  /// **'Verify OTP'**
+  String get verifyOtp;
+
+  /// No description provided for @version.
+  ///
+  /// In en, this message translates to:
+  /// **'Version'**
+  String get version;
+
+  /// No description provided for @yesterday.
+  ///
+  /// In en, this message translates to:
+  /// **'Yesterday'**
+  String get yesterday;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

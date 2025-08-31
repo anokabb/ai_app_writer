@@ -1,0 +1,2 @@
+/Users/anouar/Desktop/apps/Freelance/ai_app_writer/android/app/.cxx/RelWithDebInfo/1p3v1r5n/armeabi-v7a/CMakeFiles/edit_cache.dir
+/Users/anouar/Desktop/apps/Freelance/ai_app_writer/android/app/.cxx/RelWithDebInfo/1p3v1r5n/armeabi-v7a/CMakeFiles/rebuild_cache.dir

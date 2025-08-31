@@ -9,13 +9,8 @@ class EnvConfig {
 
   static String get baseUrl => dotenv.get('BASE_URL', fallback: '');
   static bool get showEnvBanner => devBox.get('showEnvBanner', defaultValue: kDebugMode ? true : false);
-  static String get currentEnv => devBox.get(
-        'env',
-        defaultValue: String.fromEnvironment(
-          'ENV',
-          defaultValue: ConfigEnvironments.staging.name,
-        ),
-      );
+  static String get currentEnv =>
+      devBox.get('env', defaultValue: String.fromEnvironment('ENV', defaultValue: ConfigEnvironments.staging.name));
 
   static Future<void> loadEnv() async {
     await dotenv.load(fileName: '$currentEnv.env');
@@ -27,9 +22,11 @@ class EnvConfig {
 
   static const bool FORCE_UPDATE = false;
 
-// for testing in debug mode
+  // for testing in debug mode
   static String get TEST_PHONE_NUMBER => !kDebugMode ? '' : dotenv.get('TEST_PHONE_NUMBER', fallback: '');
   static String get TEST_OTP => !kDebugMode ? '' : dotenv.get('TEST_OTP', fallback: '');
   static String get TEST_EMAIL => !kDebugMode ? '' : dotenv.get('TEST_EMAIL', fallback: '');
   static String get TEST_PASSWORD => !kDebugMode ? '' : dotenv.get('TEST_PASSWORD', fallback: '');
+
+  static String get OPENAI_API_KEY => !kDebugMode ? '' : dotenv.get('OPENAI_API_KEY', fallback: '');
 }
