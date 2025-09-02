@@ -1,14 +1,16 @@
 import 'dart:math' as math;
 
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_app_template/src/core/network/ai_api/models/text_analysis_model.dart';
 import 'package:flutter_app_template/src/core/services/theme/app_theme.dart';
 import 'package:flutter_app_template/src/core/utils/utils.dart';
 
 class PercentageBar extends StatefulWidget {
-  final double percentage; // 0.0 to 1.0
+  final TextAnalysisResult result;
   final double size;
-
-  const PercentageBar({super.key, required this.percentage, this.size = 140});
+  final Animation<double> fadeAnimation;
+  const PercentageBar({super.key, required this.result, this.size = 150, required this.fadeAnimation});
 
   @override
   State<PercentageBar> createState() => _PercentageBarState();
@@ -28,7 +30,7 @@ class _PercentageBarState extends State<PercentageBar> with SingleTickerProvider
     );
     _animation = Tween<double>(
       begin: 0.0,
-      end: widget.percentage,
+      end: widget.result.aiProbability,
     ).animate(CurvedAnimation(
       parent: _animationController,
       curve: Curves.easeInOutCubic,
@@ -46,10 +48,10 @@ class _PercentageBarState extends State<PercentageBar> with SingleTickerProvider
   @override
   void didUpdateWidget(PercentageBar oldWidget) {
     super.didUpdateWidget(oldWidget);
-    if (oldWidget.percentage != widget.percentage) {
+    if (oldWidget.result.aiProbability != widget.result.aiProbability) {
       _animation = Tween<double>(
         begin: _currentPercentage,
-        end: widget.percentage,
+        end: widget.result.aiProbability,
       ).animate(CurvedAnimation(
         parent: _animationController,
         curve: Curves.easeInOutCubic,
@@ -127,24 +129,37 @@ class _PercentageBarState extends State<PercentageBar> with SingleTickerProvider
             ),
           ),
           // Center text
-          Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text(
-                '$percentValue%',
-                style: context.appTextTheme.title2.copyWith(
-                  color: activeGradient.first,
-                  fontWeight: FontWeight.bold,
+          FadeTransition(
+            opacity: widget.fadeAnimation,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  '$percentValue%',
+                  style: context.appTextTheme.title2.copyWith(
+                    color: activeGradient.first,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
-              ),
-              Text(
-                'AI Generated',
-                style: context.appTextTheme.body3Light.copyWith(
-                  color: Colors.grey.shade400,
-                  fontWeight: FontWeight.w600,
+                SizedBox(
+                  width: widget.size - 38,
+                  child: AutoSizeText(
+                    widget.result.source == TextSource.ai
+                        ? 'AI Generated'
+                        : widget.result.source == TextSource.human
+                            ? 'Human Generated'
+                            : 'AI Assisted',
+                    maxLines: 1,
+                    textAlign: TextAlign.center,
+                    minFontSize: 8,
+                    style: context.appTextTheme.body3Light.copyWith(
+                      color: Colors.grey.shade400,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ],
       ),

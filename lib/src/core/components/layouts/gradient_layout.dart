@@ -14,52 +14,49 @@ class GradientLayout extends StatelessWidget {
     return GestureDetector(
       onTap: FocusScope.of(context).unfocus,
       child: Scaffold(
-        body: SafeArea(
-          top: false,
-          child: Column(
-            children: <Widget>[
-              Container(
-                width: double.infinity,
-                padding: EdgeInsets.fromLTRB(
-                  16,
-                  MediaQuery.of(context).padding.top,
-                  16,
-                  16,
+        body: Column(
+          children: <Widget>[
+            Container(
+              width: double.infinity,
+              padding: EdgeInsets.fromLTRB(
+                16,
+                MediaQuery.of(context).padding.top,
+                16,
+                16,
+              ),
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  begin: Alignment.bottomLeft,
+                  end: Alignment.topRight,
+                  colors: colors,
                 ),
-                decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                    begin: Alignment.bottomLeft,
-                    end: Alignment.topRight,
-                    colors: colors,
-                  ),
-                ),
-                child: Row(
-                  children: [
-                    AppCupertinoButton(
-                      onTap: () => Navigator.of(context).pop(),
-                      child: Icon(
-                        FontAwesomeIcons.solidCircleXmark,
-                        color: Colors.white,
-                        size: 20,
-                      ),
+              ),
+              child: Row(
+                children: [
+                  AppCupertinoButton(
+                    onTap: () => Navigator.of(context).pop(),
+                    child: Icon(
+                      FontAwesomeIcons.solidCircleXmark,
+                      color: Colors.white,
+                      size: 20,
                     ),
-                    Expanded(
-                      child: Center(
-                        child: Text(
-                          title,
-                          style: context.appTextTheme.subtitle2.copyWith(
-                            color: Colors.white,
-                          ),
+                  ),
+                  Expanded(
+                    child: Center(
+                      child: Text(
+                        title,
+                        style: context.appTextTheme.subtitle2.copyWith(
+                          color: Colors.white,
                         ),
                       ),
                     ),
-                    SizedBox(width: 20),
-                  ],
-                ),
+                  ),
+                  SizedBox(width: 20),
+                ],
               ),
-              Expanded(child: child),
-            ],
-          ),
+            ),
+            Expanded(child: child),
+          ],
         ),
       ),
     );

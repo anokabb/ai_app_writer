@@ -10,7 +10,9 @@ import 'package:google_fonts/google_fonts.dart';
 
 class AppTheme {
   static String? getFontFamily(String lang) {
-    return lang == LanguageEnum.ar.name ? GoogleFonts.ibmPlexSansArabic().fontFamily : GoogleFonts.poppins().fontFamily;
+    return lang == AppLanguageEnum.ar.name
+        ? GoogleFonts.ibmPlexSansArabic().fontFamily
+        : GoogleFonts.poppins().fontFamily;
   }
 
   static SimpleAppTextThemeExtension lightTextTheme(String? fontFamily) => SimpleAppTextThemeExtension(

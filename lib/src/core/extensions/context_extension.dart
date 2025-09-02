@@ -21,6 +21,13 @@ extension EBuildContext on BuildContext {
   AppLocalizations get localization => AppLocalizations.of(this)!;
   bool get isDarkMode => locator<ThemeCubit>().state.isDarkMode;
 
+  EdgeInsets get scrollSafePadding => EdgeInsets.fromLTRB(
+        16,
+        16,
+        16,
+        16 + MediaQuery.of(this).padding.bottom,
+      );
+
   void showSnackBar(String message, {bool isError = false}) {
     ScaffoldMessenger.of(this).showSnackBar(
       SnackBar(

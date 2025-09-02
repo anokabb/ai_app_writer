@@ -4,6 +4,6 @@ part of 'generator_cubit.dart';
 class GeneratorState with _$GeneratorState {
   const factory GeneratorState.initial() = GeneratorStateInitial;
   const factory GeneratorState.loading() = GeneratorStateLoading;
-  const factory GeneratorState.loaded() = GeneratorStateLoaded;
+  const factory GeneratorState.loaded(GeneratorModel result) = GeneratorStateLoaded;
   const factory GeneratorState.error(AppError error) = GeneratorStateError;
 }

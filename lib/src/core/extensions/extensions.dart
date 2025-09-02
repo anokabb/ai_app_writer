@@ -23,6 +23,9 @@ extension EString on String {
     return replaceAll(RegExp(r'\d'), '0');
   }
 
+  String enumCapitalize() {
+    return split('_').map((word) => word.capitalizeFirst).join(' ');
+  }
 }
 
 extension EDuration on Duration {

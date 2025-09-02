@@ -8,7 +8,7 @@ class EnvConfig {
   static const String APP_NAME = 'Flutter App';
 
   static String get baseUrl => dotenv.get('BASE_URL', fallback: '');
-  static bool get showEnvBanner => devBox.get('showEnvBanner', defaultValue: kDebugMode ? true : false);
+  static bool get showEnvBanner => devBox.get('showEnvBanner', defaultValue: false);
   static String get currentEnv =>
       devBox.get('env', defaultValue: String.fromEnvironment('ENV', defaultValue: ConfigEnvironments.staging.name));
 

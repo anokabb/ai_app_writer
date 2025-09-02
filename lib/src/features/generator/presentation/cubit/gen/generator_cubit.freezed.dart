@@ -20,7 +20,7 @@ mixin _$GeneratorState {
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
     required TResult Function() loading,
-    required TResult Function() loaded,
+    required TResult Function(GeneratorModel result) loaded,
     required TResult Function(AppError error) error,
   }) =>
       throw _privateConstructorUsedError;
@@ -28,7 +28,7 @@ mixin _$GeneratorState {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
     TResult? Function()? loading,
-    TResult? Function()? loaded,
+    TResult? Function(GeneratorModel result)? loaded,
     TResult? Function(AppError error)? error,
   }) =>
       throw _privateConstructorUsedError;
@@ -36,7 +36,7 @@ mixin _$GeneratorState {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
     TResult Function()? loading,
-    TResult Function()? loaded,
+    TResult Function(GeneratorModel result)? loaded,
     TResult Function(AppError error)? error,
     required TResult orElse(),
   }) =>
@@ -134,7 +134,7 @@ class _$GeneratorStateInitialImpl implements GeneratorStateInitial {
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
     required TResult Function() loading,
-    required TResult Function() loaded,
+    required TResult Function(GeneratorModel result) loaded,
     required TResult Function(AppError error) error,
   }) {
     return initial();
@@ -145,7 +145,7 @@ class _$GeneratorStateInitialImpl implements GeneratorStateInitial {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
     TResult? Function()? loading,
-    TResult? Function()? loaded,
+    TResult? Function(GeneratorModel result)? loaded,
     TResult? Function(AppError error)? error,
   }) {
     return initial?.call();
@@ -156,7 +156,7 @@ class _$GeneratorStateInitialImpl implements GeneratorStateInitial {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
     TResult Function()? loading,
-    TResult Function()? loaded,
+    TResult Function(GeneratorModel result)? loaded,
     TResult Function(AppError error)? error,
     required TResult orElse(),
   }) {
@@ -253,7 +253,7 @@ class _$GeneratorStateLoadingImpl implements GeneratorStateLoading {
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
     required TResult Function() loading,
-    required TResult Function() loaded,
+    required TResult Function(GeneratorModel result) loaded,
     required TResult Function(AppError error) error,
   }) {
     return loading();
@@ -264,7 +264,7 @@ class _$GeneratorStateLoadingImpl implements GeneratorStateLoading {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
     TResult? Function()? loading,
-    TResult? Function()? loaded,
+    TResult? Function(GeneratorModel result)? loaded,
     TResult? Function(AppError error)? error,
   }) {
     return loading?.call();
@@ -275,7 +275,7 @@ class _$GeneratorStateLoadingImpl implements GeneratorStateLoading {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
     TResult Function()? loading,
-    TResult Function()? loaded,
+    TResult Function(GeneratorModel result)? loaded,
     TResult Function(AppError error)? error,
     required TResult orElse(),
   }) {
@@ -332,6 +332,10 @@ abstract class _$$GeneratorStateLoadedImplCopyWith<$Res> {
   factory _$$GeneratorStateLoadedImplCopyWith(_$GeneratorStateLoadedImpl value,
           $Res Function(_$GeneratorStateLoadedImpl) then) =
       __$$GeneratorStateLoadedImplCopyWithImpl<$Res>;
+  @useResult
+  $Res call({GeneratorModel result});
+
+  $GeneratorModelCopyWith<$Res> get result;
 }
 
 /// @nodoc
@@ -344,37 +348,73 @@ class __$$GeneratorStateLoadedImplCopyWithImpl<$Res>
 
   /// Create a copy of GeneratorState
   /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? result = null,
+  }) {
+    return _then(_$GeneratorStateLoadedImpl(
+      null == result
+          ? _value.result
+          : result // ignore: cast_nullable_to_non_nullable
+              as GeneratorModel,
+    ));
+  }
+
+  /// Create a copy of GeneratorState
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @pragma('vm:prefer-inline')
+  $GeneratorModelCopyWith<$Res> get result {
+    return $GeneratorModelCopyWith<$Res>(_value.result, (value) {
+      return _then(_value.copyWith(result: value));
+    });
+  }
 }
 
 /// @nodoc
 
 class _$GeneratorStateLoadedImpl implements GeneratorStateLoaded {
-  const _$GeneratorStateLoadedImpl();
+  const _$GeneratorStateLoadedImpl(this.result);
+
+  @override
+  final GeneratorModel result;
 
   @override
   String toString() {
-    return 'GeneratorState.loaded()';
+    return 'GeneratorState.loaded(result: $result)';
   }
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$GeneratorStateLoadedImpl);
+            other is _$GeneratorStateLoadedImpl &&
+            (identical(other.result, result) || other.result == result));
   }
 
   @override
-  int get hashCode => runtimeType.hashCode;
+  int get hashCode => Object.hash(runtimeType, result);
+
+  /// Create a copy of GeneratorState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$GeneratorStateLoadedImplCopyWith<_$GeneratorStateLoadedImpl>
+      get copyWith =>
+          __$$GeneratorStateLoadedImplCopyWithImpl<_$GeneratorStateLoadedImpl>(
+              this, _$identity);
 
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
     required TResult Function() loading,
-    required TResult Function() loaded,
+    required TResult Function(GeneratorModel result) loaded,
     required TResult Function(AppError error) error,
   }) {
-    return loaded();
+    return loaded(result);
   }
 
   @override
@@ -382,10 +422,10 @@ class _$GeneratorStateLoadedImpl implements GeneratorStateLoaded {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
     TResult? Function()? loading,
-    TResult? Function()? loaded,
+    TResult? Function(GeneratorModel result)? loaded,
     TResult? Function(AppError error)? error,
   }) {
-    return loaded?.call();
+    return loaded?.call(result);
   }
 
   @override
@@ -393,12 +433,12 @@ class _$GeneratorStateLoadedImpl implements GeneratorStateLoaded {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
     TResult Function()? loading,
-    TResult Function()? loaded,
+    TResult Function(GeneratorModel result)? loaded,
     TResult Function(AppError error)? error,
     required TResult orElse(),
   }) {
     if (loaded != null) {
-      return loaded();
+      return loaded(result);
     }
     return orElse();
   }
@@ -442,7 +482,16 @@ class _$GeneratorStateLoadedImpl implements GeneratorStateLoaded {
 }
 
 abstract class GeneratorStateLoaded implements GeneratorState {
-  const factory GeneratorStateLoaded() = _$GeneratorStateLoadedImpl;
+  const factory GeneratorStateLoaded(final GeneratorModel result) =
+      _$GeneratorStateLoadedImpl;
+
+  GeneratorModel get result;
+
+  /// Create a copy of GeneratorState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  _$$GeneratorStateLoadedImplCopyWith<_$GeneratorStateLoadedImpl>
+      get copyWith => throw _privateConstructorUsedError;
 }
 
 /// @nodoc
@@ -528,7 +577,7 @@ class _$GeneratorStateErrorImpl implements GeneratorStateError {
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
     required TResult Function() loading,
-    required TResult Function() loaded,
+    required TResult Function(GeneratorModel result) loaded,
     required TResult Function(AppError error) error,
   }) {
     return error(this.error);
@@ -539,7 +588,7 @@ class _$GeneratorStateErrorImpl implements GeneratorStateError {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
     TResult? Function()? loading,
-    TResult? Function()? loaded,
+    TResult? Function(GeneratorModel result)? loaded,
     TResult? Function(AppError error)? error,
   }) {
     return error?.call(this.error);
@@ -550,7 +599,7 @@ class _$GeneratorStateErrorImpl implements GeneratorStateError {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
     TResult Function()? loading,
-    TResult Function()? loaded,
+    TResult Function(GeneratorModel result)? loaded,
     TResult Function(AppError error)? error,
     required TResult orElse(),
   }) {

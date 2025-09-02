@@ -20,7 +20,7 @@ mixin _$HumanizerState {
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
     required TResult Function() loading,
-    required TResult Function() loaded,
+    required TResult Function(HumanizationResult result) loaded,
     required TResult Function(AppError error) error,
   }) =>
       throw _privateConstructorUsedError;
@@ -28,7 +28,7 @@ mixin _$HumanizerState {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
     TResult? Function()? loading,
-    TResult? Function()? loaded,
+    TResult? Function(HumanizationResult result)? loaded,
     TResult? Function(AppError error)? error,
   }) =>
       throw _privateConstructorUsedError;
@@ -36,7 +36,7 @@ mixin _$HumanizerState {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
     TResult Function()? loading,
-    TResult Function()? loaded,
+    TResult Function(HumanizationResult result)? loaded,
     TResult Function(AppError error)? error,
     required TResult orElse(),
   }) =>
@@ -134,7 +134,7 @@ class _$HumanizerStateInitialImpl implements HumanizerStateInitial {
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
     required TResult Function() loading,
-    required TResult Function() loaded,
+    required TResult Function(HumanizationResult result) loaded,
     required TResult Function(AppError error) error,
   }) {
     return initial();
@@ -145,7 +145,7 @@ class _$HumanizerStateInitialImpl implements HumanizerStateInitial {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
     TResult? Function()? loading,
-    TResult? Function()? loaded,
+    TResult? Function(HumanizationResult result)? loaded,
     TResult? Function(AppError error)? error,
   }) {
     return initial?.call();
@@ -156,7 +156,7 @@ class _$HumanizerStateInitialImpl implements HumanizerStateInitial {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
     TResult Function()? loading,
-    TResult Function()? loaded,
+    TResult Function(HumanizationResult result)? loaded,
     TResult Function(AppError error)? error,
     required TResult orElse(),
   }) {
@@ -253,7 +253,7 @@ class _$HumanizerStateLoadingImpl implements HumanizerStateLoading {
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
     required TResult Function() loading,
-    required TResult Function() loaded,
+    required TResult Function(HumanizationResult result) loaded,
     required TResult Function(AppError error) error,
   }) {
     return loading();
@@ -264,7 +264,7 @@ class _$HumanizerStateLoadingImpl implements HumanizerStateLoading {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
     TResult? Function()? loading,
-    TResult? Function()? loaded,
+    TResult? Function(HumanizationResult result)? loaded,
     TResult? Function(AppError error)? error,
   }) {
     return loading?.call();
@@ -275,7 +275,7 @@ class _$HumanizerStateLoadingImpl implements HumanizerStateLoading {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
     TResult Function()? loading,
-    TResult Function()? loaded,
+    TResult Function(HumanizationResult result)? loaded,
     TResult Function(AppError error)? error,
     required TResult orElse(),
   }) {
@@ -332,6 +332,10 @@ abstract class _$$HumanizerStateLoadedImplCopyWith<$Res> {
   factory _$$HumanizerStateLoadedImplCopyWith(_$HumanizerStateLoadedImpl value,
           $Res Function(_$HumanizerStateLoadedImpl) then) =
       __$$HumanizerStateLoadedImplCopyWithImpl<$Res>;
+  @useResult
+  $Res call({HumanizationResult result});
+
+  $HumanizationResultCopyWith<$Res> get result;
 }
 
 /// @nodoc
@@ -344,37 +348,73 @@ class __$$HumanizerStateLoadedImplCopyWithImpl<$Res>
 
   /// Create a copy of HumanizerState
   /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? result = null,
+  }) {
+    return _then(_$HumanizerStateLoadedImpl(
+      null == result
+          ? _value.result
+          : result // ignore: cast_nullable_to_non_nullable
+              as HumanizationResult,
+    ));
+  }
+
+  /// Create a copy of HumanizerState
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @pragma('vm:prefer-inline')
+  $HumanizationResultCopyWith<$Res> get result {
+    return $HumanizationResultCopyWith<$Res>(_value.result, (value) {
+      return _then(_value.copyWith(result: value));
+    });
+  }
 }
 
 /// @nodoc
 
 class _$HumanizerStateLoadedImpl implements HumanizerStateLoaded {
-  const _$HumanizerStateLoadedImpl();
+  const _$HumanizerStateLoadedImpl(this.result);
+
+  @override
+  final HumanizationResult result;
 
   @override
   String toString() {
-    return 'HumanizerState.loaded()';
+    return 'HumanizerState.loaded(result: $result)';
   }
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$HumanizerStateLoadedImpl);
+            other is _$HumanizerStateLoadedImpl &&
+            (identical(other.result, result) || other.result == result));
   }
 
   @override
-  int get hashCode => runtimeType.hashCode;
+  int get hashCode => Object.hash(runtimeType, result);
+
+  /// Create a copy of HumanizerState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$HumanizerStateLoadedImplCopyWith<_$HumanizerStateLoadedImpl>
+      get copyWith =>
+          __$$HumanizerStateLoadedImplCopyWithImpl<_$HumanizerStateLoadedImpl>(
+              this, _$identity);
 
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
     required TResult Function() loading,
-    required TResult Function() loaded,
+    required TResult Function(HumanizationResult result) loaded,
     required TResult Function(AppError error) error,
   }) {
-    return loaded();
+    return loaded(result);
   }
 
   @override
@@ -382,10 +422,10 @@ class _$HumanizerStateLoadedImpl implements HumanizerStateLoaded {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
     TResult? Function()? loading,
-    TResult? Function()? loaded,
+    TResult? Function(HumanizationResult result)? loaded,
     TResult? Function(AppError error)? error,
   }) {
-    return loaded?.call();
+    return loaded?.call(result);
   }
 
   @override
@@ -393,12 +433,12 @@ class _$HumanizerStateLoadedImpl implements HumanizerStateLoaded {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
     TResult Function()? loading,
-    TResult Function()? loaded,
+    TResult Function(HumanizationResult result)? loaded,
     TResult Function(AppError error)? error,
     required TResult orElse(),
   }) {
     if (loaded != null) {
-      return loaded();
+      return loaded(result);
     }
     return orElse();
   }
@@ -442,7 +482,16 @@ class _$HumanizerStateLoadedImpl implements HumanizerStateLoaded {
 }
 
 abstract class HumanizerStateLoaded implements HumanizerState {
-  const factory HumanizerStateLoaded() = _$HumanizerStateLoadedImpl;
+  const factory HumanizerStateLoaded(final HumanizationResult result) =
+      _$HumanizerStateLoadedImpl;
+
+  HumanizationResult get result;
+
+  /// Create a copy of HumanizerState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  _$$HumanizerStateLoadedImplCopyWith<_$HumanizerStateLoadedImpl>
+      get copyWith => throw _privateConstructorUsedError;
 }
 
 /// @nodoc
@@ -528,7 +577,7 @@ class _$HumanizerStateErrorImpl implements HumanizerStateError {
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
     required TResult Function() loading,
-    required TResult Function() loaded,
+    required TResult Function(HumanizationResult result) loaded,
     required TResult Function(AppError error) error,
   }) {
     return error(this.error);
@@ -539,7 +588,7 @@ class _$HumanizerStateErrorImpl implements HumanizerStateError {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
     TResult? Function()? loading,
-    TResult? Function()? loaded,
+    TResult? Function(HumanizationResult result)? loaded,
     TResult? Function(AppError error)? error,
   }) {
     return error?.call(this.error);
@@ -550,7 +599,7 @@ class _$HumanizerStateErrorImpl implements HumanizerStateError {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
     TResult Function()? loading,
-    TResult Function()? loaded,
+    TResult Function(HumanizationResult result)? loaded,
     TResult Function(AppError error)? error,
     required TResult orElse(),
   }) {

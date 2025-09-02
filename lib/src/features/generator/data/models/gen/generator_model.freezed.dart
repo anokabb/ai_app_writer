@@ -21,7 +21,15 @@ GeneratorModel _$GeneratorModelFromJson(Map<String, dynamic> json) {
 /// @nodoc
 mixin _$GeneratorModel {
   String get id => throw _privateConstructorUsedError;
-  String get name => throw _privateConstructorUsedError;
+  String get originalText => throw _privateConstructorUsedError;
+  String get generatedContent => throw _privateConstructorUsedError;
+  String get typeOfWriting => throw _privateConstructorUsedError;
+  String get tone => throw _privateConstructorUsedError;
+  int get wordCount => throw _privateConstructorUsedError;
+  String get language => throw _privateConstructorUsedError;
+  List<String>? get suggestions => throw _privateConstructorUsedError;
+  String? get explanation => throw _privateConstructorUsedError;
+  DateTime? get createdAt => throw _privateConstructorUsedError;
 
   /// Serializes this GeneratorModel to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -39,7 +47,17 @@ abstract class $GeneratorModelCopyWith<$Res> {
           GeneratorModel value, $Res Function(GeneratorModel) then) =
       _$GeneratorModelCopyWithImpl<$Res, GeneratorModel>;
   @useResult
-  $Res call({String id, String name});
+  $Res call(
+      {String id,
+      String originalText,
+      String generatedContent,
+      String typeOfWriting,
+      String tone,
+      int wordCount,
+      String language,
+      List<String>? suggestions,
+      String? explanation,
+      DateTime? createdAt});
 }
 
 /// @nodoc
@@ -58,17 +76,57 @@ class _$GeneratorModelCopyWithImpl<$Res, $Val extends GeneratorModel>
   @override
   $Res call({
     Object? id = null,
-    Object? name = null,
+    Object? originalText = null,
+    Object? generatedContent = null,
+    Object? typeOfWriting = null,
+    Object? tone = null,
+    Object? wordCount = null,
+    Object? language = null,
+    Object? suggestions = freezed,
+    Object? explanation = freezed,
+    Object? createdAt = freezed,
   }) {
     return _then(_value.copyWith(
       id: null == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
               as String,
-      name: null == name
-          ? _value.name
-          : name // ignore: cast_nullable_to_non_nullable
+      originalText: null == originalText
+          ? _value.originalText
+          : originalText // ignore: cast_nullable_to_non_nullable
               as String,
+      generatedContent: null == generatedContent
+          ? _value.generatedContent
+          : generatedContent // ignore: cast_nullable_to_non_nullable
+              as String,
+      typeOfWriting: null == typeOfWriting
+          ? _value.typeOfWriting
+          : typeOfWriting // ignore: cast_nullable_to_non_nullable
+              as String,
+      tone: null == tone
+          ? _value.tone
+          : tone // ignore: cast_nullable_to_non_nullable
+              as String,
+      wordCount: null == wordCount
+          ? _value.wordCount
+          : wordCount // ignore: cast_nullable_to_non_nullable
+              as int,
+      language: null == language
+          ? _value.language
+          : language // ignore: cast_nullable_to_non_nullable
+              as String,
+      suggestions: freezed == suggestions
+          ? _value.suggestions
+          : suggestions // ignore: cast_nullable_to_non_nullable
+              as List<String>?,
+      explanation: freezed == explanation
+          ? _value.explanation
+          : explanation // ignore: cast_nullable_to_non_nullable
+              as String?,
+      createdAt: freezed == createdAt
+          ? _value.createdAt
+          : createdAt // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
     ) as $Val);
   }
 }
@@ -81,7 +139,17 @@ abstract class _$$GeneratorModelImplCopyWith<$Res>
       __$$GeneratorModelImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({String id, String name});
+  $Res call(
+      {String id,
+      String originalText,
+      String generatedContent,
+      String typeOfWriting,
+      String tone,
+      int wordCount,
+      String language,
+      List<String>? suggestions,
+      String? explanation,
+      DateTime? createdAt});
 }
 
 /// @nodoc
@@ -98,17 +166,57 @@ class __$$GeneratorModelImplCopyWithImpl<$Res>
   @override
   $Res call({
     Object? id = null,
-    Object? name = null,
+    Object? originalText = null,
+    Object? generatedContent = null,
+    Object? typeOfWriting = null,
+    Object? tone = null,
+    Object? wordCount = null,
+    Object? language = null,
+    Object? suggestions = freezed,
+    Object? explanation = freezed,
+    Object? createdAt = freezed,
   }) {
     return _then(_$GeneratorModelImpl(
       id: null == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
               as String,
-      name: null == name
-          ? _value.name
-          : name // ignore: cast_nullable_to_non_nullable
+      originalText: null == originalText
+          ? _value.originalText
+          : originalText // ignore: cast_nullable_to_non_nullable
               as String,
+      generatedContent: null == generatedContent
+          ? _value.generatedContent
+          : generatedContent // ignore: cast_nullable_to_non_nullable
+              as String,
+      typeOfWriting: null == typeOfWriting
+          ? _value.typeOfWriting
+          : typeOfWriting // ignore: cast_nullable_to_non_nullable
+              as String,
+      tone: null == tone
+          ? _value.tone
+          : tone // ignore: cast_nullable_to_non_nullable
+              as String,
+      wordCount: null == wordCount
+          ? _value.wordCount
+          : wordCount // ignore: cast_nullable_to_non_nullable
+              as int,
+      language: null == language
+          ? _value.language
+          : language // ignore: cast_nullable_to_non_nullable
+              as String,
+      suggestions: freezed == suggestions
+          ? _value._suggestions
+          : suggestions // ignore: cast_nullable_to_non_nullable
+              as List<String>?,
+      explanation: freezed == explanation
+          ? _value.explanation
+          : explanation // ignore: cast_nullable_to_non_nullable
+              as String?,
+      createdAt: freezed == createdAt
+          ? _value.createdAt
+          : createdAt // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
     ));
   }
 }
@@ -116,7 +224,18 @@ class __$$GeneratorModelImplCopyWithImpl<$Res>
 /// @nodoc
 @JsonSerializable()
 class _$GeneratorModelImpl implements _GeneratorModel {
-  const _$GeneratorModelImpl({required this.id, required this.name});
+  const _$GeneratorModelImpl(
+      {required this.id,
+      required this.originalText,
+      required this.generatedContent,
+      required this.typeOfWriting,
+      required this.tone,
+      required this.wordCount,
+      required this.language,
+      final List<String>? suggestions,
+      this.explanation,
+      this.createdAt})
+      : _suggestions = suggestions;
 
   factory _$GeneratorModelImpl.fromJson(Map<String, dynamic> json) =>
       _$$GeneratorModelImplFromJson(json);
@@ -124,11 +243,35 @@ class _$GeneratorModelImpl implements _GeneratorModel {
   @override
   final String id;
   @override
-  final String name;
+  final String originalText;
+  @override
+  final String generatedContent;
+  @override
+  final String typeOfWriting;
+  @override
+  final String tone;
+  @override
+  final int wordCount;
+  @override
+  final String language;
+  final List<String>? _suggestions;
+  @override
+  List<String>? get suggestions {
+    final value = _suggestions;
+    if (value == null) return null;
+    if (_suggestions is EqualUnmodifiableListView) return _suggestions;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(value);
+  }
+
+  @override
+  final String? explanation;
+  @override
+  final DateTime? createdAt;
 
   @override
   String toString() {
-    return 'GeneratorModel(id: $id, name: $name)';
+    return 'GeneratorModel(id: $id, originalText: $originalText, generatedContent: $generatedContent, typeOfWriting: $typeOfWriting, tone: $tone, wordCount: $wordCount, language: $language, suggestions: $suggestions, explanation: $explanation, createdAt: $createdAt)';
   }
 
   @override
@@ -137,12 +280,39 @@ class _$GeneratorModelImpl implements _GeneratorModel {
         (other.runtimeType == runtimeType &&
             other is _$GeneratorModelImpl &&
             (identical(other.id, id) || other.id == id) &&
-            (identical(other.name, name) || other.name == name));
+            (identical(other.originalText, originalText) ||
+                other.originalText == originalText) &&
+            (identical(other.generatedContent, generatedContent) ||
+                other.generatedContent == generatedContent) &&
+            (identical(other.typeOfWriting, typeOfWriting) ||
+                other.typeOfWriting == typeOfWriting) &&
+            (identical(other.tone, tone) || other.tone == tone) &&
+            (identical(other.wordCount, wordCount) ||
+                other.wordCount == wordCount) &&
+            (identical(other.language, language) ||
+                other.language == language) &&
+            const DeepCollectionEquality()
+                .equals(other._suggestions, _suggestions) &&
+            (identical(other.explanation, explanation) ||
+                other.explanation == explanation) &&
+            (identical(other.createdAt, createdAt) ||
+                other.createdAt == createdAt));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  int get hashCode => Object.hash(runtimeType, id, name);
+  int get hashCode => Object.hash(
+      runtimeType,
+      id,
+      originalText,
+      generatedContent,
+      typeOfWriting,
+      tone,
+      wordCount,
+      language,
+      const DeepCollectionEquality().hash(_suggestions),
+      explanation,
+      createdAt);
 
   /// Create a copy of GeneratorModel
   /// with the given fields replaced by the non-null parameter values.
@@ -164,7 +334,15 @@ class _$GeneratorModelImpl implements _GeneratorModel {
 abstract class _GeneratorModel implements GeneratorModel {
   const factory _GeneratorModel(
       {required final String id,
-      required final String name}) = _$GeneratorModelImpl;
+      required final String originalText,
+      required final String generatedContent,
+      required final String typeOfWriting,
+      required final String tone,
+      required final int wordCount,
+      required final String language,
+      final List<String>? suggestions,
+      final String? explanation,
+      final DateTime? createdAt}) = _$GeneratorModelImpl;
 
   factory _GeneratorModel.fromJson(Map<String, dynamic> json) =
       _$GeneratorModelImpl.fromJson;
@@ -172,7 +350,23 @@ abstract class _GeneratorModel implements GeneratorModel {
   @override
   String get id;
   @override
-  String get name;
+  String get originalText;
+  @override
+  String get generatedContent;
+  @override
+  String get typeOfWriting;
+  @override
+  String get tone;
+  @override
+  int get wordCount;
+  @override
+  String get language;
+  @override
+  List<String>? get suggestions;
+  @override
+  String? get explanation;
+  @override
+  DateTime? get createdAt;
 
   /// Create a copy of GeneratorModel
   /// with the given fields replaced by the non-null parameter values.

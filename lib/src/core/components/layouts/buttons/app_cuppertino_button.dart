@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class AppCupertinoButton extends StatelessWidget {
-  final Function() onTap;
+  final Function()? onTap;
   final Widget child;
 
   const AppCupertinoButton({

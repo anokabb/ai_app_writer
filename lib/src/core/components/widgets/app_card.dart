@@ -9,6 +9,7 @@ class AppCard extends StatelessWidget {
   final String? title;
   final Color? titleColor;
   final Widget? icon;
+  final EdgeInsets? titlePadding;
 
   const AppCard({
     super.key,
@@ -19,6 +20,7 @@ class AppCard extends StatelessWidget {
     this.title,
     this.titleColor,
     this.icon,
+    this.titlePadding,
   });
 
   @override
@@ -42,7 +44,7 @@ class AppCard extends StatelessWidget {
         children: [
           if (title != null || icon != null)
             Padding(
-              padding: const EdgeInsets.only(bottom: 16),
+              padding: titlePadding ?? const EdgeInsets.only(bottom: 16),
               child: Row(
                 spacing: 8,
                 children: <Widget>[
@@ -56,7 +58,7 @@ class AppCard extends StatelessWidget {
                 ],
               ),
             ),
-          child,
+          Flexible(child: child),
         ],
       ),
     );

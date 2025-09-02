@@ -1,21 +1,17 @@
-import 'package:fpdart/fpdart.dart';
+import 'package:flutter_app_template/src/core/network/ai_api/models/text_analysis_model.dart';
+import 'package:flutter_app_template/src/core/network/ai_api/repos/ai_repo.dart';
 import 'package:flutter_app_template/src/core/network/models/app_error.dart';
-import 'package:flutter_app_template/src/features/humanizer/data/api/humanizer_api.dart';
-import 'package:flutter_app_template/src/features/humanizer/data/models/humanizer_model.dart';
+import 'package:fpdart/fpdart.dart';
+
 import 'humanizer_repo.dart';
 
 class HumanizerRepoImpl implements HumanizerRepo {
-  final HumanizerApi _api;
+  final AiRepo repo;
 
-  HumanizerRepoImpl(this._api);
+  HumanizerRepoImpl(this.repo);
 
   @override
-  Future<Either<AppError, HumanizerModel>> fetchSomething() async {
-    try {
-      final response = await _api.fetchSomething();
-      return right(response.data!);
-    } catch (e) {
-      return left(AppError.fromException(e));
-    }
+  Stream<Either<AppError, HumanizationResult>> humanizeText(String text, {double? humanLike, double? creativity}) {
+    return repo.humanizeText(text, humanLike: humanLike, creativity: creativity);
   }
 }

@@ -22,12 +22,22 @@ HistoryItem _$HistoryItemFromJson(Map<String, dynamic> json) {
 mixin _$HistoryItem {
   String get id => throw _privateConstructorUsedError;
   DateTime get timestamp => throw _privateConstructorUsedError;
-  String get title => throw _privateConstructorUsedError;
   String get originalText => throw _privateConstructorUsedError;
-  String get humanizedText => throw _privateConstructorUsedError;
+  HistoryItemType get type =>
+      throw _privateConstructorUsedError; // Title field (AI-generated or fallback)
+  String? get title =>
+      throw _privateConstructorUsedError; // Humanization fields (optional for generated content)
+  String? get humanizedText => throw _privateConstructorUsedError;
+  HumanizationResult? get humanizationResult =>
+      throw _privateConstructorUsedError; // Generation fields (optional for humanized content)
+  String? get generatedContent => throw _privateConstructorUsedError;
+  GeneratorModel? get generatorResult =>
+      throw _privateConstructorUsedError; // Common fields
   TextAnalysisResult? get analysisResult => throw _privateConstructorUsedError;
-  HumanizationResult get humanizationResult =>
-      throw _privateConstructorUsedError;
+  String? get typeOfWriting => throw _privateConstructorUsedError;
+  String? get tone => throw _privateConstructorUsedError;
+  int? get wordCount => throw _privateConstructorUsedError;
+  String? get language => throw _privateConstructorUsedError;
 
   /// Serializes this HistoryItem to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -48,14 +58,22 @@ abstract class $HistoryItemCopyWith<$Res> {
   $Res call(
       {String id,
       DateTime timestamp,
-      String title,
       String originalText,
-      String humanizedText,
+      HistoryItemType type,
+      String? title,
+      String? humanizedText,
+      HumanizationResult? humanizationResult,
+      String? generatedContent,
+      GeneratorModel? generatorResult,
       TextAnalysisResult? analysisResult,
-      HumanizationResult humanizationResult});
+      String? typeOfWriting,
+      String? tone,
+      int? wordCount,
+      String? language});
 
+  $HumanizationResultCopyWith<$Res>? get humanizationResult;
+  $GeneratorModelCopyWith<$Res>? get generatorResult;
   $TextAnalysisResultCopyWith<$Res>? get analysisResult;
-  $HumanizationResultCopyWith<$Res> get humanizationResult;
 }
 
 /// @nodoc
@@ -75,11 +93,18 @@ class _$HistoryItemCopyWithImpl<$Res, $Val extends HistoryItem>
   $Res call({
     Object? id = null,
     Object? timestamp = null,
-    Object? title = null,
     Object? originalText = null,
-    Object? humanizedText = null,
+    Object? type = null,
+    Object? title = freezed,
+    Object? humanizedText = freezed,
+    Object? humanizationResult = freezed,
+    Object? generatedContent = freezed,
+    Object? generatorResult = freezed,
     Object? analysisResult = freezed,
-    Object? humanizationResult = null,
+    Object? typeOfWriting = freezed,
+    Object? tone = freezed,
+    Object? wordCount = freezed,
+    Object? language = freezed,
   }) {
     return _then(_value.copyWith(
       id: null == id
@@ -90,27 +115,84 @@ class _$HistoryItemCopyWithImpl<$Res, $Val extends HistoryItem>
           ? _value.timestamp
           : timestamp // ignore: cast_nullable_to_non_nullable
               as DateTime,
-      title: null == title
-          ? _value.title
-          : title // ignore: cast_nullable_to_non_nullable
-              as String,
       originalText: null == originalText
           ? _value.originalText
           : originalText // ignore: cast_nullable_to_non_nullable
               as String,
-      humanizedText: null == humanizedText
+      type: null == type
+          ? _value.type
+          : type // ignore: cast_nullable_to_non_nullable
+              as HistoryItemType,
+      title: freezed == title
+          ? _value.title
+          : title // ignore: cast_nullable_to_non_nullable
+              as String?,
+      humanizedText: freezed == humanizedText
           ? _value.humanizedText
           : humanizedText // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
+      humanizationResult: freezed == humanizationResult
+          ? _value.humanizationResult
+          : humanizationResult // ignore: cast_nullable_to_non_nullable
+              as HumanizationResult?,
+      generatedContent: freezed == generatedContent
+          ? _value.generatedContent
+          : generatedContent // ignore: cast_nullable_to_non_nullable
+              as String?,
+      generatorResult: freezed == generatorResult
+          ? _value.generatorResult
+          : generatorResult // ignore: cast_nullable_to_non_nullable
+              as GeneratorModel?,
       analysisResult: freezed == analysisResult
           ? _value.analysisResult
           : analysisResult // ignore: cast_nullable_to_non_nullable
               as TextAnalysisResult?,
-      humanizationResult: null == humanizationResult
-          ? _value.humanizationResult
-          : humanizationResult // ignore: cast_nullable_to_non_nullable
-              as HumanizationResult,
+      typeOfWriting: freezed == typeOfWriting
+          ? _value.typeOfWriting
+          : typeOfWriting // ignore: cast_nullable_to_non_nullable
+              as String?,
+      tone: freezed == tone
+          ? _value.tone
+          : tone // ignore: cast_nullable_to_non_nullable
+              as String?,
+      wordCount: freezed == wordCount
+          ? _value.wordCount
+          : wordCount // ignore: cast_nullable_to_non_nullable
+              as int?,
+      language: freezed == language
+          ? _value.language
+          : language // ignore: cast_nullable_to_non_nullable
+              as String?,
     ) as $Val);
+  }
+
+  /// Create a copy of HistoryItem
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @pragma('vm:prefer-inline')
+  $HumanizationResultCopyWith<$Res>? get humanizationResult {
+    if (_value.humanizationResult == null) {
+      return null;
+    }
+
+    return $HumanizationResultCopyWith<$Res>(_value.humanizationResult!,
+        (value) {
+      return _then(_value.copyWith(humanizationResult: value) as $Val);
+    });
+  }
+
+  /// Create a copy of HistoryItem
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @pragma('vm:prefer-inline')
+  $GeneratorModelCopyWith<$Res>? get generatorResult {
+    if (_value.generatorResult == null) {
+      return null;
+    }
+
+    return $GeneratorModelCopyWith<$Res>(_value.generatorResult!, (value) {
+      return _then(_value.copyWith(generatorResult: value) as $Val);
+    });
   }
 
   /// Create a copy of HistoryItem
@@ -126,17 +208,6 @@ class _$HistoryItemCopyWithImpl<$Res, $Val extends HistoryItem>
       return _then(_value.copyWith(analysisResult: value) as $Val);
     });
   }
-
-  /// Create a copy of HistoryItem
-  /// with the given fields replaced by the non-null parameter values.
-  @override
-  @pragma('vm:prefer-inline')
-  $HumanizationResultCopyWith<$Res> get humanizationResult {
-    return $HumanizationResultCopyWith<$Res>(_value.humanizationResult,
-        (value) {
-      return _then(_value.copyWith(humanizationResult: value) as $Val);
-    });
-  }
 }
 
 /// @nodoc
@@ -150,16 +221,25 @@ abstract class _$$HistoryItemImplCopyWith<$Res>
   $Res call(
       {String id,
       DateTime timestamp,
-      String title,
       String originalText,
-      String humanizedText,
+      HistoryItemType type,
+      String? title,
+      String? humanizedText,
+      HumanizationResult? humanizationResult,
+      String? generatedContent,
+      GeneratorModel? generatorResult,
       TextAnalysisResult? analysisResult,
-      HumanizationResult humanizationResult});
+      String? typeOfWriting,
+      String? tone,
+      int? wordCount,
+      String? language});
 
   @override
-  $TextAnalysisResultCopyWith<$Res>? get analysisResult;
+  $HumanizationResultCopyWith<$Res>? get humanizationResult;
   @override
-  $HumanizationResultCopyWith<$Res> get humanizationResult;
+  $GeneratorModelCopyWith<$Res>? get generatorResult;
+  @override
+  $TextAnalysisResultCopyWith<$Res>? get analysisResult;
 }
 
 /// @nodoc
@@ -177,11 +257,18 @@ class __$$HistoryItemImplCopyWithImpl<$Res>
   $Res call({
     Object? id = null,
     Object? timestamp = null,
-    Object? title = null,
     Object? originalText = null,
-    Object? humanizedText = null,
+    Object? type = null,
+    Object? title = freezed,
+    Object? humanizedText = freezed,
+    Object? humanizationResult = freezed,
+    Object? generatedContent = freezed,
+    Object? generatorResult = freezed,
     Object? analysisResult = freezed,
-    Object? humanizationResult = null,
+    Object? typeOfWriting = freezed,
+    Object? tone = freezed,
+    Object? wordCount = freezed,
+    Object? language = freezed,
   }) {
     return _then(_$HistoryItemImpl(
       id: null == id
@@ -192,26 +279,54 @@ class __$$HistoryItemImplCopyWithImpl<$Res>
           ? _value.timestamp
           : timestamp // ignore: cast_nullable_to_non_nullable
               as DateTime,
-      title: null == title
-          ? _value.title
-          : title // ignore: cast_nullable_to_non_nullable
-              as String,
       originalText: null == originalText
           ? _value.originalText
           : originalText // ignore: cast_nullable_to_non_nullable
               as String,
-      humanizedText: null == humanizedText
+      type: null == type
+          ? _value.type
+          : type // ignore: cast_nullable_to_non_nullable
+              as HistoryItemType,
+      title: freezed == title
+          ? _value.title
+          : title // ignore: cast_nullable_to_non_nullable
+              as String?,
+      humanizedText: freezed == humanizedText
           ? _value.humanizedText
           : humanizedText // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
+      humanizationResult: freezed == humanizationResult
+          ? _value.humanizationResult
+          : humanizationResult // ignore: cast_nullable_to_non_nullable
+              as HumanizationResult?,
+      generatedContent: freezed == generatedContent
+          ? _value.generatedContent
+          : generatedContent // ignore: cast_nullable_to_non_nullable
+              as String?,
+      generatorResult: freezed == generatorResult
+          ? _value.generatorResult
+          : generatorResult // ignore: cast_nullable_to_non_nullable
+              as GeneratorModel?,
       analysisResult: freezed == analysisResult
           ? _value.analysisResult
           : analysisResult // ignore: cast_nullable_to_non_nullable
               as TextAnalysisResult?,
-      humanizationResult: null == humanizationResult
-          ? _value.humanizationResult
-          : humanizationResult // ignore: cast_nullable_to_non_nullable
-              as HumanizationResult,
+      typeOfWriting: freezed == typeOfWriting
+          ? _value.typeOfWriting
+          : typeOfWriting // ignore: cast_nullable_to_non_nullable
+              as String?,
+      tone: freezed == tone
+          ? _value.tone
+          : tone // ignore: cast_nullable_to_non_nullable
+              as String?,
+      wordCount: freezed == wordCount
+          ? _value.wordCount
+          : wordCount // ignore: cast_nullable_to_non_nullable
+              as int?,
+      language: freezed == language
+          ? _value.language
+          : language // ignore: cast_nullable_to_non_nullable
+              as String?,
     ));
   }
 }
@@ -222,11 +337,18 @@ class _$HistoryItemImpl extends _HistoryItem {
   const _$HistoryItemImpl(
       {required this.id,
       required this.timestamp,
-      required this.title,
       required this.originalText,
-      required this.humanizedText,
-      required this.analysisResult,
-      required this.humanizationResult})
+      required this.type,
+      this.title,
+      this.humanizedText,
+      this.humanizationResult,
+      this.generatedContent,
+      this.generatorResult,
+      this.analysisResult,
+      this.typeOfWriting,
+      this.tone,
+      this.wordCount,
+      this.language})
       : super._();
 
   factory _$HistoryItemImpl.fromJson(Map<String, dynamic> json) =>
@@ -237,19 +359,37 @@ class _$HistoryItemImpl extends _HistoryItem {
   @override
   final DateTime timestamp;
   @override
-  final String title;
-  @override
   final String originalText;
   @override
-  final String humanizedText;
+  final HistoryItemType type;
+// Title field (AI-generated or fallback)
+  @override
+  final String? title;
+// Humanization fields (optional for generated content)
+  @override
+  final String? humanizedText;
+  @override
+  final HumanizationResult? humanizationResult;
+// Generation fields (optional for humanized content)
+  @override
+  final String? generatedContent;
+  @override
+  final GeneratorModel? generatorResult;
+// Common fields
   @override
   final TextAnalysisResult? analysisResult;
   @override
-  final HumanizationResult humanizationResult;
+  final String? typeOfWriting;
+  @override
+  final String? tone;
+  @override
+  final int? wordCount;
+  @override
+  final String? language;
 
   @override
   String toString() {
-    return 'HistoryItem(id: $id, timestamp: $timestamp, title: $title, originalText: $originalText, humanizedText: $humanizedText, analysisResult: $analysisResult, humanizationResult: $humanizationResult)';
+    return 'HistoryItem(id: $id, timestamp: $timestamp, originalText: $originalText, type: $type, title: $title, humanizedText: $humanizedText, humanizationResult: $humanizationResult, generatedContent: $generatedContent, generatorResult: $generatorResult, analysisResult: $analysisResult, typeOfWriting: $typeOfWriting, tone: $tone, wordCount: $wordCount, language: $language)';
   }
 
   @override
@@ -260,21 +400,47 @@ class _$HistoryItemImpl extends _HistoryItem {
             (identical(other.id, id) || other.id == id) &&
             (identical(other.timestamp, timestamp) ||
                 other.timestamp == timestamp) &&
-            (identical(other.title, title) || other.title == title) &&
             (identical(other.originalText, originalText) ||
                 other.originalText == originalText) &&
+            (identical(other.type, type) || other.type == type) &&
+            (identical(other.title, title) || other.title == title) &&
             (identical(other.humanizedText, humanizedText) ||
                 other.humanizedText == humanizedText) &&
+            (identical(other.humanizationResult, humanizationResult) ||
+                other.humanizationResult == humanizationResult) &&
+            (identical(other.generatedContent, generatedContent) ||
+                other.generatedContent == generatedContent) &&
+            (identical(other.generatorResult, generatorResult) ||
+                other.generatorResult == generatorResult) &&
             (identical(other.analysisResult, analysisResult) ||
                 other.analysisResult == analysisResult) &&
-            (identical(other.humanizationResult, humanizationResult) ||
-                other.humanizationResult == humanizationResult));
+            (identical(other.typeOfWriting, typeOfWriting) ||
+                other.typeOfWriting == typeOfWriting) &&
+            (identical(other.tone, tone) || other.tone == tone) &&
+            (identical(other.wordCount, wordCount) ||
+                other.wordCount == wordCount) &&
+            (identical(other.language, language) ||
+                other.language == language));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  int get hashCode => Object.hash(runtimeType, id, timestamp, title,
-      originalText, humanizedText, analysisResult, humanizationResult);
+  int get hashCode => Object.hash(
+      runtimeType,
+      id,
+      timestamp,
+      originalText,
+      type,
+      title,
+      humanizedText,
+      humanizationResult,
+      generatedContent,
+      generatorResult,
+      analysisResult,
+      typeOfWriting,
+      tone,
+      wordCount,
+      language);
 
   /// Create a copy of HistoryItem
   /// with the given fields replaced by the non-null parameter values.
@@ -294,14 +460,20 @@ class _$HistoryItemImpl extends _HistoryItem {
 
 abstract class _HistoryItem extends HistoryItem {
   const factory _HistoryItem(
-          {required final String id,
-          required final DateTime timestamp,
-          required final String title,
-          required final String originalText,
-          required final String humanizedText,
-          required final TextAnalysisResult? analysisResult,
-          required final HumanizationResult humanizationResult}) =
-      _$HistoryItemImpl;
+      {required final String id,
+      required final DateTime timestamp,
+      required final String originalText,
+      required final HistoryItemType type,
+      final String? title,
+      final String? humanizedText,
+      final HumanizationResult? humanizationResult,
+      final String? generatedContent,
+      final GeneratorModel? generatorResult,
+      final TextAnalysisResult? analysisResult,
+      final String? typeOfWriting,
+      final String? tone,
+      final int? wordCount,
+      final String? language}) = _$HistoryItemImpl;
   const _HistoryItem._() : super._();
 
   factory _HistoryItem.fromJson(Map<String, dynamic> json) =
@@ -312,15 +484,30 @@ abstract class _HistoryItem extends HistoryItem {
   @override
   DateTime get timestamp;
   @override
-  String get title;
-  @override
   String get originalText;
   @override
-  String get humanizedText;
+  HistoryItemType get type; // Title field (AI-generated or fallback)
+  @override
+  String? get title; // Humanization fields (optional for generated content)
+  @override
+  String? get humanizedText;
+  @override
+  HumanizationResult?
+      get humanizationResult; // Generation fields (optional for humanized content)
+  @override
+  String? get generatedContent;
+  @override
+  GeneratorModel? get generatorResult; // Common fields
   @override
   TextAnalysisResult? get analysisResult;
   @override
-  HumanizationResult get humanizationResult;
+  String? get typeOfWriting;
+  @override
+  String? get tone;
+  @override
+  int? get wordCount;
+  @override
+  String? get language;
 
   /// Create a copy of HistoryItem
   /// with the given fields replaced by the non-null parameter values.

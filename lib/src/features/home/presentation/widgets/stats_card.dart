@@ -4,7 +4,12 @@ import 'package:flutter_app_template/src/core/extensions/context_extension.dart'
 import 'package:flutter_app_template/src/core/gen/assets.gen.dart';
 import 'package:flutter_app_template/src/core/services/theme/app_theme.dart';
 import 'package:flutter_app_template/src/core/utils/utils.dart';
+import 'package:flutter_app_template/src/features/documents/presentation/cubit/history_cubit.dart';
+import 'package:flutter_app_template/src/features/documents/presentation/cubit/history_state.dart';
+import 'package:flutter_app_template/src/features/documents/presentation/pages/documents_page.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:go_router/go_router.dart';
 
 class StatsCard extends StatelessWidget {
   const StatsCard({
@@ -30,15 +35,27 @@ class StatsCard extends StatelessWidget {
             padding: EdgeInsets.symmetric(horizontal: 16),
             scrollDirection: Axis.horizontal,
             children: [
-              _StatsItem(
-                title: context.localization.documents,
-                svgIcon: Assets.svg.docs,
-                value: '100',
-                gradientColors: [
-                  Utils.hexToColor('#0584FB'),
-                  Utils.hexToColor('#0E6DAB'),
-                ],
-                onPressed: () {},
+              BlocBuilder<HistoryCubit, HistoryState>(
+                builder: (context, state) {
+                  int value = state.when(
+                    initial: () => 0,
+                    loading: () => 0,
+                    loaded: (history) => history.length,
+                    error: (error) => 0,
+                  );
+                  return _StatsItem(
+                    title: context.localization.documents,
+                    svgIcon: Assets.svg.docs,
+                    value: value.toString(),
+                    gradientColors: [
+                      Utils.hexToColor('#0584FB'),
+                      Utils.hexToColor('#0E6DAB'),
+                    ],
+                    onPressed: () {
+                      context.go(DocumentsPage.routeName);
+                    },
+                  );
+                },
               ),
               SizedBox(width: 16),
               _StatsItem(

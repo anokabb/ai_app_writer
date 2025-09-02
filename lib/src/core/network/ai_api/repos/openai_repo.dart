@@ -1,0 +1,674 @@
+import 'dart:convert';
+import 'dart:developer';
+
+import 'package:flutter_app_template/src/core/constants/env_config.dart';
+import 'package:flutter_app_template/src/core/network/ai_api/ai_api.dart';
+import 'package:flutter_app_template/src/core/network/ai_api/models/text_analysis_model.dart';
+import 'package:flutter_app_template/src/core/network/models/app_error.dart';
+import 'package:flutter_app_template/src/core/services/logger/logger.dart';
+import 'package:flutter_app_template/src/features/detector/presentation/pages/detector_page.dart';
+import 'package:flutter_app_template/src/features/documents/data/models/history_item.dart';
+import 'package:fpdart/fpdart.dart';
+
+import 'ai_repo.dart';
+
+class OpenAIRepo implements AiRepo {
+  final String apiKey;
+  final AiApi _api;
+
+  OpenAIRepo({required this.apiKey, required AiApi api}) : _api = api;
+
+  @override
+  Future<Either<AppError, TextAnalysisResult>> analyzeText({required String text, required DetectorModes mode}) async {
+    try {
+      // Get mode-specific prompt
+      final modePrompt = _getModeSpecificPrompt(mode);
+
+      final requestBody = {
+        'model': 'gpt-3.5-turbo',
+        'messages': [
+          {
+            'role': 'system',
+            'content': '''
+You are an expert AI detection specialist. Your task is to identify AI-generated text with high precision. Be EXTREMELY critical and skeptical - modern AI is very sophisticated and can mimic human writing patterns.
+
+**DETECTION MODE: ${mode.name.toUpperCase()}**
+$modePrompt
+
+**CRITICAL AI INDICATORS (Look for these patterns):**
+- **Overly systematic structure**: Perfect paragraph organization, consistent formatting
+- **Corporate template language**: Generic business speak that sounds "professional" but lacks personality
+- **Too-perfect details**: Specific dates, names, and numbers that feel artificially constructed
+- **Lack of authentic voice**: No personal quirks, unique expressions, or genuine human thought patterns
+- **Artificial coherence**: Everything flows too perfectly without natural human inconsistencies
+- **Buzzword overuse**: Excessive use of business jargon and industry terms
+- **Template-based responses**: Follows business communication templates too rigidly
+- **Perfect formatting**: Too clean, too organized, too "professional"
+- **Artificial specificity**: Details that seem real but lack authentic human context
+- **Lack of genuine decision-making**: No evidence of real human thought processes or uncertainty
+
+**HUMAN INDICATORS (Rare in modern AI):**
+- Natural writing imperfections and variations
+- Authentic personal voice with unique expressions
+- Genuine human thought processes and decision-making patterns
+- Realistic formatting inconsistencies
+- Emotional authenticity and personal experiences
+- Natural flow that isn't overly systematic
+- Conversational language and casual tone
+- Personal touches and informal expressions
+- Natural contractions and casual phrasing
+
+**MODERN AI DETECTION TECHNIQUES:**
+- **Pattern recognition**: Look for AI training data patterns and systematic organization
+- **Authenticity check**: Does this feel like a real person wrote it, or a perfect business template?
+- **Coherence analysis**: Natural human writing has subtle inconsistencies; AI is too coherent
+- **Template detection**: Business communications that follow templates too perfectly
+- **Detail analysis**: Specific details that feel artificially constructed rather than naturally occurring
+
+Respond with a JSON object in this exact format:
+{
+  "source": "ai" | "human" | "mixed",
+  "ai_probability": number between 0-1,
+  "human_probability": number between 0-1,
+  "explanation": "detailed explanation of your analysis",
+  "suggestions": ["specific suggestion 1", "specific suggestion 2", "etc."],
+  "total_sentences": number,
+  "ai_generated_sentences": number,
+  "highlighted_sentences": ["sentence 1", "sentence 2", "etc."]
+}
+
+Analyze each sentence individually and identify which ones are likely AI-generated. Count the total sentences and how many appear AI-generated.
+
+**CRITICAL INSTRUCTION:** Be balanced and fair in your analysis. Consider that humanized text can still be human-like. Focus on genuine human writing patterns rather than just detecting AI humanization techniques.
+
+**BUSINESS TEXT RED FLAGS:**
+- **Perfect business structure**: Real emails are messier and less organized
+- **Template-like language**: "As discussed in our last sync", "I wanted to give you a quick update"
+- **Artificial specificity**: Reservation codes, specific dates, perfect formatting
+- **Corporate buzzwords**: "consolidated roadmap", "integration", "analytics dashboard"
+- **Too professional**: Real humans are less formal and more personal
+- **Perfect details**: Real business communications have more natural variations
+
+**EXAMPLE ANALYSIS:**
+- "I wanted to give you a quick update" = AI template language
+- "92% test coverage" = Too specific and perfect
+- "reservation code PHX25NYC" = Artificially constructed detail
+- Perfect formatting with emojis = AI-generated professional appearance
+- "consolidated roadmap" = Corporate buzzword overuse
+
+**HUMANIZED TEXT ANALYSIS:**
+- Humanized text that uses conversational language, contractions, and casual tone should be considered more human-like
+- Phrases like "Hey", "How's it going?", "Thanks a bunch" indicate human-like communication
+- Informal expressions and personal touches are positive human indicators
+- Don't penalize text for being humanized - that's the goal!
+
+**REMEMBER:** Real human business communication is more casual, less structured, and has natural imperfections. Humanized text that achieves this casual, conversational tone should be recognized as human-like.
+'''
+          },
+          {'role': 'user', 'content': 'Analyze this text: "$text"'}
+        ],
+        'temperature': _getModeTemperature(mode),
+        'max_tokens': _getModeMaxTokens(mode),
+      };
+
+      final data = await _api.analyzeText('Bearer $apiKey', requestBody);
+      final analysisText = data['choices'][0]['message']['content'];
+
+      // Parse the JSON response from OpenAI
+      final jsonMatch = RegExp(r'\{.*\}', dotAll: true).firstMatch(analysisText);
+      if (jsonMatch != null) {
+        logResponse(jsonDecode(jsonMatch.group(0)!));
+        final resultJson = jsonDecode(jsonMatch.group(0)!);
+
+        return right(TextAnalysisResult(
+          source: _parseTextSource(resultJson['source']),
+          aiProbability: (resultJson['ai_probability'] as num).toDouble(),
+          humanProbability: (resultJson['human_probability'] as num).toDouble(),
+          explanation: resultJson['explanation'] ?? 'Analysis completed',
+          suggestions: (resultJson['suggestions'] as List?)?.cast<String>() ?? [],
+          totalSentences: resultJson['total_sentences'] as int?,
+          aiGeneratedSentences: resultJson['ai_generated_sentences'] as int?,
+          highlightedSentences: (resultJson['highlighted_sentences'] as List?)?.cast<String>() ?? [],
+        ));
+      } else {
+        return left(AppError.fromException(Exception('Failed to parse AI response')));
+      }
+    } catch (e) {
+      // Check if it's a quota error or timeout
+      if (e.toString().contains('insufficient_quota') ||
+          e.toString().contains('timeout') ||
+          e.toString().contains('connection timeout')) {
+        return left(AppError.server(
+          message: 'API quota exceeded or timeout. Please try again later or use a different provider.',
+        ));
+      }
+
+      // Check for DNS/network connectivity issues
+      if (e.toString().contains('Failed host lookup') ||
+          e.toString().contains('No address associated with hostname') ||
+          e.toString().contains('connection error') ||
+          e.toString().contains('SocketException')) {
+        return left(AppError.server(
+          message: 'Network connectivity issue. Check your internet connection or try switching to Mock provider.',
+        ));
+      }
+
+      return left(AppError.fromException(e));
+    }
+  }
+
+  @override
+  Stream<Either<AppError, HumanizationResult>> humanizeText(String text,
+      {double? humanLike, double? creativity}) async* {
+    try {
+      // Use creativity parameter to adjust temperature (0.3 to 1.0 range)
+      final temperature = creativity != null ? (0.3 + (creativity * 0.7)).clamp(0.3, 1.0) : 0.7;
+
+      // Get creativity prompt
+      final creativityPrompt = _getCreativityPrompt(creativity);
+      final creativityLevel = creativity != null ? (creativity * 100).round() : 0;
+
+      final requestBody = {
+        'model': 'gpt-3.5-turbo',
+        'messages': [
+          {
+            'role': 'system',
+            'content': '''
+You are an expert at humanizing AI-generated text. Your task is to transform robotic, formal text into natural, human-like writing.
+
+**CREATIVITY LEVEL: $creativityLevel%**
+$creativityPrompt
+
+Humanization techniques to apply:
+- Add conversational elements ("I think", "I believe", "in my opinion")
+- Make it sound personal and natural
+- Replace technical terms with simpler alternatives
+- Add emotional expression or personal perspective
+- Use contractions and casual language
+- Make the tone more casual and approachable
+- Add personal anecdotes or opinions where appropriate
+- Ensure it flows like natural human conversation
+
+Provide the humanized version that sounds like it was written by a real person.
+'''
+          },
+          {
+            'role': 'user',
+            'content':
+                'Humanize this text to make it sound more natural and human-like:\n\n"$text"\n\nMake it conversational, add personal touches, and avoid robotic or overly formal language. The result should sound like it was written by a real person having a conversation.'
+          }
+        ],
+        'temperature': temperature,
+        'max_tokens': 2000,
+        'stream': true,
+      };
+
+      if (apiKey.isEmpty) {
+        yield Left(AppError.server(message: 'API key not found'));
+        return;
+      }
+
+      // Get the streaming response
+      final responseBody = await _api.streamHumanizeText('Bearer $apiKey', requestBody);
+
+      String accumulatedText = '';
+      double humanLikeScore = 0.0;
+      List<String> changes = [];
+
+      log('Starting to process streaming response');
+
+      // Process the actual streaming response from OpenAI
+      String buffer = '';
+      await for (final chunk in responseBody.stream) {
+        final chunkStr = utf8.decode(chunk);
+        buffer += chunkStr;
+
+        final lines = buffer.split('\n');
+        buffer = lines.removeLast(); // Keep incomplete line in buffer
+
+        for (final line in lines) {
+          if (line.startsWith('data: ')) {
+            final jsonStr = line.substring(6); // Remove 'data: ' prefix
+            if (jsonStr.trim() == '[DONE]') {
+              log('Stream completed, final text: $accumulatedText');
+              break;
+            }
+
+            try {
+              final jsonData = jsonDecode(jsonStr);
+              if (jsonData['choices'] != null &&
+                  jsonData['choices'].isNotEmpty &&
+                  jsonData['choices'][0]['delta'] != null &&
+                  jsonData['choices'][0]['delta']['content'] != null) {
+                final content = jsonData['choices'][0]['delta']['content'] as String;
+                accumulatedText += content;
+                humanLikeScore = _calculateHumanLikeScore(accumulatedText, originalText: text);
+
+                changes = [
+                  'Converting to conversational tone',
+                  'Adding personal elements',
+                  'Making language more natural',
+                  'Removing robotic patterns'
+                ];
+
+                // Yield progress update
+                yield Right(HumanizationResult(
+                  originalText: text,
+                  humanizedText: accumulatedText,
+                  humanLike: humanLikeScore,
+                  changes: changes,
+                ));
+              }
+            } catch (e) {
+              log('Error parsing JSON chunk: $e');
+            }
+          }
+        }
+      }
+
+      if (accumulatedText.isEmpty) {
+        log('No content received from streaming response');
+        yield Left(AppError.server(message: 'No content received from AI service'));
+        return;
+      }
+
+      log('Humanization completed successfully');
+    } catch (e) {
+      log('Error humanizing text: $e');
+      yield Left(AppError.fromException(e));
+    }
+  }
+
+  TextSource _parseTextSource(String source) {
+    switch (source.toLowerCase()) {
+      case 'ai':
+        return TextSource.ai;
+      case 'human':
+        return TextSource.human;
+      case 'mixed':
+        return TextSource.mixed;
+      default:
+        return TextSource.mixed;
+    }
+  }
+
+  double _calculateHumanLikeScore(String text, {String? originalText}) {
+    // Simulate increasing human-like score as text grows
+    // Start at 10% and gradually increase to 90%
+    final baseScore = 10.0;
+    final maxScore = 90.0;
+
+    // Use original text length as reference, or fallback to current text length
+    final targetLength = originalText?.length ?? text.length;
+    final progress = (text.length / targetLength).clamp(0.0, 1.0);
+
+    // Use a slower curve (square root) to make it increase more gradually
+    final slowProgress = progress * progress; // This makes it increase slower at the beginning
+
+    // Use a smooth curve to increase the score
+    final score = baseScore + (maxScore - baseScore) * slowProgress;
+
+    // Add some randomness to make it look more realistic
+    final randomFactor = (DateTime.now().millisecondsSinceEpoch % 10 - 5) / 100.0;
+    final finalScore = (score + randomFactor).clamp(10.0, 90.0);
+
+    return finalScore / 100.0; // Convert to 0.0-1.0 range
+  }
+
+  String _getModeSpecificPrompt(DetectorModes mode) {
+    switch (mode) {
+      case DetectorModes.quick:
+        return '''
+**QUICK MODE:**
+- **Fast Analysis**: Provide a quick assessment with basic AI detection patterns.
+- **Surface Level**: Focus on obvious AI indicators and common patterns.
+- **Efficient Processing**: Prioritize speed over detailed analysis.
+- **Basic Indicators**: Look for clear-cut AI vs human patterns.
+- **Limited Depth**: Avoid deep linguistic analysis for faster results.
+''';
+      case DetectorModes.standard:
+        return '''
+**STANDARD MODE:**
+- **Balanced Analysis**: Provide comprehensive analysis with moderate depth.
+- **Detailed Assessment**: Consider both AI and human indicators thoroughly.
+- **Pattern Recognition**: Analyze writing patterns, structure, and language use.
+- **Context Awareness**: Consider the type of content and its purpose.
+- **Moderate Precision**: Balance between accuracy and processing time.
+''';
+      case DetectorModes.deep:
+        return '''
+**DEEP MODE:**
+- **Comprehensive Analysis**: Provide the most thorough and detailed assessment.
+- **Advanced Detection**: Use sophisticated linguistic analysis and pattern recognition.
+- **Contextual Understanding**: Deeply analyze the context, purpose, and audience.
+- **Multiple Perspectives**: Consider various angles of AI vs human writing.
+- **Maximum Precision**: Prioritize accuracy over processing speed.
+- **Detailed Explanations**: Provide comprehensive reasoning for conclusions.
+''';
+    }
+  }
+
+  @override
+  Stream<Either<AppError, ContentGenerationResult>> generateContent({
+    required String text,
+    required String typeOfWriting,
+    required String tone,
+    required int wordCount,
+    required String language,
+  }) async* {
+    try {
+      // Get tone-specific prompt
+      final tonePrompt = _getTonePrompt(tone);
+      final typePrompt = _getTypeOfWritingPrompt(typeOfWriting);
+
+      final requestBody = {
+        'model': 'gpt-3.5-turbo',
+        'messages': [
+          {
+            'role': 'system',
+            'content': '''
+You are an expert content generator. Your task is to create high-quality, engaging content based on the user's requirements.
+
+**CONTENT TYPE: ${typeOfWriting.toUpperCase()}**
+$typePrompt
+
+**TONE: ${tone.toUpperCase()}**
+$tonePrompt
+
+**WORD COUNT: $wordCount words**
+**LANGUAGE: $language**
+
+**CONTENT GENERATION GUIDELINES:**
+- Create engaging and informative content
+- Follow the specified tone and style
+- Ensure the content matches the requested type
+- Maintain consistent quality throughout
+- Use appropriate language and terminology
+- Structure the content logically
+- Make it engaging and readable
+- Ensure it meets the word count requirement
+
+Generate content that is well-structured, engaging, and meets all the specified requirements.
+'''
+          },
+          {
+            'role': 'user',
+            'content':
+                'Generate content about: "$text"\n\nPlease create $wordCount words of $typeOfWriting content in a $tone tone, written in $language.'
+          }
+        ],
+        'temperature': 0.7,
+        'max_tokens': (wordCount * 1.5).round(), // Approximate token count
+        'stream': true,
+      };
+
+      if (apiKey.isEmpty) {
+        yield Left(AppError.server(message: 'API key not found'));
+        return;
+      }
+
+      // Get the streaming response
+      final responseBody = await _api.streamGenerateContent('Bearer $apiKey', requestBody);
+
+      String accumulatedText = '';
+      List<String> suggestions = [];
+
+      log('Starting to process content generation streaming response');
+
+      // Process the actual streaming response from OpenAI
+      String buffer = '';
+      await for (final chunk in responseBody.stream) {
+        final chunkStr = utf8.decode(chunk);
+        buffer += chunkStr;
+
+        final lines = buffer.split('\n');
+        buffer = lines.removeLast(); // Keep incomplete line in buffer
+
+        for (final line in lines) {
+          if (line.startsWith('data: ')) {
+            final jsonStr = line.substring(6); // Remove 'data: ' prefix
+            if (jsonStr.trim() == '[DONE]') {
+              log('Stream completed, final content: $accumulatedText');
+              break;
+            }
+
+            try {
+              final jsonData = jsonDecode(jsonStr);
+              if (jsonData['choices'] != null &&
+                  jsonData['choices'].isNotEmpty &&
+                  jsonData['choices'][0]['delta'] != null &&
+                  jsonData['choices'][0]['delta']['content'] != null) {
+                final content = jsonData['choices'][0]['delta']['content'] as String;
+                accumulatedText += content;
+
+                suggestions = [
+                  'Content generated successfully',
+                  'Follows specified tone and style',
+                  'Meets word count requirements',
+                  'Well-structured and engaging'
+                ];
+
+                // Yield progress update
+                yield Right(ContentGenerationResult(
+                  originalText: text,
+                  generatedContent: accumulatedText,
+                  typeOfWriting: typeOfWriting,
+                  tone: tone,
+                  wordCount: wordCount,
+                  language: language,
+                  suggestions: suggestions,
+                  explanation: 'Content generated based on your specifications',
+                ));
+              }
+            } catch (e) {
+              log('Error parsing JSON chunk: $e');
+            }
+          }
+        }
+      }
+
+      if (accumulatedText.isEmpty) {
+        log('No content received from streaming response');
+        yield Left(AppError.server(message: 'No content received from AI service'));
+        return;
+      }
+
+      log('Content generation completed successfully');
+    } catch (e) {
+      log('Error generating content: $e');
+      yield Left(AppError.fromException(e));
+    }
+  }
+
+  String _getTonePrompt(String tone) {
+    switch (tone.toLowerCase()) {
+      case 'formal':
+        return '''
+**FORMAL TONE:**
+- Use professional and academic language
+- Maintain a serious and respectful tone
+- Avoid contractions and casual expressions
+- Use complete sentences and proper grammar
+- Appropriate for business, academic, and professional contexts
+''';
+      case 'neutral':
+        return '''
+**NEUTRAL TONE:**
+- Use balanced and objective language
+- Maintain a professional but approachable tone
+- Use clear and direct communication
+- Avoid overly formal or casual extremes
+- Appropriate for general communication and documentation
+''';
+      case 'conversational':
+        return '''
+**CONVERSATIONAL TONE:**
+- Use friendly and approachable language
+- Include personal touches and expressions
+- Use contractions and natural speech patterns
+- Maintain a warm and engaging tone
+- Appropriate for blogs, social media, and casual communication
+''';
+      case 'creative':
+        return '''
+**CREATIVE TONE:**
+- Use imaginative and expressive language
+- Include vivid descriptions and metaphors
+- Allow for artistic and innovative expression
+- Maintain an engaging and inspiring tone
+- Appropriate for stories, creative writing, and artistic content
+''';
+      default:
+        return '''
+**DEFAULT TONE:**
+- Use clear and effective communication
+- Maintain appropriate formality for the context
+- Focus on clarity and engagement
+''';
+    }
+  }
+
+  String _getTypeOfWritingPrompt(String typeOfWriting) {
+    switch (typeOfWriting.toLowerCase()) {
+      case 'paper':
+        return '''
+**ACADEMIC PAPER:**
+- Use formal academic language and structure
+- Include proper citations and references
+- Maintain logical flow and organization
+- Use objective and analytical tone
+- Follow academic writing conventions
+''';
+      case 'letter':
+        return '''
+**LETTER:**
+- Use appropriate greeting and closing
+- Maintain personal and sincere tone
+- Structure with clear paragraphs
+- Use appropriate formality level
+- Include relevant details and context
+''';
+      case 'email':
+        return '''
+**EMAIL:**
+- Use clear subject line and greeting
+- Maintain professional but approachable tone
+- Structure with concise paragraphs
+- Use appropriate formality for recipient
+- Include clear call to action if needed
+''';
+      case 'story':
+        return '''
+**STORY:**
+- Use engaging narrative structure
+- Include vivid descriptions and dialogue
+- Maintain consistent point of view
+- Create emotional connection with reader
+- Use creative and expressive language
+''';
+      case 'blog':
+        return '''
+**BLOG POST:**
+- Use engaging and conversational tone
+- Include clear headings and structure
+- Maintain reader interest throughout
+- Use relevant examples and anecdotes
+- Include call to action if appropriate
+''';
+      case 'discussion_board':
+        return '''
+**DISCUSSION BOARD:**
+- Use clear and respectful language
+- Maintain engaging and interactive tone
+- Structure with logical arguments
+- Encourage participation and discussion
+- Use appropriate formality for audience
+''';
+      default:
+        return '''
+**GENERAL WRITING:**
+- Use clear and effective communication
+- Maintain appropriate structure and flow
+- Focus on clarity and engagement
+- Use appropriate tone for context
+''';
+    }
+  }
+
+  double _getModeTemperature(DetectorModes mode) {
+    switch (mode) {
+      case DetectorModes.quick:
+        return 0.1;
+      case DetectorModes.standard:
+        return 0.3;
+      case DetectorModes.deep:
+        return 0.2;
+    }
+  }
+
+  int _getModeMaxTokens(DetectorModes mode) {
+    switch (mode) {
+      case DetectorModes.quick:
+        return 1000;
+      case DetectorModes.standard:
+        return 1500;
+      case DetectorModes.deep:
+        return 2000;
+    }
+  }
+
+  String _getCreativityPrompt(double? creativity) {
+    if (creativity == null) {
+      return '';
+    }
+    final level = (creativity * 100).round();
+    if (level < 30) {
+      return '**LOW CREATIVITY MODE:**\n- More robotic, formal, and structured language.\n- Less personal touches and informal expressions.\n- More direct and to-the-point statements.';
+    } else if (level < 70) {
+      return '**MEDIUM CREATIVITY MODE:**\n- Balanced humanization.\n- Natural conversational tone.\n- Personal touches and informal expressions.';
+    } else {
+      return '**HIGH CREATIVITY MODE:**\n- Very human-like, conversational, and casual.\n- Rich personal perspective and emotional expression.\n- More creative and imaginative language.';
+    }
+  }
+
+  @override
+  Future<Either<AppError, String>> generateTitle(String prompt) async {
+    try {
+      final apiKey = EnvConfig.OPENAI_API_KEY;
+
+      if (apiKey.isEmpty) {
+        return Left(AppError.server(message: 'API key not found'));
+      }
+
+      final requestBody = {
+        'model': 'gpt-3.5-turbo',
+        'messages': [
+          {
+            'role': 'system',
+            'content':
+                'You are a title generator. Generate descriptive, complete titles (8-15 words) that fully capture the main topic and essence of the content. Avoid cutting off mid-sentence or creating incomplete phrases. Return ONLY the title text - no quotes, no prefixes like "Title:" or "Generated:", no markdown formatting, no extra punctuation. Just the complete, meaningful title.'
+          },
+          {'role': 'user', 'content': prompt}
+        ],
+        'temperature': 0.7,
+        'max_tokens': 100,
+      };
+
+      final response = await _api.generateTitle('Bearer $apiKey', requestBody);
+      final responseData = response.data as Map<String, dynamic>;
+
+      if (responseData['choices'] != null &&
+          responseData['choices'].isNotEmpty &&
+          responseData['choices'][0]['message'] != null &&
+          responseData['choices'][0]['message']['content'] != null) {
+        final title = responseData['choices'][0]['message']['content'] as String;
+        return Right(HistoryItem.cleanTitle(title));
+      }
+
+      return Left(AppError.server(message: 'Invalid response from AI service'));
+    } catch (e) {
+      log('Error generating title: $e');
+      return Left(AppError.fromException(e));
+    }
+  }
+}

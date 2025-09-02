@@ -20,7 +20,7 @@ mixin _$DetectorState {
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
     required TResult Function() loading,
-    required TResult Function() loaded,
+    required TResult Function(TextAnalysisResult result) loaded,
     required TResult Function(AppError error) error,
   }) =>
       throw _privateConstructorUsedError;
@@ -28,7 +28,7 @@ mixin _$DetectorState {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
     TResult? Function()? loading,
-    TResult? Function()? loaded,
+    TResult? Function(TextAnalysisResult result)? loaded,
     TResult? Function(AppError error)? error,
   }) =>
       throw _privateConstructorUsedError;
@@ -36,7 +36,7 @@ mixin _$DetectorState {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
     TResult Function()? loading,
-    TResult Function()? loaded,
+    TResult Function(TextAnalysisResult result)? loaded,
     TResult Function(AppError error)? error,
     required TResult orElse(),
   }) =>
@@ -133,7 +133,7 @@ class _$DetectorStateInitialImpl implements DetectorStateInitial {
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
     required TResult Function() loading,
-    required TResult Function() loaded,
+    required TResult Function(TextAnalysisResult result) loaded,
     required TResult Function(AppError error) error,
   }) {
     return initial();
@@ -144,7 +144,7 @@ class _$DetectorStateInitialImpl implements DetectorStateInitial {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
     TResult? Function()? loading,
-    TResult? Function()? loaded,
+    TResult? Function(TextAnalysisResult result)? loaded,
     TResult? Function(AppError error)? error,
   }) {
     return initial?.call();
@@ -155,7 +155,7 @@ class _$DetectorStateInitialImpl implements DetectorStateInitial {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
     TResult Function()? loading,
-    TResult Function()? loaded,
+    TResult Function(TextAnalysisResult result)? loaded,
     TResult Function(AppError error)? error,
     required TResult orElse(),
   }) {
@@ -251,7 +251,7 @@ class _$DetectorStateLoadingImpl implements DetectorStateLoading {
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
     required TResult Function() loading,
-    required TResult Function() loaded,
+    required TResult Function(TextAnalysisResult result) loaded,
     required TResult Function(AppError error) error,
   }) {
     return loading();
@@ -262,7 +262,7 @@ class _$DetectorStateLoadingImpl implements DetectorStateLoading {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
     TResult? Function()? loading,
-    TResult? Function()? loaded,
+    TResult? Function(TextAnalysisResult result)? loaded,
     TResult? Function(AppError error)? error,
   }) {
     return loading?.call();
@@ -273,7 +273,7 @@ class _$DetectorStateLoadingImpl implements DetectorStateLoading {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
     TResult Function()? loading,
-    TResult Function()? loaded,
+    TResult Function(TextAnalysisResult result)? loaded,
     TResult Function(AppError error)? error,
     required TResult orElse(),
   }) {
@@ -330,6 +330,10 @@ abstract class _$$DetectorStateLoadedImplCopyWith<$Res> {
   factory _$$DetectorStateLoadedImplCopyWith(_$DetectorStateLoadedImpl value,
           $Res Function(_$DetectorStateLoadedImpl) then) =
       __$$DetectorStateLoadedImplCopyWithImpl<$Res>;
+  @useResult
+  $Res call({TextAnalysisResult result});
+
+  $TextAnalysisResultCopyWith<$Res> get result;
 }
 
 /// @nodoc
@@ -342,37 +346,72 @@ class __$$DetectorStateLoadedImplCopyWithImpl<$Res>
 
   /// Create a copy of DetectorState
   /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? result = null,
+  }) {
+    return _then(_$DetectorStateLoadedImpl(
+      null == result
+          ? _value.result
+          : result // ignore: cast_nullable_to_non_nullable
+              as TextAnalysisResult,
+    ));
+  }
+
+  /// Create a copy of DetectorState
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @pragma('vm:prefer-inline')
+  $TextAnalysisResultCopyWith<$Res> get result {
+    return $TextAnalysisResultCopyWith<$Res>(_value.result, (value) {
+      return _then(_value.copyWith(result: value));
+    });
+  }
 }
 
 /// @nodoc
 
 class _$DetectorStateLoadedImpl implements DetectorStateLoaded {
-  const _$DetectorStateLoadedImpl();
+  const _$DetectorStateLoadedImpl(this.result);
+
+  @override
+  final TextAnalysisResult result;
 
   @override
   String toString() {
-    return 'DetectorState.loaded()';
+    return 'DetectorState.loaded(result: $result)';
   }
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$DetectorStateLoadedImpl);
+            other is _$DetectorStateLoadedImpl &&
+            (identical(other.result, result) || other.result == result));
   }
 
   @override
-  int get hashCode => runtimeType.hashCode;
+  int get hashCode => Object.hash(runtimeType, result);
+
+  /// Create a copy of DetectorState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$DetectorStateLoadedImplCopyWith<_$DetectorStateLoadedImpl> get copyWith =>
+      __$$DetectorStateLoadedImplCopyWithImpl<_$DetectorStateLoadedImpl>(
+          this, _$identity);
 
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
     required TResult Function() loading,
-    required TResult Function() loaded,
+    required TResult Function(TextAnalysisResult result) loaded,
     required TResult Function(AppError error) error,
   }) {
-    return loaded();
+    return loaded(result);
   }
 
   @override
@@ -380,10 +419,10 @@ class _$DetectorStateLoadedImpl implements DetectorStateLoaded {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
     TResult? Function()? loading,
-    TResult? Function()? loaded,
+    TResult? Function(TextAnalysisResult result)? loaded,
     TResult? Function(AppError error)? error,
   }) {
-    return loaded?.call();
+    return loaded?.call(result);
   }
 
   @override
@@ -391,12 +430,12 @@ class _$DetectorStateLoadedImpl implements DetectorStateLoaded {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
     TResult Function()? loading,
-    TResult Function()? loaded,
+    TResult Function(TextAnalysisResult result)? loaded,
     TResult Function(AppError error)? error,
     required TResult orElse(),
   }) {
     if (loaded != null) {
-      return loaded();
+      return loaded(result);
     }
     return orElse();
   }
@@ -440,7 +479,16 @@ class _$DetectorStateLoadedImpl implements DetectorStateLoaded {
 }
 
 abstract class DetectorStateLoaded implements DetectorState {
-  const factory DetectorStateLoaded() = _$DetectorStateLoadedImpl;
+  const factory DetectorStateLoaded(final TextAnalysisResult result) =
+      _$DetectorStateLoadedImpl;
+
+  TextAnalysisResult get result;
+
+  /// Create a copy of DetectorState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  _$$DetectorStateLoadedImplCopyWith<_$DetectorStateLoadedImpl> get copyWith =>
+      throw _privateConstructorUsedError;
 }
 
 /// @nodoc
@@ -526,7 +574,7 @@ class _$DetectorStateErrorImpl implements DetectorStateError {
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
     required TResult Function() loading,
-    required TResult Function() loaded,
+    required TResult Function(TextAnalysisResult result) loaded,
     required TResult Function(AppError error) error,
   }) {
     return error(this.error);
@@ -537,7 +585,7 @@ class _$DetectorStateErrorImpl implements DetectorStateError {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
     TResult? Function()? loading,
-    TResult? Function()? loaded,
+    TResult? Function(TextAnalysisResult result)? loaded,
     TResult? Function(AppError error)? error,
   }) {
     return error?.call(this.error);
@@ -548,7 +596,7 @@ class _$DetectorStateErrorImpl implements DetectorStateError {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
     TResult Function()? loading,
-    TResult Function()? loaded,
+    TResult Function(TextAnalysisResult result)? loaded,
     TResult Function(AppError error)? error,
     required TResult orElse(),
   }) {

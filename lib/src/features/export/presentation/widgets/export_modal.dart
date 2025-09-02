@@ -1,4 +1,6 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_app_template/src/core/components/layouts/buttons/app_cuppertino_button.dart';
 import 'package:flutter_app_template/src/core/components/pop_up/slide_up_pop_up.dart';
 import 'package:flutter_app_template/src/core/services/theme/app_theme.dart';
 import 'package:flutter_app_template/src/features/export/data/models/export_options.dart';
@@ -8,7 +10,7 @@ class ExportModal {
   static void show(
     BuildContext context, {
     required String text,
-    required String title,
+    Color? color,
   }) {
     FocusScope.of(context).unfocus();
     SlideUpPopUp.show(
@@ -27,11 +29,11 @@ class ExportModal {
                   height: 40,
                   decoration: BoxDecoration(
                     shape: BoxShape.circle,
-                    color: context.theme.primaryColor.withValues(alpha: 0.1),
+                    color: (color ?? context.theme.primaryColor).withValues(alpha: 0.1),
                   ),
                   child: Icon(
                     Icons.file_download,
-                    color: context.theme.primaryColor,
+                    color: color ?? context.theme.primaryColor,
                     size: 20,
                   ),
                 ),
@@ -42,15 +44,13 @@ class ExportModal {
                     children: [
                       Text(
                         'Export Text',
-                        style: context.theme.appTextTheme.subtitle1.copyWith(
+                        style: context.theme.appTextTheme.subtitle2.copyWith(
                           fontWeight: FontWeight.bold,
                         ),
                       ),
                       Text(
                         'Choose how to export your text',
-                        style: context.theme.appTextTheme.body2.copyWith(
-                          color: Colors.grey[600],
-                        ),
+                        style: context.theme.appTextTheme.body3Light,
                       ),
                     ],
                   ),
@@ -64,75 +64,95 @@ class ExportModal {
             const SizedBox(height: 20),
 
             // Export options
-            ...ExportOptions.allOptions.map((option) => _buildExportOption(
-                  context,
-                  option,
-                  text,
-                  title,
-                )),
+            ...ExportOptions.allOptions.map(
+              (option) => _ExportOption(
+                option: option,
+                text: text,
+                color: color,
+              ),
+            ),
           ],
         ),
       ),
     );
   }
+}
 
-  static Widget _buildExportOption(
-    BuildContext context,
-    ExportOptions option,
-    String text,
-    String title,
-  ) {
+class _ExportOption extends StatefulWidget {
+  final ExportOptions option;
+  final String text;
+  final Color? color;
+  const _ExportOption({required this.option, required this.text, required this.color});
+
+  @override
+  State<_ExportOption> createState() => _ExportOptionState();
+}
+
+class _ExportOptionState extends State<_ExportOption> {
+  late final Color? color = widget.color;
+  late final ExportOptions option = widget.option;
+  late final String text = widget.text;
+  bool isLoading = false;
+
+  @override
+  Widget build(BuildContext context) {
     return Container(
       margin: const EdgeInsets.only(bottom: 12),
       child: Material(
         color: Colors.transparent,
-        child: InkWell(
-          borderRadius: BorderRadius.circular(12),
+        child: AppCupertinoButton(
           onTap: () async {
-            Navigator.of(context).pop();
+            if (isLoading) return;
+            setState(() => isLoading = true);
             await ExportService.exportText(
               text: text,
               type: option.type,
-              title: title,
             );
+            setState(() => isLoading = false);
           },
           child: Container(
-            padding: const EdgeInsets.all(16),
+            padding: const EdgeInsets.all(14),
+            width: double.infinity,
             decoration: BoxDecoration(
               color: Colors.grey[50],
               borderRadius: BorderRadius.circular(12),
               border: Border.all(color: Colors.grey[300]!),
             ),
-            child: Row(
-              children: [
-                Container(
-                  width: 40,
-                  height: 40,
-                  decoration: BoxDecoration(
-                    color: context.theme.primaryColor.withValues(alpha: 0.1),
-                    borderRadius: BorderRadius.circular(8),
-                  ),
-                  child: Icon(
-                    option.icon,
-                    color: context.theme.primaryColor,
-                    size: 20,
-                  ),
-                ),
-                const SizedBox(width: 12),
-                Expanded(
-                  child: Text(
-                    option.label,
-                    style: context.theme.appTextTheme.body1.copyWith(
-                      fontWeight: FontWeight.w500,
+            child: AnimatedSize(
+              duration: const Duration(milliseconds: 300),
+              child: isLoading
+                  ? const Center(
+                      child: CupertinoActivityIndicator(),
+                    )
+                  : Row(
+                      children: [
+                        Container(
+                          width: 40,
+                          height: 40,
+                          decoration: BoxDecoration(
+                            color: (color ?? context.theme.primaryColor).withValues(alpha: 0.1),
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                          child: Icon(
+                            option.icon,
+                            color: (color ?? context.theme.primaryColor),
+                            size: 20,
+                          ),
+                        ),
+                        const SizedBox(width: 12),
+                        Expanded(
+                          child: Text(
+                            option.label,
+                            style: context.theme.appTextTheme.subtitle3,
+                          ),
+                        ),
+                        Icon(
+                          Icons.arrow_forward_ios,
+                          color: Colors.grey[400],
+                          size: 16,
+                        ),
+                      ],
                     ),
-                  ),
-                ),
-                Icon(
-                  Icons.arrow_forward_ios,
-                  color: Colors.grey[400],
-                  size: 16,
-                ),
-              ],
             ),
           ),
         ),

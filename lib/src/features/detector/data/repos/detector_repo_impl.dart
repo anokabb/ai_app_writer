@@ -1,21 +1,18 @@
-import 'package:fpdart/fpdart.dart';
+import 'package:flutter_app_template/src/core/network/ai_api/models/text_analysis_model.dart';
+import 'package:flutter_app_template/src/core/network/ai_api/repos/ai_repo.dart';
 import 'package:flutter_app_template/src/core/network/models/app_error.dart';
-import 'package:flutter_app_template/src/features/detector/data/api/detector_api.dart';
-import 'package:flutter_app_template/src/features/detector/data/models/detector_model.dart';
+import 'package:flutter_app_template/src/features/detector/presentation/pages/detector_page.dart';
+import 'package:fpdart/fpdart.dart';
+
 import 'detector_repo.dart';
 
 class DetectorRepoImpl implements DetectorRepo {
-  final DetectorApi _api;
+  final AiRepo repo;
 
-  DetectorRepoImpl(this._api);
+  DetectorRepoImpl(this.repo);
 
   @override
-  Future<Either<AppError, DetectorModel>> fetchSomething() async {
-    try {
-      final response = await _api.fetchSomething();
-      return right(response.data!);
-    } catch (e) {
-      return left(AppError.fromException(e));
-    }
+  Future<Either<AppError, TextAnalysisResult>> analyzeText({required String text, required DetectorModes mode}) async {
+    return repo.analyzeText(text: text, mode: mode);
   }
 }

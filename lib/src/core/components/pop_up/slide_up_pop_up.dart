@@ -21,12 +21,13 @@ class SlideUpPopUp extends StatelessWidget {
 
   static Future<T?> show<T>({
     required BuildContext context,
-    required Widget child,
+    Widget? child,
     EdgeInsets? margin,
     double? width,
     BorderRadius? borderRadius,
     Color? backgroundColor,
     bool isDismissible = true,
+    Widget Function(BuildContext dialogContext)? itemBuilder,
   }) {
     BuildContext? currentContext = rootNavigatorKey.currentContext ?? context;
     final screenSize = MediaQuery.of(currentContext).size;
@@ -86,7 +87,7 @@ class SlideUpPopUp extends StatelessWidget {
                   width: width ?? screenSize.width,
                   borderRadius: borderRadius ?? BorderRadius.circular(12),
                   backgroundColor: backgroundColor ?? Colors.white,
-                  child: child,
+                  child: itemBuilder != null ? itemBuilder(context) : (child ?? const SizedBox.shrink()),
                 ),
               ),
             ),

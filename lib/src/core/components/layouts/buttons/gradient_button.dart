@@ -16,7 +16,7 @@ class GradientButton extends StatefulWidget {
   final double? width;
   final double borderRadius;
   final Color? textColor;
-  final Color? backgroundColor;
+  final Color? forceButtonColor;
   final TextStyle? textStyle;
   final bool isTextButton;
   final Alignment? alignment;
@@ -29,6 +29,10 @@ class GradientButton extends StatefulWidget {
   final TextAlign? textAlign;
   final List<Color> gradientColors;
   final bool expand;
+  final bool isLoading;
+  final Alignment? gradientBegin;
+  final Alignment? gradientEnd;
+
   const GradientButton({
     super.key,
     this.label,
@@ -41,7 +45,7 @@ class GradientButton extends StatefulWidget {
     this.borderRadius = 10,
     this.textStyle,
     this.textColor,
-    this.backgroundColor,
+    this.forceButtonColor,
     this.isAsync = false,
     this.padding,
     this.height = 48,
@@ -56,6 +60,9 @@ class GradientButton extends StatefulWidget {
     this.textAlign,
     required this.gradientColors,
     this.expand = true,
+    this.isLoading = false,
+    this.gradientBegin,
+    this.gradientEnd,
   });
 
   @override
@@ -69,48 +76,60 @@ class _GradientButtonState extends State<GradientButton> {
 
   @override
   Widget build(BuildContext context) {
-    return AppCupertinoButton(
-      onTap: widget.isAsync
-          ? () async {
-              if (isLoading) return;
-              setState(() => isLoading = true);
-              await widget.onPressed();
-              setState(() => isLoading = false);
-            }
-          : widget.onPressed,
-      child: Container(
-        padding: widget.padding,
-        width: widget.width ?? (widget.expand ? double.infinity : null),
-        height: widget.ignoreHeight ? null : widget.height,
-        decoration: BoxDecoration(
-          gradient: LinearGradient(colors: widget.gradientColors),
-          borderRadius: BorderRadius.circular(widget.borderRadius),
-          boxShadow: widget.hasShadow != null
-              ? [
-                  BoxShadow(
-                    color: Colors.black.withOpacity(0.1),
-                    blurRadius: 6,
-                    offset: Offset(0, 1),
+    return Opacity(
+      opacity: widget.disabled ? 0.5 : 1,
+      child: AppCupertinoButton(
+        onTap: widget.disabled
+            ? null
+            : widget.isAsync
+                ? () async {
+                    if (isLoading || widget.isLoading) return;
+                    setState(() => isLoading = true);
+                    await widget.onPressed();
+                    setState(() => isLoading = false);
+                  }
+                : widget.onPressed,
+        child: Container(
+          padding: widget.padding,
+          width: widget.width ?? (widget.expand ? double.infinity : null),
+          height: widget.ignoreHeight ? null : widget.height,
+          decoration: BoxDecoration(
+            color: widget.forceButtonColor,
+            gradient: widget.forceButtonColor != null
+                ? null
+                : LinearGradient(
+                    colors: widget.gradientColors,
+                    begin: widget.gradientBegin ?? Alignment.centerLeft,
+                    end: widget.gradientEnd ?? Alignment.centerRight,
                   ),
-                ]
-              : null,
-        ),
-        child: isLoading
-            ? Center(child: _CircularProgressIndicator(height: widget.height, color: textColor))
-            : widget.customChild ??
-                Row(
-                  mainAxisSize: MainAxisSize.min,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  spacing: 8,
-                  children: <Widget>[
-                    widget.icon ?? SizedBox(),
-                    Text(
-                      widget.label ?? '',
-                      textAlign: widget.textAlign ?? TextAlign.center,
-                      style: widget.textStyle ?? context.theme.appTextTheme.subtitle2.copyWith(color: textColor),
+            borderRadius: BorderRadius.circular(widget.borderRadius),
+            boxShadow: widget.hasShadow != null
+                ? [
+                    BoxShadow(
+                      color: Colors.black.withOpacity(0.1),
+                      blurRadius: 6,
+                      offset: Offset(0, 1),
                     ),
-                  ],
-                ),
+                  ]
+                : null,
+          ),
+          child: isLoading || widget.isLoading
+              ? _CircularProgressIndicator(height: widget.height, color: textColor)
+              : widget.customChild ??
+                  Row(
+                    mainAxisSize: MainAxisSize.min,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    spacing: 8,
+                    children: <Widget>[
+                      widget.icon ?? SizedBox(),
+                      Text(
+                        widget.label ?? '',
+                        textAlign: widget.textAlign ?? TextAlign.center,
+                        style: widget.textStyle ?? context.theme.appTextTheme.subtitle2.copyWith(color: textColor),
+                      ),
+                    ],
+                  ),
+        ),
       ),
     );
   }
@@ -119,16 +138,20 @@ class _GradientButtonState extends State<GradientButton> {
 class _CircularProgressIndicator extends StatelessWidget {
   final double height;
   final Color? color;
+  final bool expand;
 
-  const _CircularProgressIndicator({required this.height, this.color});
+  const _CircularProgressIndicator({required this.height, this.color, this.expand = false});
 
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: height * 0.4,
-      width: height * 0.4,
-      child: CupertinoActivityIndicator(
-        color: color ?? context.theme.appColors.textColor,
+      width: expand ? double.infinity : 100,
+      child: SizedBox(
+        height: height * 0.4,
+        width: height * 0.4,
+        child: CupertinoActivityIndicator(
+          color: color ?? context.theme.appColors.textColor,
+        ),
       ),
     );
   }

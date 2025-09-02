@@ -60,8 +60,14 @@ class $AssetsSvgGen {
   /// File path: assets/svg/globe.svg
   String get globe => 'assets/svg/globe.svg';
 
+  /// File path: assets/svg/hashtag.svg
+  String get hashtag => 'assets/svg/hashtag.svg';
+
   /// File path: assets/svg/home.svg
   String get home => 'assets/svg/home.svg';
+
+  /// File path: assets/svg/light.svg
+  String get light => 'assets/svg/light.svg';
 
   /// File path: assets/svg/link.svg
   String get link => 'assets/svg/link.svg';
@@ -94,7 +100,9 @@ class $AssetsSvgGen {
         copyOrange,
         docs,
         globe,
+        hashtag,
         home,
+        light,
         link,
         profile,
         settingsOrange,

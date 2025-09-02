@@ -20,6 +20,10 @@ List<LanguageModel> languages = [
   LanguageModel(name: 'French', flag: '🇫🇷'),
   LanguageModel(name: 'Spanish', flag: '🇪🇸'),
   LanguageModel(name: 'German', flag: '🇩🇪'),
+  LanguageModel(name: 'Chinese', flag: '🇨🇳'),
+  LanguageModel(name: 'Russian', flag: '🇷🇺'),
+  LanguageModel(name: 'Korean', flag: '🇰🇷'),
+  LanguageModel(name: 'Arabic', flag: '🇸🇦'),
 ];
 
 class LanguageSelector extends StatelessWidget {

@@ -14,7 +14,7 @@ class PageTransitions {
             end: Offset.zero,
           ).animate(CurvedAnimation(
             parent: animation,
-            curve: Curves.ease,
+            curve: Curves.easeInOutCubic,
           )),
           child: child,
         );

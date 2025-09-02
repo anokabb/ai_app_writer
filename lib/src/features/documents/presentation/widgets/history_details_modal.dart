@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app_template/src/core/components/pop_up/slide_up_pop_up.dart';
+import 'package:flutter_app_template/src/core/extensions/extensions.dart';
+import 'package:flutter_app_template/src/core/network/ai_api/models/text_analysis_model.dart';
 import 'package:flutter_app_template/src/core/services/theme/app_theme.dart';
 import 'package:flutter_app_template/src/features/documents/data/models/history_item.dart';
 import 'package:flutter_app_template/src/features/export/presentation/widgets/export_modal.dart';
-import 'package:flutter_app_template/src/features/writer/data/models/text_analysis_model.dart';
 
 class HistoryDetailsModal extends StatelessWidget {
   final HistoryItem item;
@@ -28,6 +29,15 @@ class HistoryDetailsModal extends StatelessWidget {
         return Colors.green;
       case TextSource.mixed:
         return Colors.orange;
+    }
+  }
+
+  Color _getTypeColor(HistoryItemType type) {
+    switch (type) {
+      case HistoryItemType.humanized:
+        return Colors.green;
+      case HistoryItemType.generated:
+        return Colors.blue;
     }
   }
 
@@ -101,161 +111,146 @@ class HistoryDetailsModal extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(20.0),
-      child: ListView(
+    return Container(
+      padding: const EdgeInsets.all(20),
+      decoration: const BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+      ),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           // Header
           Row(
             children: [
-              if (item.analysisResult != null) ...[
-                Container(
-                  width: 60,
-                  height: 60,
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    color: _getSourceColor(item.analysisResult!.source).withValues(alpha: 0.1),
-                  ),
-                  child: Center(
-                    child: Text(
-                      '${item.analysisResult!.aiPercentage}%',
-                      style: TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
-                        color: _getSourceColor(item.analysisResult!.source),
-                      ),
-                    ),
-                  ),
-                ),
-                const SizedBox(width: 16),
-              ],
+              Icon(
+                item.type == HistoryItemType.humanized ? Icons.person : Icons.auto_awesome,
+                color: _getTypeColor(item.type).withValues(alpha: 0.6),
+                size: 24,
+              ),
+              const SizedBox(width: 12),
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      item.title,
-                      style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                            fontWeight: FontWeight.bold,
-                          ),
+                      item.displayTitle,
+                      style: context.theme.appTextTheme.subtitle1.copyWith(
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
-                    const SizedBox(height: 4),
                     Text(
-                      item.formattedDate,
-                      style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                            color: Colors.grey[600],
-                          ),
+                      item.displaySubtitle,
+                      style: context.theme.appTextTheme.body3.copyWith(
+                        color: Colors.grey[600],
+                      ),
                     ),
                   ],
                 ),
               ),
-              IconButton(
-                onPressed: () => Navigator.of(context).pop(),
-                icon: const Icon(Icons.close),
+              Container(
+                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                decoration: BoxDecoration(
+                  color: _getTypeColor(item.type).withValues(alpha: 0.1),
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                child: Text(
+                  item.type == HistoryItemType.humanized ? 'Humanized' : 'Generated',
+                  style: context.theme.appTextTheme.body3.copyWith(
+                    fontSize: 12,
+                    color: _getTypeColor(item.type).withValues(alpha: 0.7),
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
               ),
             ],
           ),
           const SizedBox(height: 20),
 
-          // Analysis Summary
-          if (item.analysisResult != null) ...[
-            Container(
-              padding: const EdgeInsets.all(16),
-              decoration: BoxDecoration(
-                color: Colors.blue.withValues(alpha: 0.05),
-                borderRadius: BorderRadius.circular(12),
-                border: Border.all(color: Colors.blue.withValues(alpha: 0.2)),
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
-                    children: [
-                      Icon(Icons.analytics, color: Colors.blue[600], size: 20),
-                      const SizedBox(width: 8),
-                      Text(
-                        'Analysis Results',
-                        style: context.theme.appTextTheme.subtitle2.copyWith(
-                          color: Colors.blue[600],
-                        ),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 12),
-                  Text(
-                    item.analysisResult!.displayTitle,
-                    style: context.theme.appTextTheme.body2.copyWith(),
-                  ),
-                  const SizedBox(height: 4),
-                  Text(
-                    item.analysisResult!.displaySummary ?? 'AI analysis completed',
-                    style: context.theme.appTextTheme.body3.copyWith(
-                      color: Colors.grey[600],
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ],
-          const SizedBox(height: 20),
-
-          // Humanized Text Section
+          // Content Section (Humanized or Generated)
           Container(
             padding: const EdgeInsets.all(16),
             decoration: BoxDecoration(
-              color: Colors.green.withValues(alpha: 0.05),
+              color: _getTypeColor(item.type).withValues(alpha: 0.05),
               borderRadius: BorderRadius.circular(12),
-              border: Border.all(color: Colors.green.withValues(alpha: 0.2)),
+              border: Border.all(color: _getTypeColor(item.type).withValues(alpha: 0.2)),
             ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Row(
                   children: [
-                    Icon(Icons.person, color: Colors.green[600], size: 20),
+                    Icon(
+                      item.type == HistoryItemType.humanized ? Icons.person : Icons.auto_awesome,
+                      color: _getTypeColor(item.type).withValues(alpha: 0.6),
+                      size: 20,
+                    ),
                     const SizedBox(width: 8),
                     Text(
-                      'Humanized Text',
+                      item.type == HistoryItemType.humanized ? 'Humanized Text' : 'Generated Content',
                       style: context.theme.appTextTheme.subtitle2.copyWith(
                         fontWeight: FontWeight.bold,
-                        color: Colors.green[600],
+                        color: _getTypeColor(item.type).withValues(alpha: 0.6),
                       ),
                     ),
                     const Spacer(),
-                    Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                      decoration: BoxDecoration(
-                        color: Colors.green.withValues(alpha: 0.1),
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                      child: Text(
-                        '${(item.humanizationResult.humanLike * 100).toStringAsFixed(0)}% human-like',
-                        style: context.theme.appTextTheme.body3.copyWith(
-                          fontSize: 12,
-                          color: Colors.green[700],
+                    if (item.type == HistoryItemType.humanized && item.humanizationResult != null) ...[
+                      Container(
+                        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                        decoration: BoxDecoration(
+                          color: _getTypeColor(item.type).withValues(alpha: 0.1),
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        child: Text(
+                          '${(item.humanizationResult!.humanLike * 100).toStringAsFixed(0)}% human-like',
+                          style: context.theme.appTextTheme.body3.copyWith(
+                            fontSize: 12,
+                            color: _getTypeColor(item.type).withValues(alpha: 0.7),
+                          ),
                         ),
                       ),
-                    ),
+                    ] else if (item.type == HistoryItemType.generated && item.wordCount != null) ...[
+                      Container(
+                        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                        decoration: BoxDecoration(
+                          color: _getTypeColor(item.type).withValues(alpha: 0.1),
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        child: Text(
+                          '${item.wordCount} words',
+                          style: context.theme.appTextTheme.body3.copyWith(
+                            fontSize: 12,
+                            color: _getTypeColor(item.type).withValues(alpha: 0.7),
+                          ),
+                        ),
+                      ),
+                    ],
                   ],
                 ),
                 const SizedBox(height: 12),
-                Text(item.humanizedText, style: context.theme.appTextTheme.body3),
+                Text(
+                  item.type == HistoryItemType.humanized ? (item.humanizedText ?? '') : (item.generatedContent ?? ''),
+                  style: context.theme.appTextTheme.body3,
+                ),
                 const SizedBox(height: 16),
                 // Export button
                 SizedBox(
                   width: double.infinity,
                   child: ElevatedButton.icon(
                     onPressed: () {
+                      final content = item.type == HistoryItemType.humanized
+                          ? (item.humanizedText ?? '')
+                          : (item.generatedContent ?? '');
                       ExportModal.show(
                         context,
-                        text: item.humanizedText,
-                        title: item.title,
+                        text: content,
                       );
                     },
                     icon: const Icon(Icons.share, size: 16),
-                    label: const Text('Export Humanized Text'),
+                    label: Text('Export ${item.type == HistoryItemType.humanized ? 'Humanized' : 'Generated'} Content'),
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.green,
+                      backgroundColor: _getTypeColor(item.type),
                       foregroundColor: Colors.white,
                     ),
                   ),
@@ -264,6 +259,51 @@ class HistoryDetailsModal extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 20),
+
+          // Generation Details (for generated content)
+          if (item.type == HistoryItemType.generated &&
+              (item.typeOfWriting != null || item.tone != null || item.language != null)) ...[
+            Container(
+              padding: const EdgeInsets.all(16),
+              decoration: BoxDecoration(
+                color: Colors.indigo.withValues(alpha: 0.05),
+                borderRadius: BorderRadius.circular(12),
+                border: Border.all(color: Colors.indigo.withValues(alpha: 0.2)),
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    children: [
+                      Icon(Icons.settings, color: Colors.indigo[600], size: 20),
+                      const SizedBox(width: 8),
+                      Text(
+                        'Generation Details',
+                        style: context.theme.appTextTheme.subtitle2.copyWith(
+                          fontWeight: FontWeight.bold,
+                          color: Colors.indigo[600],
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 12),
+                  if (item.typeOfWriting != null) ...[
+                    _buildDetailRow('Type', item.typeOfWriting!.enumCapitalize()),
+                  ],
+                  if (item.tone != null) ...[
+                    _buildDetailRow('Tone', item.tone!.enumCapitalize()),
+                  ],
+                  if (item.wordCount != null) ...[
+                    _buildDetailRow('Word Count', '${item.wordCount} words'),
+                  ],
+                  if (item.language != null) ...[
+                    _buildDetailRow('Language', item.language!),
+                  ],
+                ],
+              ),
+            ),
+            const SizedBox(height: 20),
+          ],
 
           // Original Text Section
           Container(
@@ -381,6 +421,30 @@ class HistoryDetailsModal extends StatelessWidget {
               ),
             ),
           ],
+        ],
+      ),
+    );
+  }
+
+  Widget _buildDetailRow(String label, String value) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 8),
+      child: Row(
+        children: [
+          Text(
+            '$label: ',
+            style: TextStyle(
+              fontWeight: FontWeight.w500,
+              color: Colors.grey[700],
+            ),
+          ),
+          Text(
+            value,
+            style: TextStyle(
+              color: Colors.indigo[600],
+              fontWeight: FontWeight.w500,
+            ),
+          ),
         ],
       ),
     );

@@ -1,6 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_app_template/src/core/components/layouts/buttons/gradient_button.dart';
+import 'package:flutter_app_template/src/core/components/pop_up/slide_up_pop_up.dart';
+import 'package:flutter_app_template/src/core/components/widgets/app_card.dart';
+import 'package:flutter_app_template/src/core/extensions/extensions.dart';
+import 'package:flutter_app_template/src/core/network/ai_api/models/text_analysis_model.dart';
+import 'package:flutter_app_template/src/core/services/theme/app_theme.dart';
 import 'package:flutter_app_template/src/features/documents/data/models/history_item.dart';
-import 'package:flutter_app_template/src/features/writer/data/models/text_analysis_model.dart';
 
 class HistoryItemCard extends StatelessWidget {
   final HistoryItem item;
@@ -14,6 +19,263 @@ class HistoryItemCard extends StatelessWidget {
     required this.onDelete,
   });
 
+  Color _getTypeColor(HistoryItemType type) {
+    switch (type) {
+      case HistoryItemType.humanized:
+        return Colors.green;
+      case HistoryItemType.generated:
+        return Colors.blue;
+    }
+  }
+
+  String _getTypeLabel(HistoryItemType type) {
+    switch (type) {
+      case HistoryItemType.humanized:
+        return 'Humanized';
+      case HistoryItemType.generated:
+        return 'Generated';
+    }
+  }
+
+  IconData _getTypeIcon(HistoryItemType type) {
+    switch (type) {
+      case HistoryItemType.humanized:
+        return Icons.person;
+      case HistoryItemType.generated:
+        return Icons.auto_awesome;
+    }
+  }
+
+  /// Generate a fallback title when AI title is not available
+  String _generateFallbackTitle(HistoryItem item) {
+    final prefix = item.type == HistoryItemType.humanized ? 'Humanized' : 'Generated';
+    final content = item.type == HistoryItemType.humanized ? (item.humanizedText ?? '') : (item.generatedContent ?? '');
+
+    if (content.isEmpty) return '$prefix Content';
+
+    // Take first few meaningful words for the title
+    final words = content.split(' ').where((word) => word.length > 2).take(4).join(' ');
+    if (words.isEmpty) return '$prefix Content';
+
+    final title = '$prefix: $words';
+    return title.length > 50 ? '${title.substring(0, 47)}...' : title;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return AppCard(
+      radius: 10,
+      child: GestureDetector(
+        onTap: onTap,
+        behavior: HitTestBehavior.opaque,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            // Header row with title, time, and more menu
+            Row(
+              children: [
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      // Title with overflow ellipsis
+                      Text(
+                        item.formattedTitle,
+                        style: context.appTextTheme.subtitle3.copyWith(
+                          fontWeight: FontWeight.w500,
+                        ),
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                      const SizedBox(height: 4),
+                      // Time ago
+                      Text(
+                        item.formattedDate,
+                        style: context.appTextTheme.body3Light.copyWith(fontSize: 10),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(height: 12),
+
+            // Content type indicator
+            Container(
+              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+              decoration: BoxDecoration(
+                color: _getTypeColor(item.type).withValues(alpha: 0.1),
+                borderRadius: BorderRadius.circular(12),
+              ),
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Icon(
+                    _getTypeIcon(item.type),
+                    size: 12,
+                    color: _getTypeColor(item.type).withValues(alpha: 0.7),
+                  ),
+                  const SizedBox(width: 4),
+                  Text(
+                    _getTypeLabel(item.type),
+                    style: TextStyle(
+                      fontSize: 10,
+                      color: _getTypeColor(item.type).withValues(alpha: 0.7),
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            const SizedBox(height: 12),
+
+            // Tags row
+            Row(
+              spacing: 8,
+              children: [
+                Expanded(
+                  child: Wrap(
+                    spacing: 8,
+                    runSpacing: 4,
+                    children: [
+                      // Type of writing tag (for generated content)
+                      if (item.type == HistoryItemType.generated && item.typeOfWriting != null)
+                        Container(
+                          padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                          decoration: BoxDecoration(
+                            color: Colors.orange.withValues(alpha: 0.1),
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                          child: Text(
+                            item.typeOfWriting!.enumCapitalize(),
+                            style: TextStyle(
+                              fontSize: 10,
+                              color: Colors.orange[700],
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                        ),
+
+                      // Tone tag (for generated content)
+                      if (item.type == HistoryItemType.generated && item.tone != null)
+                        Container(
+                          padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                          decoration: BoxDecoration(
+                            color: Colors.purple.withValues(alpha: 0.1),
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                          child: Text(
+                            item.tone!.enumCapitalize(),
+                            style: TextStyle(
+                              fontSize: 10,
+                              color: Colors.purple[700],
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                        ),
+
+                      // Word count tag (for generated content)
+                      if (item.type == HistoryItemType.generated && item.wordCount != null)
+                        Container(
+                          padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                          decoration: BoxDecoration(
+                            color: Colors.indigo.withValues(alpha: 0.1),
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                          child: Text(
+                            '${item.wordCount} words',
+                            style: TextStyle(
+                              fontSize: 10,
+                              color: Colors.indigo[700],
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                        ),
+
+                      // Language tag
+                      if (item.language != null)
+                        Container(
+                          padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                          decoration: BoxDecoration(
+                            color: Colors.teal.withValues(alpha: 0.1),
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                          child: Text(
+                            item.language!,
+                            style: TextStyle(
+                              fontSize: 10,
+                              color: Colors.teal[700],
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                        ),
+
+                      // Human-like percentage tag (for humanized content)
+                      if (item.type == HistoryItemType.humanized && item.humanizationResult != null)
+                        Container(
+                          padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                          decoration: BoxDecoration(
+                            color: Colors.blue.withValues(alpha: 0.1),
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                          child: Text(
+                            '${(item.humanizationResult!.humanLike * 100).toStringAsFixed(0)}% human',
+                            style: TextStyle(
+                              fontSize: 10,
+                              color: Colors.blue[700],
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                        ),
+
+                      // AI percentage tag (if analysis available)
+                      if (item.analysisResult != null)
+                        Container(
+                          padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                          decoration: BoxDecoration(
+                            color: _getSourceColor(item.analysisResult!.source).withValues(alpha: 0.1),
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                          child: Text(
+                            '${item.analysisResult!.aiPercentage}% AI',
+                            style: TextStyle(
+                              fontSize: 10,
+                              color: _getSourceColor(item.analysisResult!.source),
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                        ),
+                    ],
+                  ),
+                ),
+                PopupMenuButton<String>(
+                  onSelected: (value) {
+                    if (value == 'delete') {
+                      _showDeleteConfirmDialog(context);
+                    }
+                  },
+                  itemBuilder: (context) => [
+                    const PopupMenuItem(
+                      value: 'delete',
+                      child: Row(
+                        children: [
+                          Icon(Icons.delete, color: Colors.red, size: 16),
+                          SizedBox(width: 8),
+                          Text('Delete'),
+                        ],
+                      ),
+                    ),
+                  ],
+                  child: const Icon(Icons.more_vert, size: 20),
+                ),
+              ],
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
   Color _getSourceColor(TextSource source) {
     switch (source) {
       case TextSource.ai:
@@ -25,222 +287,50 @@ class HistoryItemCard extends StatelessWidget {
     }
   }
 
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: Colors.grey.withValues(alpha: 0.2)),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.grey.withValues(alpha: 0.3),
-            blurRadius: 8,
-            offset: const Offset(0, 2),
-          ),
-        ],
-      ),
-      child: InkWell(
-        onTap: onTap,
-        borderRadius: BorderRadius.circular(12),
-        child: Padding(
-          padding: const EdgeInsets.all(16),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              // Header with title and actions
-              Row(
-                children: [
-                  Expanded(
-                    child: Text(
-                      item.title,
-                      style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                            fontWeight: FontWeight.bold,
-                          ),
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                  ),
-                  Text(
-                    item.formattedDate,
-                    style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                          color: Colors.grey[600],
-                        ),
-                  ),
-                  const SizedBox(width: 8),
-                  PopupMenuButton<String>(
-                    onSelected: (value) {
-                      if (value == 'delete') {
-                        _showDeleteConfirmDialog(context);
-                      }
-                    },
-                    itemBuilder: (context) => [
-                      const PopupMenuItem(
-                        value: 'delete',
-                        child: Row(
-                          children: [
-                            Icon(Icons.delete, color: Colors.red, size: 16),
-                            SizedBox(width: 8),
-                            Text('Delete'),
-                          ],
-                        ),
-                      ),
-                    ],
-                    child: const Icon(Icons.more_vert, size: 20),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 12),
-
-              // Analysis results
-              Row(
-                children: [
-                  if (item.analysisResult != null) ...[
-                    Container(
-                      width: 40,
-                      height: 40,
-                      decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        color: _getSourceColor(item.analysisResult!.source).withValues(alpha: 0.1),
-                      ),
-                      child: Center(
-                        child: Text(
-                          '${item.analysisResult!.aiPercentage}%',
-                          style: TextStyle(
-                            fontSize: 12,
-                            fontWeight: FontWeight.bold,
-                            color: _getSourceColor(item.analysisResult!.source),
-                          ),
-                        ),
-                      ),
-                    ),
-                    const SizedBox(width: 12),
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            item.analysisResult!.displayTitle,
-                            style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                                  fontWeight: FontWeight.w500,
-                                ),
-                          ),
-                          const SizedBox(height: 2),
-                          Text(
-                            item.analysisResult!.displaySummary ?? 'AI analysis completed',
-                            style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                                  color: Colors.grey[600],
-                                ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ] else ...[
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            'No Analysis',
-                            style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                                  fontWeight: FontWeight.w500,
-                                ),
-                          ),
-                          const SizedBox(height: 2),
-                          Text(
-                            'Text was humanized without analysis',
-                            style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                                  color: Colors.grey[600],
-                                ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
-                  Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                    decoration: BoxDecoration(
-                      color: Colors.green.withValues(alpha: 0.1),
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                    child: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Icon(
-                          Icons.check_circle,
-                          size: 12,
-                          color: Colors.green[700],
-                        ),
-                        const SizedBox(width: 4),
-                        Text(
-                          'Humanized',
-                          style: TextStyle(
-                            fontSize: 10,
-                            color: Colors.green[700],
-                            fontWeight: FontWeight.w500,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 12),
-
-              // Preview text
-              Text(
-                item.shortPreview,
-                style: Theme.of(context).textTheme.bodyMedium,
-                maxLines: 2,
-                overflow: TextOverflow.ellipsis,
-              ),
-              const SizedBox(height: 8),
-
-              // Humanization score
-              Row(
-                children: [
-                  Icon(
-                    Icons.person,
-                    size: 16,
-                    color: Colors.blue[600],
-                  ),
-                  const SizedBox(width: 4),
-                  Text(
-                    '${(item.humanizationResult.humanLike * 100).toStringAsFixed(0)}% human-like',
-                    style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                          color: Colors.blue[600],
-                          fontWeight: FontWeight.w500,
-                        ),
-                  ),
-                ],
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-
   void _showDeleteConfirmDialog(BuildContext context) {
-    showDialog(
+    SlideUpPopUp.show(
       context: context,
-      builder: (context) => AlertDialog(
-        title: const Text('Delete History Item'),
-        content: const Text('Are you sure you want to delete this item? This action cannot be undone.'),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.of(context).pop(),
-            child: const Text('Cancel'),
-          ),
-          TextButton(
-            onPressed: () {
-              Navigator.of(context).pop();
-              onDelete();
-            },
-            style: TextButton.styleFrom(foregroundColor: Colors.red),
-            child: const Text('Delete'),
-          ),
-        ],
+      itemBuilder: (dialogContext) => Padding(
+        padding: const EdgeInsets.all(16),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text('Delete Document', style: context.appTextTheme.subtitle1),
+            Text(
+              'Are you sure you want to delete this document? This action cannot be undone.',
+              style: context.appTextTheme.body2Light,
+            ),
+            const SizedBox(height: 20),
+            Row(
+              spacing: 16,
+              children: [
+                Expanded(
+                  child: GradientButton(
+                    onPressed: () {
+                      Navigator.of(dialogContext).pop();
+                    },
+                    label: 'Cancel',
+                    gradientColors: [],
+                    forceButtonColor: context.appColors.secondary,
+                    textColor: context.appColors.onSecondary,
+                  ),
+                ),
+                Expanded(
+                  child: GradientButton(
+                    onPressed: () {
+                      onDelete();
+                      Navigator.of(dialogContext).pop();
+                    },
+                    label: 'Delete',
+                    gradientColors: [],
+                    forceButtonColor: context.appColors.error,
+                  ),
+                ),
+              ],
+            ),
+          ],
+        ),
       ),
     );
   }

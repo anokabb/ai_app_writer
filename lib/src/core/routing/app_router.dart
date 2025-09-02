@@ -8,8 +8,11 @@ import 'package:flutter_app_template/src/core/routing/tabs/profile_tab.dart';
 import 'package:flutter_app_template/src/core/services/logger/logger.dart';
 import 'package:flutter_app_template/src/features/detector/presentation/pages/detector_page.dart';
 import 'package:flutter_app_template/src/features/dev/presentation/views/dev_mode_view.dart';
+import 'package:flutter_app_template/src/features/documents/data/models/history_item.dart';
+import 'package:flutter_app_template/src/features/generator/presentation/pages/generator_detail_page.dart';
 import 'package:flutter_app_template/src/features/generator/presentation/pages/generator_page.dart';
 import 'package:flutter_app_template/src/features/home/presentation/pages/home_page.dart';
+import 'package:flutter_app_template/src/features/humanizer/presentation/pages/humanizer_detail_page.dart';
 import 'package:flutter_app_template/src/features/humanizer/presentation/pages/humanizer_page.dart';
 import 'package:flutter_app_template/src/features/languages/presentation/pages/language_page.dart';
 import 'package:flutter_app_template/src/features/theme/presentation/pages/theme_page.dart';
@@ -75,7 +78,25 @@ class AppRouter {
       GoRoute(
         path: HumanizerPage.routeName,
         pageBuilder: (context, state) => PageTransitions.slideUpTransition(
-          child: const HumanizerPage(),
+          child: HumanizerPage(text: state.extra as String?),
+        ),
+      ),
+      GoRoute(
+        path: HumanizerDetailPage.routeName,
+        pageBuilder: (context, state) => PageTransitions.slideUpTransition(
+          child: HumanizerDetailPage(
+            text: state.extra is String ? state.extra as String : null,
+            historyItem: state.extra as HistoryItem,
+          ),
+        ),
+      ),
+      GoRoute(
+        path: GeneratorDetailPage.routeName,
+        pageBuilder: (context, state) => PageTransitions.slideUpTransition(
+          child: GeneratorDetailPage(
+            text: state.extra is String ? state.extra as String : null,
+            historyItem: state.extra as HistoryItem,
+          ),
         ),
       ),
     ];

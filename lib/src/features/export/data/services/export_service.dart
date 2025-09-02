@@ -1,8 +1,8 @@
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:flutter/services.dart';
 import 'package:flutter_app_template/src/core/extensions/context_extension.dart';
+import 'package:flutter_app_template/src/core/utils/utils.dart';
 import 'package:flutter_app_template/src/features/export/data/models/export_options.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:pdf/pdf.dart';
@@ -14,7 +14,6 @@ class ExportService {
   static Future<void> exportText({
     required String text,
     required ExportType type,
-    required String title,
   }) async {
     try {
       switch (type) {
@@ -40,8 +39,7 @@ class ExportService {
   }
 
   static Future<void> _copyToClipboard(String text) async {
-    await Clipboard.setData(ClipboardData(text: text));
-    showTopAlert('Copied to clipboard!');
+    Utils.copyToClipboard(text);
   }
 
   static Future<void> _shareText(String text) async {
