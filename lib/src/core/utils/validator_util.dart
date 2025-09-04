@@ -1,5 +1,5 @@
 import 'package:flutter/widgets.dart';
-import 'package:flutter_app_template/src/core/extensions/context_extension.dart';
+import 'package:phrasly_ai_tools/src/core/extensions/context_extension.dart';
 
 class ValidatorUtil {
   static String? validateNotEmptyString(String? val, {String msg = 'Please enter a value'}) {

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_app_template/src/features/languages/presentation/cubit/language_cubit.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:phrasly_ai_tools/src/features/languages/presentation/cubit/language_cubit.dart';
 
 class RTLWrapper extends StatelessWidget {
   final Widget child;

@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_app_template/src/core/components/layouts/buttons/app_cuppertino_button.dart';
-import 'package:flutter_app_template/src/core/components/widgets/app_card.dart';
-import 'package:flutter_app_template/src/core/gen/assets.gen.dart';
-import 'package:flutter_app_template/src/core/services/theme/app_theme.dart';
-import 'package:flutter_app_template/src/core/utils/utils.dart';
-import 'package:flutter_app_template/src/features/detector/presentation/pages/detector_page.dart';
-import 'package:flutter_app_template/src/features/generator/presentation/pages/generator_page.dart';
-import 'package:flutter_app_template/src/features/humanizer/presentation/pages/humanizer_page.dart';
 import 'package:go_router/go_router.dart';
+import 'package:phrasly_ai_tools/src/core/components/layouts/buttons/app_cuppertino_button.dart';
+import 'package:phrasly_ai_tools/src/core/components/widgets/app_card.dart';
+import 'package:phrasly_ai_tools/src/core/gen/assets.gen.dart';
+import 'package:phrasly_ai_tools/src/core/services/theme/app_theme.dart';
+import 'package:phrasly_ai_tools/src/core/utils/utils.dart';
+import 'package:phrasly_ai_tools/src/features/detector/presentation/pages/detector_page.dart';
+import 'package:phrasly_ai_tools/src/features/generator/presentation/pages/generator_page.dart';
+import 'package:phrasly_ai_tools/src/features/humanizer/presentation/pages/humanizer_page.dart';
 
 class AItoolsSection extends StatelessWidget {
   const AItoolsSection({super.key});

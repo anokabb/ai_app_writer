@@ -1,7 +1,7 @@
-import 'package:flutter_app_template/src/core/extensions/extensions.dart';
-import 'package:flutter_app_template/src/core/network/ai_api/models/text_analysis_model.dart';
-import 'package:flutter_app_template/src/features/generator/data/models/generator_model.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:phrasly_ai_tools/src/core/extensions/extensions.dart';
+import 'package:phrasly_ai_tools/src/core/network/ai_api/models/text_analysis_model.dart';
+import 'package:phrasly_ai_tools/src/features/generator/data/models/generator_model.dart';
 
 part 'gen/history_item.freezed.dart';
 part 'gen/history_item.g.dart';

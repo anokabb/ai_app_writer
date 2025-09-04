@@ -1,10 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_app_template/src/core/components/layouts/buttons/app_cuppertino_button.dart';
-import 'package:flutter_app_template/src/core/components/pop_up/slide_up_pop_up.dart';
-import 'package:flutter_app_template/src/core/services/theme/app_theme.dart';
-import 'package:flutter_app_template/src/features/export/data/models/export_options.dart';
-import 'package:flutter_app_template/src/features/export/data/services/export_service.dart';
+import 'package:phrasly_ai_tools/src/core/components/layouts/buttons/app_cuppertino_button.dart';
+import 'package:phrasly_ai_tools/src/core/components/pop_up/slide_up_pop_up.dart';
+import 'package:phrasly_ai_tools/src/core/services/theme/app_theme.dart';
+import 'package:phrasly_ai_tools/src/features/export/data/models/export_options.dart';
+import 'package:phrasly_ai_tools/src/features/export/data/services/export_service.dart';
 
 class ExportModal {
   static void show(

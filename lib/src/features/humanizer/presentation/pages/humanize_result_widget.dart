@@ -1,17 +1,17 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_app_template/src/core/components/layouts/buttons/gradient_button.dart';
-import 'package:flutter_app_template/src/core/components/widgets/app_card.dart';
-import 'package:flutter_app_template/src/core/components/widgets/markdown_text.dart';
-import 'package:flutter_app_template/src/core/extensions/context_extension.dart';
-import 'package:flutter_app_template/src/core/gen/assets.gen.dart';
-import 'package:flutter_app_template/src/core/services/locator/locator.dart';
-import 'package:flutter_app_template/src/core/services/theme/app_theme.dart';
-import 'package:flutter_app_template/src/core/utils/utils.dart';
-import 'package:flutter_app_template/src/features/documents/presentation/cubit/history_cubit.dart';
-import 'package:flutter_app_template/src/features/export/presentation/widgets/export_modal.dart';
-import 'package:flutter_app_template/src/features/humanizer/presentation/cubit/humanizer_cubit.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:phrasly_ai_tools/src/core/components/layouts/buttons/gradient_button.dart';
+import 'package:phrasly_ai_tools/src/core/components/widgets/app_card.dart';
+import 'package:phrasly_ai_tools/src/core/components/widgets/markdown_text.dart';
+import 'package:phrasly_ai_tools/src/core/extensions/context_extension.dart';
+import 'package:phrasly_ai_tools/src/core/gen/assets.gen.dart';
+import 'package:phrasly_ai_tools/src/core/services/locator/locator.dart';
+import 'package:phrasly_ai_tools/src/core/services/theme/app_theme.dart';
+import 'package:phrasly_ai_tools/src/core/utils/utils.dart';
+import 'package:phrasly_ai_tools/src/features/documents/presentation/cubit/history_cubit.dart';
+import 'package:phrasly_ai_tools/src/features/export/presentation/widgets/export_modal.dart';
+import 'package:phrasly_ai_tools/src/features/humanizer/presentation/cubit/humanizer_cubit.dart';
 
 class HumanizeResultWidget extends StatefulWidget {
   final Color color;

@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_app_template/src/core/components/layouts/buttons/app_cuppertino_button.dart';
-import 'package:flutter_app_template/src/core/extensions/context_extension.dart';
-import 'package:flutter_app_template/src/core/gen/assets.gen.dart';
-import 'package:flutter_app_template/src/core/services/theme/app_theme.dart';
-import 'package:flutter_app_template/src/core/utils/utils.dart';
-import 'package:flutter_app_template/src/features/documents/presentation/cubit/history_cubit.dart';
-import 'package:flutter_app_template/src/features/documents/presentation/cubit/history_state.dart';
-import 'package:flutter_app_template/src/features/documents/presentation/pages/documents_page.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
+import 'package:phrasly_ai_tools/src/core/components/layouts/buttons/app_cuppertino_button.dart';
+import 'package:phrasly_ai_tools/src/core/extensions/context_extension.dart';
+import 'package:phrasly_ai_tools/src/core/gen/assets.gen.dart';
+import 'package:phrasly_ai_tools/src/core/services/theme/app_theme.dart';
+import 'package:phrasly_ai_tools/src/core/utils/utils.dart';
+import 'package:phrasly_ai_tools/src/features/documents/presentation/cubit/history_cubit.dart';
+import 'package:phrasly_ai_tools/src/features/documents/presentation/cubit/history_state.dart';
+import 'package:phrasly_ai_tools/src/features/documents/presentation/pages/documents_page.dart';
 
 class StatsCard extends StatelessWidget {
   const StatsCard({
@@ -66,7 +66,6 @@ class StatsCard extends StatelessWidget {
                   Utils.hexToColor('#2FC76F'),
                   Utils.hexToColor('#21CCAF'),
                 ],
-                onPressed: () {},
               ),
               SizedBox(width: 16),
               _StatsItem(
@@ -92,20 +91,20 @@ class _StatsItem extends StatelessWidget {
   final String svgIcon;
   final String value;
   final List<Color> gradientColors;
-  final VoidCallback onPressed;
+  final VoidCallback? onPressed;
 
   const _StatsItem({
     required this.title,
     required this.svgIcon,
     required this.value,
     required this.gradientColors,
-    required this.onPressed,
+    this.onPressed,
   });
 
   @override
   Widget build(BuildContext context) {
     return AppCupertinoButton(
-      onTap: onPressed,
+      onTap: onPressed ?? () {},
       child: Container(
         width: 174,
         decoration: BoxDecoration(
@@ -144,10 +143,11 @@ class _StatsItem extends StatelessWidget {
                         ),
                       ),
                     ),
-                    SvgPicture.asset(
-                      Assets.svg.arrowRightOpacity,
-                      width: 16,
-                    ),
+                    if (onPressed != null)
+                      SvgPicture.asset(
+                        Assets.svg.arrowRightOpacity,
+                        width: 16,
+                      ),
                   ],
                 ),
               ],

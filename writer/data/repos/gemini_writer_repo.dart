@@ -1,9 +1,9 @@
 import 'dart:convert';
 import 'dart:developer';
 
-import 'package:flutter_app_template/src/core/network/models/app_error.dart';
-import 'package:flutter_app_template/src/core/services/logger/logger.dart';
 import 'package:fpdart/fpdart.dart';
+import 'package:phrasly_ai_tools/src/core/network/models/app_error.dart';
+import 'package:phrasly_ai_tools/src/core/services/logger/logger.dart';
 
 import '../api/gemini_writer_api.dart';
 import '../models/text_analysis_model.dart';

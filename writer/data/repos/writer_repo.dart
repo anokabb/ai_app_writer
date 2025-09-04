@@ -1,5 +1,5 @@
-import 'package:flutter_app_template/src/core/network/models/app_error.dart';
 import 'package:fpdart/fpdart.dart';
+import 'package:phrasly_ai_tools/src/core/network/models/app_error.dart';
 
 import '../models/text_analysis_model.dart';
 

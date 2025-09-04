@@ -1,11 +1,11 @@
-import 'package:flutter_app_template/src/core/network/models/app_error.dart';
-import 'package:flutter_app_template/src/core/services/locator/locator.dart';
-import 'package:flutter_app_template/src/features/documents/presentation/cubit/history_cubit.dart';
-import 'package:flutter_app_template/src/features/generator/data/models/generator_model.dart';
-import 'package:flutter_app_template/src/features/generator/data/repos/generator_repo.dart';
-import 'package:flutter_app_template/src/features/settings/presentation/cubit/settings_cubit.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:phrasly_ai_tools/src/core/network/models/app_error.dart';
+import 'package:phrasly_ai_tools/src/core/services/locator/locator.dart';
+import 'package:phrasly_ai_tools/src/features/documents/presentation/cubit/history_cubit.dart';
+import 'package:phrasly_ai_tools/src/features/generator/data/models/generator_model.dart';
+import 'package:phrasly_ai_tools/src/features/generator/data/repos/generator_repo.dart';
+import 'package:phrasly_ai_tools/src/features/settings/presentation/cubit/settings_cubit.dart';
 
 part 'gen/generator_cubit.freezed.dart';
 part 'generator_state.dart';

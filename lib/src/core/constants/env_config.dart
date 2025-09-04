@@ -1,5 +1,5 @@
 import 'package:flutter/foundation.dart';
-import 'package:flutter_app_template/src/core/constants/hive_config.dart';
+import 'package:phrasly_ai_tools/src/core/constants/hive_config.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 enum ConfigEnvironments { staging }

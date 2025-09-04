@@ -1,6 +1,6 @@
-import 'package:flutter_app_template/src/core/network/models/app_error.dart';
-import 'package:flutter_app_template/src/features/documents/data/models/history_item.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:phrasly_ai_tools/src/core/network/models/app_error.dart';
+import 'package:phrasly_ai_tools/src/features/documents/data/models/history_item.dart';
 
 part 'gen/history_state.freezed.dart';
 

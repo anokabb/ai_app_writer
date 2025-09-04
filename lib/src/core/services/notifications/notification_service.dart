@@ -2,9 +2,9 @@ import 'dart:developer';
 import 'dart:io';
 
 import 'package:firebase_messaging/firebase_messaging.dart';
-import 'package:flutter_app_template/src/core/services/logger/logger.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:phrasly_ai_tools/src/core/services/logger/logger.dart';
 
 final FirebaseMessaging fcm = FirebaseMessaging.instance;
 

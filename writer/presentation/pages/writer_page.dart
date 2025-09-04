@@ -1,12 +1,12 @@
 // import 'dart:developer';
 
 // import 'package:flutter/material.dart';
-// import 'package:flutter_app_template/src/core/components/layouts/buttons/app_button.dart';
-// import 'package:flutter_app_template/src/core/constants/env_config.dart';
-// import 'package:flutter_app_template/src/core/extensions/context_extension.dart';
-// import 'package:flutter_app_template/src/core/services/locator/locator.dart';
-// import 'package:flutter_app_template/src/features/documents/data/models/history_item.dart';
-// import 'package:flutter_app_template/src/features/documents/presentation/cubit/history_cubit.dart';
+// import 'package:phrasly_ai_tools/src/core/components/layouts/buttons/app_button.dart';
+// import 'package:phrasly_ai_tools/src/core/constants/env_config.dart';
+// import 'package:phrasly_ai_tools/src/core/extensions/context_extension.dart';
+// import 'package:phrasly_ai_tools/src/core/services/locator/locator.dart';
+// import 'package:phrasly_ai_tools/src/features/documents/data/models/history_item.dart';
+// import 'package:phrasly_ai_tools/src/features/documents/presentation/cubit/history_cubit.dart';
 // import 'package:flutter_bloc/flutter_bloc.dart';
 
 // import '../../data/api/gemini_writer_api.dart';

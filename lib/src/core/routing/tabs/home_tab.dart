@@ -1,5 +1,5 @@
 import 'package:flutter/cupertino.dart';
-import 'package:flutter_app_template/src/features/home/presentation/pages/home_page.dart';
+import 'package:phrasly_ai_tools/src/features/home/presentation/pages/home_page.dart';
 import 'package:go_router/go_router.dart';
 
 final homeTabBranch = StatefulShellBranch(

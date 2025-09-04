@@ -2,9 +2,9 @@ import 'dart:math' as math;
 
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_app_template/src/core/network/ai_api/models/text_analysis_model.dart';
-import 'package:flutter_app_template/src/core/services/theme/app_theme.dart';
-import 'package:flutter_app_template/src/core/utils/utils.dart';
+import 'package:phrasly_ai_tools/src/core/network/ai_api/models/text_analysis_model.dart';
+import 'package:phrasly_ai_tools/src/core/services/theme/app_theme.dart';
+import 'package:phrasly_ai_tools/src/core/utils/utils.dart';
 
 class PercentageBar extends StatefulWidget {
   final TextAnalysisResult result;

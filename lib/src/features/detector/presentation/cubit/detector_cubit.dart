@@ -1,9 +1,9 @@
-import 'package:flutter_app_template/src/core/network/ai_api/models/text_analysis_model.dart';
-import 'package:flutter_app_template/src/core/network/models/app_error.dart';
-import 'package:flutter_app_template/src/features/detector/data/repos/detector_repo.dart';
-import 'package:flutter_app_template/src/features/detector/presentation/pages/detector_page.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:phrasly_ai_tools/src/core/network/ai_api/models/text_analysis_model.dart';
+import 'package:phrasly_ai_tools/src/core/network/models/app_error.dart';
+import 'package:phrasly_ai_tools/src/features/detector/data/repos/detector_repo.dart';
+import 'package:phrasly_ai_tools/src/features/detector/presentation/pages/detector_page.dart';
 
 part 'detector_state.dart';
 part 'gen/detector_cubit.freezed.dart';

@@ -1,22 +1,22 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_app_template/src/core/components/layouts/buttons/gradient_button.dart';
-import 'package:flutter_app_template/src/core/components/pop_up/slide_up_pop_up.dart';
-import 'package:flutter_app_template/src/core/components/widgets/app_card.dart';
-import 'package:flutter_app_template/src/core/extensions/extensions.dart';
-import 'package:flutter_app_template/src/core/network/ai_api/models/text_analysis_model.dart';
-import 'package:flutter_app_template/src/core/services/theme/app_theme.dart';
-import 'package:flutter_app_template/src/features/documents/data/models/history_item.dart';
+import 'package:phrasly_ai_tools/src/core/components/layouts/buttons/gradient_button.dart';
+import 'package:phrasly_ai_tools/src/core/components/pop_up/slide_up_pop_up.dart';
+import 'package:phrasly_ai_tools/src/core/components/widgets/app_card.dart';
+import 'package:phrasly_ai_tools/src/core/extensions/extensions.dart';
+import 'package:phrasly_ai_tools/src/core/network/ai_api/models/text_analysis_model.dart';
+import 'package:phrasly_ai_tools/src/core/services/theme/app_theme.dart';
+import 'package:phrasly_ai_tools/src/features/documents/data/models/history_item.dart';
 
 class HistoryItemCard extends StatelessWidget {
   final HistoryItem item;
   final VoidCallback onTap;
-  final VoidCallback onDelete;
+  final VoidCallback? onDelete;
 
   const HistoryItemCard({
     super.key,
     required this.item,
     required this.onTap,
-    required this.onDelete,
+    this.onDelete,
   });
 
   Color _getTypeColor(HistoryItemType type) {
@@ -248,26 +248,27 @@ class HistoryItemCard extends StatelessWidget {
                     ],
                   ),
                 ),
-                PopupMenuButton<String>(
-                  onSelected: (value) {
-                    if (value == 'delete') {
-                      _showDeleteConfirmDialog(context);
-                    }
-                  },
-                  itemBuilder: (context) => [
-                    const PopupMenuItem(
-                      value: 'delete',
-                      child: Row(
-                        children: [
-                          Icon(Icons.delete, color: Colors.red, size: 16),
-                          SizedBox(width: 8),
-                          Text('Delete'),
-                        ],
+                if (onDelete != null)
+                  PopupMenuButton<String>(
+                    onSelected: (value) {
+                      if (value == 'delete') {
+                        _showDeleteConfirmDialog(context);
+                      }
+                    },
+                    itemBuilder: (context) => [
+                      const PopupMenuItem(
+                        value: 'delete',
+                        child: Row(
+                          children: [
+                            Icon(Icons.delete, color: Colors.red, size: 16),
+                            SizedBox(width: 8),
+                            Text('Delete'),
+                          ],
+                        ),
                       ),
-                    ),
-                  ],
-                  child: const Icon(Icons.more_vert, size: 20),
-                ),
+                    ],
+                    child: const Icon(Icons.more_vert, size: 20),
+                  ),
               ],
             ),
           ],
@@ -319,7 +320,7 @@ class HistoryItemCard extends StatelessWidget {
                 Expanded(
                   child: GradientButton(
                     onPressed: () {
-                      onDelete();
+                      onDelete?.call();
                       Navigator.of(dialogContext).pop();
                     },
                     label: 'Delete',

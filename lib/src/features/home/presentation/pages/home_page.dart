@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_app_template/src/core/routing/app_bottom_nav.dart';
-import 'package:flutter_app_template/src/features/home/presentation/widgets/ai_tools_section.dart';
-import 'package:flutter_app_template/src/features/home/presentation/widgets/recent_documents_section.dart';
-import 'package:flutter_app_template/src/features/home/presentation/widgets/stats_card.dart';
-import 'package:flutter_app_template/src/features/home/presentation/widgets/welcome_card.dart';
+import 'package:phrasly_ai_tools/src/core/routing/app_bottom_nav.dart';
+import 'package:phrasly_ai_tools/src/features/home/presentation/widgets/ai_tools_section.dart';
+import 'package:phrasly_ai_tools/src/features/home/presentation/widgets/recent_documents_section.dart';
+import 'package:phrasly_ai_tools/src/features/home/presentation/widgets/stats_card.dart';
+import 'package:phrasly_ai_tools/src/features/home/presentation/widgets/welcome_card.dart';
 
 class HomePage extends StatefulWidget {
   static const String routeName = '/home';

@@ -1,12 +1,22 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_app_template/src/core/extensions/context_extension.dart';
-import 'package:flutter_app_template/src/core/services/theme/app_theme.dart';
+import 'package:phrasly_ai_tools/src/core/extensions/context_extension.dart';
+import 'package:phrasly_ai_tools/src/core/services/theme/app_theme.dart';
 
 class MainTextField extends StatefulWidget {
   final TextEditingController controller;
   final double? height;
   final Color? primaryColor;
-  const MainTextField({super.key, required this.controller, this.height, this.primaryColor});
+  final bool isMultiline;
+  final String? hintText;
+  final bool obscureText;
+  const MainTextField(
+      {super.key,
+      required this.controller,
+      this.height,
+      this.primaryColor,
+      this.isMultiline = true,
+      this.hintText,
+      this.obscureText = false});
 
   @override
   State<MainTextField> createState() => _MainTextFieldState();
@@ -24,7 +34,7 @@ class _MainTextFieldState extends State<MainTextField> {
         ),
       ),
       child: Container(
-        height: widget.height ?? context.height * 0.4,
+        height: !widget.isMultiline ? null : (widget.height ?? context.height * 0.4),
         decoration: BoxDecoration(
           color: context.appColors.secondaryBackground,
           borderRadius: BorderRadius.circular(8),
@@ -40,8 +50,10 @@ class _MainTextFieldState extends State<MainTextField> {
           children: [
             TextFormField(
               controller: widget.controller,
-              maxLines: null,
+              maxLines: widget.isMultiline ? null : 1,
+              expands: widget.isMultiline,
               textAlignVertical: TextAlignVertical.top,
+              obscureText: widget.obscureText,
               validator: (value) {
                 if (value?.trim().isEmpty ?? true) {
                   return '*';
@@ -49,12 +61,11 @@ class _MainTextFieldState extends State<MainTextField> {
                 return null;
               },
               textAlign: TextAlign.left,
-              expands: true,
               style: context.appTextTheme.body3.copyWith(
                 color: context.appColors.textColor,
               ),
               decoration: InputDecoration(
-                hintText: 'Enter your text here...',
+                hintText: widget.hintText ?? 'Enter your text here...',
                 hintStyle: context.appTextTheme.body3.copyWith(
                   color: context.appColors.lightTextColor,
                 ),

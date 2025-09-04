@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_app_template/src/core/services/locator/locator.dart';
-import 'package:flutter_app_template/src/core/services/theme/app_color_extention.dart';
-import 'package:flutter_app_template/src/core/services/theme/app_colors.dart';
-import 'package:flutter_app_template/src/core/services/theme/app_text_theme_extension.dart';
-import 'package:flutter_app_template/src/core/services/theme/app_typography.dart';
-import 'package:flutter_app_template/src/features/languages/presentation/cubit/language_cubit.dart';
-import 'package:flutter_app_template/src/features/languages/presentation/pages/language_page.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:phrasly_ai_tools/src/core/services/locator/locator.dart';
+import 'package:phrasly_ai_tools/src/core/services/theme/app_color_extention.dart';
+import 'package:phrasly_ai_tools/src/core/services/theme/app_colors.dart';
+import 'package:phrasly_ai_tools/src/core/services/theme/app_text_theme_extension.dart';
+import 'package:phrasly_ai_tools/src/core/services/theme/app_typography.dart';
+import 'package:phrasly_ai_tools/src/features/languages/presentation/cubit/language_cubit.dart';
+import 'package:phrasly_ai_tools/src/features/languages/presentation/pages/language_page.dart';
 
 class AppTheme {
   static String? getFontFamily(String lang) {

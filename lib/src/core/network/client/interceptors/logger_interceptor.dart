@@ -1,5 +1,5 @@
 import 'package:dio/dio.dart';
-import 'package:flutter_app_template/src/core/services/logger/logger.dart';
+import 'package:phrasly_ai_tools/src/core/services/logger/logger.dart';
 
 class LoggerInterceptor extends Interceptor {
   final _logger = getLogger('LoggerInterceptor');

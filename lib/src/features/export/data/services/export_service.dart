@@ -1,12 +1,12 @@
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:flutter_app_template/src/core/extensions/context_extension.dart';
-import 'package:flutter_app_template/src/core/utils/utils.dart';
-import 'package:flutter_app_template/src/features/export/data/models/export_options.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
+import 'package:phrasly_ai_tools/src/core/extensions/context_extension.dart';
+import 'package:phrasly_ai_tools/src/core/utils/utils.dart';
+import 'package:phrasly_ai_tools/src/features/export/data/models/export_options.dart';
 import 'package:printing/printing.dart';
 import 'package:share_plus/share_plus.dart';
 

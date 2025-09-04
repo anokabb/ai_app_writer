@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_app_template/src/core/components/layouts/default_layout.dart';
-import 'package:flutter_app_template/src/core/extensions/context_extension.dart';
-import 'package:flutter_app_template/src/core/extensions/extensions.dart';
-import 'package:flutter_app_template/src/core/services/locator/locator.dart';
-import 'package:flutter_app_template/src/core/services/theme/app_theme.dart';
-import 'package:flutter_app_template/src/features/theme/presentation/cubit/theme_cubit.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:phrasly_ai_tools/src/core/components/layouts/default_layout.dart';
+import 'package:phrasly_ai_tools/src/core/extensions/context_extension.dart';
+import 'package:phrasly_ai_tools/src/core/extensions/extensions.dart';
+import 'package:phrasly_ai_tools/src/core/services/locator/locator.dart';
+import 'package:phrasly_ai_tools/src/core/services/theme/app_theme.dart';
+import 'package:phrasly_ai_tools/src/features/theme/presentation/cubit/theme_cubit.dart';
 
 class ThemePage extends StatefulWidget {
   static const String routeName = '/theme';

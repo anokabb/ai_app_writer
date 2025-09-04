@@ -6,9 +6,9 @@ import 'dart:io';
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_app_template/src/core/components/layouts/buttons/app_button.dart';
-import 'package:flutter_app_template/src/core/components/pop_up/app_pop_up.dart';
-import 'package:flutter_app_template/src/core/routing/app_router.dart';
+import 'package:phrasly_ai_tools/src/core/components/layouts/buttons/app_button.dart';
+import 'package:phrasly_ai_tools/src/core/components/pop_up/app_pop_up.dart';
+import 'package:phrasly_ai_tools/src/core/routing/app_router.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 Future<bool> checkPermission(Permission permission, {BuildContext? cnt}) async {

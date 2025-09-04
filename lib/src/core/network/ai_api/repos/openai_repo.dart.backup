@@ -1,15 +1,15 @@
 import 'dart:convert';
 import 'dart:developer';
 
-import 'package:flutter_app_template/src/core/network/ai_api/ai_api.dart';
-import 'package:flutter_app_template/src/core/network/ai_api/models/text_analysis_model.dart';
-import 'package:flutter_app_template/src/core/network/models/app_error.dart';
-import 'package:flutter_app_template/src/core/services/logger/logger.dart';
-import 'package:flutter_app_template/src/features/detector/presentation/pages/detector_page.dart';
+import 'package:phrasly_ai_tools/src/core/network/ai_api/ai_api.dart';
+import 'package:phrasly_ai_tools/src/core/network/ai_api/models/text_analysis_model.dart';
+import 'package:phrasly_ai_tools/src/core/network/models/app_error.dart';
+import 'package:phrasly_ai_tools/src/core/services/logger/logger.dart';
+import 'package:phrasly_ai_tools/src/features/detector/presentation/pages/detector_page.dart';
 import 'package:fpdart/fpdart.dart';
 
 import 'ai_repo.dart';
-import 'package:flutter_app_template/src/core/constants/env_config.dart';
+import 'package:phrasly_ai_tools/src/core/constants/env_config.dart';
 
 class OpenAIRepo implements AiRepo {
   final String apiKey;

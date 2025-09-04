@@ -1,20 +1,20 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_app_template/src/core/components/layouts/buttons/gradient_button.dart';
-import 'package:flutter_app_template/src/core/components/widgets/app_card.dart';
-import 'package:flutter_app_template/src/core/extensions/context_extension.dart';
-import 'package:flutter_app_template/src/core/gen/assets.gen.dart';
-import 'package:flutter_app_template/src/core/network/ai_api/models/text_analysis_model.dart';
-import 'package:flutter_app_template/src/core/services/theme/app_colors.dart';
-import 'package:flutter_app_template/src/core/services/theme/app_theme.dart';
-import 'package:flutter_app_template/src/core/utils/utils.dart';
-import 'package:flutter_app_template/src/features/detector/presentation/cubit/detector_cubit.dart';
-import 'package:flutter_app_template/src/features/detector/presentation/widgets/highlighted_text.dart';
-import 'package:flutter_app_template/src/features/detector/presentation/widgets/percentage_bar.dart';
-import 'package:flutter_app_template/src/features/humanizer/presentation/pages/humanizer_page.dart';
-import 'package:flutter_app_template/src/features/settings/presentation/cubit/settings_cubit.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
+import 'package:phrasly_ai_tools/src/core/components/layouts/buttons/gradient_button.dart';
+import 'package:phrasly_ai_tools/src/core/components/widgets/app_card.dart';
+import 'package:phrasly_ai_tools/src/core/extensions/context_extension.dart';
+import 'package:phrasly_ai_tools/src/core/gen/assets.gen.dart';
+import 'package:phrasly_ai_tools/src/core/network/ai_api/models/text_analysis_model.dart';
+import 'package:phrasly_ai_tools/src/core/services/theme/app_colors.dart';
+import 'package:phrasly_ai_tools/src/core/services/theme/app_theme.dart';
+import 'package:phrasly_ai_tools/src/core/utils/utils.dart';
+import 'package:phrasly_ai_tools/src/features/detector/presentation/cubit/detector_cubit.dart';
+import 'package:phrasly_ai_tools/src/features/detector/presentation/widgets/highlighted_text.dart';
+import 'package:phrasly_ai_tools/src/features/detector/presentation/widgets/percentage_bar.dart';
+import 'package:phrasly_ai_tools/src/features/humanizer/presentation/pages/humanizer_page.dart';
+import 'package:phrasly_ai_tools/src/features/settings/presentation/cubit/settings_cubit.dart';
 
 class DetectorResultWidget extends StatefulWidget {
   final TextEditingController? textController;

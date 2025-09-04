@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_app_template/src/core/services/theme/app_theme.dart';
-import 'package:flutter_app_template/src/core/utils/utils.dart';
-import 'package:flutter_app_template/src/features/profile/presentation/widgets/profile_tab.dart';
-import 'package:flutter_app_template/src/features/profile/presentation/widgets/settings_tab.dart';
-import 'package:flutter_app_template/src/features/profile/presentation/widgets/user_info.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:phrasly_ai_tools/src/core/services/theme/app_theme.dart';
+import 'package:phrasly_ai_tools/src/core/utils/utils.dart';
+import 'package:phrasly_ai_tools/src/features/profile/presentation/widgets/profile_tab.dart';
+import 'package:phrasly_ai_tools/src/features/profile/presentation/widgets/settings_tab.dart';
+import 'package:phrasly_ai_tools/src/features/profile/presentation/widgets/user_info.dart';
 
 class ProfilePage extends StatefulWidget {
   static const String routeName = '/profile';
@@ -20,31 +20,35 @@ class _ProfilePageState extends State<ProfilePage> with SingleTickerProviderStat
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: SafeArea(
-        bottom: false,
-        child: Column(
-          children: [
-            Padding(
-              padding: const EdgeInsets.fromLTRB(16, 16, 16, 0),
-              child: Column(
-                children: <Widget>[
-                  UserInfo(),
-                  SizedBox(height: 20),
-                  TableSection(tabController: _tabController),
-                ],
+    return GestureDetector(
+      onTap: () => FocusScope.of(context).unfocus(),
+      behavior: HitTestBehavior.opaque,
+      child: Scaffold(
+        body: SafeArea(
+          bottom: false,
+          child: Column(
+            children: [
+              Padding(
+                padding: const EdgeInsets.fromLTRB(16, 16, 16, 0),
+                child: Column(
+                  children: <Widget>[
+                    UserInfo(),
+                    SizedBox(height: 20),
+                    TableSection(tabController: _tabController),
+                  ],
+                ),
               ),
-            ),
-            Expanded(
-              child: TabBarView(
-                controller: _tabController,
-                children: [
-                  ProfileTab(),
-                  SettingsTab(),
-                ],
+              Expanded(
+                child: TabBarView(
+                  controller: _tabController,
+                  children: [
+                    ProfileTab(),
+                    SettingsTab(),
+                  ],
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

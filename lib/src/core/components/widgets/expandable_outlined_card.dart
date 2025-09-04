@@ -1,9 +1,9 @@
 // ignore_for_file: sort_child_properties_last
 
 import 'package:flutter/material.dart';
-import 'package:flutter_app_template/src/core/components/layouts/buttons/outlined_icon.dart';
-import 'package:flutter_app_template/src/core/extensions/extensions.dart';
-import 'package:flutter_app_template/src/core/services/theme/app_theme.dart';
+import 'package:phrasly_ai_tools/src/core/components/layouts/buttons/outlined_icon.dart';
+import 'package:phrasly_ai_tools/src/core/extensions/extensions.dart';
+import 'package:phrasly_ai_tools/src/core/services/theme/app_theme.dart';
 
 class ExpandableOutlinedCard extends StatefulWidget {
   final Widget title;

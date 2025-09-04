@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_app_template/src/core/constants/hive_config.dart';
-import 'package:flutter_app_template/src/features/languages/presentation/pages/language_page.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:phrasly_ai_tools/src/core/constants/hive_config.dart';
+import 'package:phrasly_ai_tools/src/features/languages/presentation/pages/language_page.dart';
 
 const DEFAULT_LANGUAGE = AppLanguageEnum.en;
 

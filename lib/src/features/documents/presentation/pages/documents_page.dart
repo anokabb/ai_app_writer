@@ -1,18 +1,18 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_app_template/src/core/components/layouts/buttons/app_icon_button.dart';
-import 'package:flutter_app_template/src/core/components/layouts/buttons/gradient_button.dart';
-import 'package:flutter_app_template/src/core/components/pop_up/slide_up_pop_up.dart';
-import 'package:flutter_app_template/src/core/routing/app_bottom_nav.dart';
-import 'package:flutter_app_template/src/core/services/locator/locator.dart';
-import 'package:flutter_app_template/src/core/services/theme/app_theme.dart';
-import 'package:flutter_app_template/src/features/documents/data/models/history_item.dart';
-import 'package:flutter_app_template/src/features/documents/presentation/cubit/history_cubit.dart';
-import 'package:flutter_app_template/src/features/documents/presentation/cubit/history_state.dart';
-import 'package:flutter_app_template/src/features/documents/presentation/widgets/history_item_card.dart';
-import 'package:flutter_app_template/src/features/generator/presentation/pages/generator_detail_page.dart';
-import 'package:flutter_app_template/src/features/humanizer/presentation/pages/humanizer_detail_page.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:phrasly_ai_tools/src/core/components/layouts/buttons/app_icon_button.dart';
+import 'package:phrasly_ai_tools/src/core/components/layouts/buttons/gradient_button.dart';
+import 'package:phrasly_ai_tools/src/core/components/pop_up/slide_up_pop_up.dart';
+import 'package:phrasly_ai_tools/src/core/routing/app_bottom_nav.dart';
+import 'package:phrasly_ai_tools/src/core/services/locator/locator.dart';
+import 'package:phrasly_ai_tools/src/core/services/theme/app_theme.dart';
+import 'package:phrasly_ai_tools/src/features/documents/data/models/history_item.dart';
+import 'package:phrasly_ai_tools/src/features/documents/presentation/cubit/history_cubit.dart';
+import 'package:phrasly_ai_tools/src/features/documents/presentation/cubit/history_state.dart';
+import 'package:phrasly_ai_tools/src/features/documents/presentation/widgets/history_item_card.dart';
+import 'package:phrasly_ai_tools/src/features/generator/presentation/pages/generator_detail_page.dart';
+import 'package:phrasly_ai_tools/src/features/humanizer/presentation/pages/humanizer_detail_page.dart';
 
 class DocumentsPage extends StatefulWidget {
   static const String routeName = '/documents';
@@ -140,7 +140,7 @@ class _DocumentsPageState extends State<DocumentsPage> {
                 padding: const EdgeInsets.only(bottom: kBottomNavigationBarHeight),
                 child: Center(
                   child: Text(
-                    'No documents yet.\nGenerate content or humanize text with AI.',
+                    'No documents yet,\nGenerate content or humanize text with AI.',
                     textAlign: TextAlign.center,
                     style: context.appTextTheme.body3Light,
                   ),

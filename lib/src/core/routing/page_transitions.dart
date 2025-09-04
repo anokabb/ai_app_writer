@@ -21,4 +21,18 @@ class PageTransitions {
       },
     );
   }
+
+  static CustomTransitionPage fadeTransition({
+    required Widget child,
+  }) {
+    return CustomTransitionPage(
+      child: child,
+      transitionsBuilder: (context, animation, secondaryAnimation, child) {
+        return FadeTransition(
+          opacity: animation,
+          child: child,
+        );
+      },
+    );
+  }
 }

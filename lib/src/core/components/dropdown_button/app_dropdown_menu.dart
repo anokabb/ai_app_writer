@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_app_template/src/core/extensions/extensions.dart';
-import 'package:flutter_app_template/src/core/services/theme/app_colors.dart';
-import 'package:flutter_app_template/src/core/services/theme/app_theme.dart';
+import 'package:phrasly_ai_tools/src/core/extensions/extensions.dart';
+import 'package:phrasly_ai_tools/src/core/services/theme/app_colors.dart';
+import 'package:phrasly_ai_tools/src/core/services/theme/app_theme.dart';
 
 import 'dropdown_model.dart';
 

@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_app_template/src/core/components/widgets/rtl_wraper.dart';
-import 'package:flutter_app_template/src/core/extensions/context_extension.dart';
-import 'package:flutter_app_template/src/core/services/theme/app_colors.dart';
-import 'package:flutter_app_template/src/core/services/theme/app_theme.dart';
+import 'package:phrasly_ai_tools/src/core/extensions/context_extension.dart';
+import 'package:phrasly_ai_tools/src/core/services/theme/app_theme.dart';
 import 'package:validators/validators.dart' as validator;
 
 enum InputType { email, password, phone, number, text, postalCode, price }
@@ -180,29 +178,26 @@ class _AppTextFormFieldState extends State<AppTextFormField> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        if (widget.label != null)
-          Padding(
-            padding: const EdgeInsets.only(bottom: 4.0),
-            child: RTLWrapper(
-              rtlChild: Align(
-                alignment: Alignment.centerRight,
-                child: Text(
-                  widget.label!,
-                  style: context.theme.appTextTheme.subtitle2,
-                ),
-              ),
-              child: Align(
-                alignment: Alignment.centerLeft,
-                child: Text(
-                  widget.label!,
-                  style: context.theme.appTextTheme.subtitle2,
-                ),
-              ),
+    return Theme(
+      data: context.theme.copyWith(
+        textSelectionTheme: TextSelectionThemeData(
+          cursorColor: context.theme.primaryColor.withOpacity(0.9),
+        ),
+      ),
+      child: Container(
+        height: !widget.isMultiline ? null : (widget.height ?? context.height * 0.4),
+        decoration: BoxDecoration(
+          color: context.appColors.secondaryBackground,
+          borderRadius: BorderRadius.circular(8),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.grey.withOpacity(0.2),
+              blurRadius: 4,
+              offset: const Offset(0, 0),
             ),
-          ),
-        TextFormField(
+          ],
+        ),
+        child: TextFormField(
           readOnly: widget.readOnly,
           focusNode: widget.focusNode,
           controller: widget.initialValue != null ? persistController : widget.controller,
@@ -216,6 +211,9 @@ class _AppTextFormFieldState extends State<AppTextFormField> {
           obscureText: widget.inputType == InputType.password && _showPassword == false,
           obscuringCharacter: '*',
           onSaved: widget.onSaved,
+          style: context.appTextTheme.body3.copyWith(
+            color: context.appColors.textColor,
+          ),
           onChanged: widget.onChanged,
           maxLines: widget.maxLines ?? (widget.isMultiline ? 3 : 1),
           autovalidateMode: _autoValidate,
@@ -231,20 +229,39 @@ class _AppTextFormFieldState extends State<AppTextFormField> {
               },
           inputFormatters: widget.isDigitsOnly ? [FilteringTextInputFormatter.digitsOnly] : null,
           decoration: InputDecoration(
-            hintText: widget.hintText,
-            hintStyle: TextStyle(
-              color: context.theme.appColors.textColor.withOpacity(0.5),
-              fontStyle: FontStyle.italic,
+            contentPadding: const EdgeInsets.all(10),
+            errorStyle: TextStyle(fontSize: 0),
+            focusedErrorBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(8),
+              borderSide: BorderSide(
+                color: context.theme.primaryColor.withOpacity(0.9),
+                width: 0.6,
+              ),
             ),
-            border: widget.border ?? context.theme.inputDecorationTheme.border,
-            enabledBorder: widget.border ?? context.theme.inputDecorationTheme.border,
-            focusedBorder: widget.border ?? context.theme.inputDecorationTheme.focusedBorder,
-            errorBorder: widget.border?.copyWith(borderSide: const BorderSide(color: AppColors.red)) ??
-                context.theme.inputDecorationTheme.border,
-            errorStyle: TextStyle(fontSize: widget.showErrorMessage ? null : 0),
-            fillColor: widget.backgroundColor,
-            filled: widget.backgroundColor != null,
-            contentPadding: widget.contentPadding ?? const EdgeInsets.all(16.0),
+            border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(8),
+              borderSide: BorderSide.none,
+            ),
+            enabledBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(8),
+              borderSide: BorderSide.none,
+            ),
+            focusedBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(8),
+              borderSide: BorderSide(
+                color: context.theme.primaryColor.withOpacity(0.9),
+                width: 0.6,
+              ),
+            ),
+            filled: true,
+            fillColor: Colors.transparent,
+
+            //
+            hintText: widget.hintText,
+            hintStyle: context.appTextTheme.body3.copyWith(
+              color: context.appColors.lightTextColor,
+            ),
+
             // constraints: widget.isMultiline ? null : BoxConstraints(maxHeight: widget.height ?? 50),
             // labelText: widget.label,
             // labelStyle: const TextStyle(
@@ -275,7 +292,7 @@ class _AppTextFormFieldState extends State<AppTextFormField> {
                 : null,
           ),
         ),
-      ],
+      ),
     );
   }
 }

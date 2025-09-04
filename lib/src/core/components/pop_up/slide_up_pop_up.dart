@@ -1,7 +1,7 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_app_template/src/core/routing/app_router.dart';
+import 'package:phrasly_ai_tools/src/core/routing/app_router.dart';
 
 class SlideUpPopUp extends StatelessWidget {
   final Widget child;

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
-import 'package:flutter_app_template/src/core/constants/hive_config.dart';
-import 'package:flutter_app_template/src/core/services/locator/locator.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:phrasly_ai_tools/src/core/constants/hive_config.dart';
+import 'package:phrasly_ai_tools/src/core/services/locator/locator.dart';
 
 part 'theme_state.dart';
 

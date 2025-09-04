@@ -1,10 +1,10 @@
 // import 'package:flutter/material.dart';
 // import 'package:flutter/services.dart';
-// import 'package:flutter_app_template/src/core/components/layouts/buttons/app_button.dart';
-// import 'package:flutter_app_template/src/core/components/pop_up/slide_up_pop_up.dart';
-// import 'package:flutter_app_template/src/core/extensions/context_extension.dart';
-// import 'package:flutter_app_template/src/features/export/presentation/widgets/export_modal.dart';
-// import 'package:flutter_app_template/src/features/writer/data/models/text_analysis_model.dart';
+// import 'package:phrasly_ai_tools/src/core/components/layouts/buttons/app_button.dart';
+// import 'package:phrasly_ai_tools/src/core/components/pop_up/slide_up_pop_up.dart';
+// import 'package:phrasly_ai_tools/src/core/extensions/context_extension.dart';
+// import 'package:phrasly_ai_tools/src/features/export/presentation/widgets/export_modal.dart';
+// import 'package:phrasly_ai_tools/src/features/writer/data/models/text_analysis_model.dart';
 
 // class HumanizationResultModal {
 //   static void show(

@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_app_template/l10n/app_localizations.dart';
-import 'package:flutter_app_template/src/core/routing/app_router.dart';
-import 'package:flutter_app_template/src/core/services/locator/locator.dart';
-import 'package:flutter_app_template/src/core/services/theme/app_colors.dart';
-import 'package:flutter_app_template/src/features/theme/presentation/cubit/theme_cubit.dart';
+import 'package:phrasly_ai_tools/l10n/app_localizations.dart';
+import 'package:phrasly_ai_tools/src/core/routing/app_router.dart';
+import 'package:phrasly_ai_tools/src/core/services/locator/locator.dart';
+import 'package:phrasly_ai_tools/src/core/services/theme/app_colors.dart';
+import 'package:phrasly_ai_tools/src/features/theme/presentation/cubit/theme_cubit.dart';
 import 'package:top_snackbar_flutter/custom_snack_bar.dart';
 import 'package:top_snackbar_flutter/top_snack_bar.dart';
 
@@ -51,9 +51,7 @@ void showTopError(String message) {
 
 void showTopAlert(String message, {bool isError = false}) {
   OverlayState? overlayState = rootNavigatorKey.currentState?.overlay;
-  if (overlayState == null) {
-    return;
-  }
+  if (overlayState == null) return;
   showTopSnackBar(
     overlayState,
     isError

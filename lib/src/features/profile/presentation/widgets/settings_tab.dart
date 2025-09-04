@@ -1,9 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_app_template/src/core/routing/app_bottom_nav.dart';
-import 'package:flutter_app_template/src/core/services/theme/app_colors.dart';
-import 'package:flutter_app_template/src/core/services/theme/app_theme.dart';
-import 'package:flutter_app_template/src/core/utils/utils.dart';
-import 'package:flutter_app_template/src/features/profile/presentation/widgets/settings_card_section.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
+import 'package:phrasly_ai_tools/src/core/routing/app_bottom_nav.dart';
+import 'package:phrasly_ai_tools/src/core/services/locator/locator.dart';
+import 'package:phrasly_ai_tools/src/core/services/theme/app_colors.dart';
+import 'package:phrasly_ai_tools/src/core/services/theme/app_theme.dart';
+import 'package:phrasly_ai_tools/src/core/utils/utils.dart';
+import 'package:phrasly_ai_tools/src/features/auth/presentation/cubit/auth_cubit.dart';
+import 'package:phrasly_ai_tools/src/features/home/presentation/pages/home_page.dart';
+import 'package:phrasly_ai_tools/src/features/profile/presentation/widgets/settings_card_section.dart';
 
 class SettingsTab extends StatelessWidget {
   const SettingsTab({super.key});
@@ -198,6 +203,59 @@ class SettingsTab extends StatelessWidget {
                     ],
                   ),
                 ),
+              ),
+              BlocBuilder<AuthCubit, AuthState>(
+                builder: (context, state) {
+                  if (state is! AuthStateAuthenticated) {
+                    return const SizedBox.shrink();
+                  }
+                  return Padding(
+                    padding: const EdgeInsets.only(top: 12),
+                    child: GestureDetector(
+                      onTap: () async {
+                        await locator<AuthCubit>().logout();
+                        context.go(HomePage.routeName);
+                      },
+                      child: Container(
+                        padding: const EdgeInsets.all(12),
+                        decoration: BoxDecoration(
+                          color: AppColors.red.withOpacity(0.1),
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        child: Row(
+                          children: [
+                            Icon(
+                              Icons.logout_outlined,
+                              color: AppColors.red,
+                              size: 20,
+                            ),
+                            const SizedBox(width: 16),
+                            Expanded(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    'Logout',
+                                    style: context.appTextTheme.body3Light.copyWith(
+                                      color: AppColors.red,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                  Text('Logout from your account', style: context.appTextTheme.body3Light),
+                                ],
+                              ),
+                            ),
+                            Icon(
+                              Icons.arrow_forward_ios_rounded,
+                              size: 13,
+                              color: AppColors.red,
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  );
+                },
               ),
             ],
           ),

@@ -1,6 +1,6 @@
-import 'package:flutter_app_template/src/core/constants/hive_config.dart';
-import 'package:flutter_app_template/src/features/settings/data/models/settings_model.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:phrasly_ai_tools/src/core/constants/hive_config.dart';
+import 'package:phrasly_ai_tools/src/features/settings/data/models/settings_model.dart';
 
 part 'settings_state.dart';
 
@@ -12,7 +12,7 @@ class SettingsCubit extends Cubit<SettingsState> {
   Future<void> loadSettings() async {
     try {
       // Load settings model from Hive
-      final settingsJson = persistsData.get('settings');
+      final settingsJson = cacheBox.get('settings');
 
       SettingsModel settings;
       if (settingsJson != null) {
@@ -44,7 +44,7 @@ class SettingsCubit extends Cubit<SettingsState> {
 
   Future<void> saveSettings(SettingsModel settings) async {
     try {
-      await persistsData.put('settings', settings.toJson());
+      await cacheBox.put('settings', settings.toJson());
       emit(SettingsState(settings: settings));
     } catch (e) {
       emit(SettingsState(settings: SettingsModel()));

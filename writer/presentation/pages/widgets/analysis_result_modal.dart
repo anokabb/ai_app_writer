@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_app_template/src/core/components/pop_up/slide_up_pop_up.dart';
-import 'package:flutter_app_template/src/core/services/theme/app_theme.dart';
+import 'package:phrasly_ai_tools/src/core/components/pop_up/slide_up_pop_up.dart';
+import 'package:phrasly_ai_tools/src/core/services/theme/app_theme.dart';
 
 import '../../../data/models/text_analysis_model.dart';
 

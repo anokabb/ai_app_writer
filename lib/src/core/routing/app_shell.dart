@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_app_template/src/core/gen/assets.gen.dart';
-import 'package:flutter_app_template/src/core/routing/app_bottom_nav.dart';
-import 'package:flutter_app_template/src/core/services/theme/app_theme.dart';
+import 'package:phrasly_ai_tools/src/core/gen/assets.gen.dart';
+import 'package:phrasly_ai_tools/src/core/routing/app_bottom_nav.dart';
+import 'package:phrasly_ai_tools/src/core/services/theme/app_theme.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
 

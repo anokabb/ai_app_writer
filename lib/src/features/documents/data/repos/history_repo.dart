@@ -1,8 +1,8 @@
 import 'dart:convert';
 
-import 'package:flutter_app_template/src/core/constants/hive_config.dart';
-import 'package:flutter_app_template/src/core/services/logger/logger.dart';
-import 'package:flutter_app_template/src/features/documents/data/models/history_item.dart';
+import 'package:phrasly_ai_tools/src/core/constants/hive_config.dart';
+import 'package:phrasly_ai_tools/src/core/services/logger/logger.dart';
+import 'package:phrasly_ai_tools/src/features/documents/data/models/history_item.dart';
 
 class HistoryRepo {
   static const String _historyKey = 'humanization_history';
@@ -12,7 +12,7 @@ class HistoryRepo {
   Future<List<HistoryItem>> getHistory() async {
     _logger.d('Getting history');
     try {
-      final historyData = persistsData.get(_historyKey, defaultValue: <String>[]) as List;
+      final historyData = cacheBox.get(_historyKey, defaultValue: <String>[]) as List;
       _logger.d('History data: $historyData');
 
       final history = historyData
@@ -54,7 +54,7 @@ class HistoryRepo {
       // Convert to JSON strings
       final historyJsonList = currentHistory.map((item) => jsonEncode(item.toJson())).toList();
 
-      await persistsData.put(_historyKey, historyJsonList);
+      await cacheBox.put(_historyKey, historyJsonList);
       _logger.d('History item added: $item');
     } catch (e) {
       // Silently fail to avoid breaking the main flow
@@ -70,7 +70,7 @@ class HistoryRepo {
       // Convert to JSON strings
       final historyJsonList = currentHistory.map((item) => jsonEncode(item.toJson())).toList();
 
-      await persistsData.put(_historyKey, historyJsonList);
+      await cacheBox.put(_historyKey, historyJsonList);
     } catch (e) {
       _logger.e('Error deleting history item: $e');
     }
@@ -78,7 +78,7 @@ class HistoryRepo {
 
   Future<void> clearHistory() async {
     try {
-      await persistsData.delete(_historyKey);
+      await cacheBox.delete(_historyKey);
     } catch (e) {
       _logger.e('Error clearing history: $e');
     }

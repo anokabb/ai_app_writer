@@ -1,6 +1,6 @@
 import 'package:flutter/widgets.dart';
-import 'package:flutter_app_template/src/core/routing/app_router.dart';
-import 'package:flutter_app_template/src/features/dev/presentation/views/dev_mode_view.dart';
+import 'package:phrasly_ai_tools/src/core/routing/app_router.dart';
+import 'package:phrasly_ai_tools/src/features/dev/presentation/views/dev_mode_view.dart';
 import 'package:go_router/go_router.dart';
 import 'package:logger/logger.dart';
 

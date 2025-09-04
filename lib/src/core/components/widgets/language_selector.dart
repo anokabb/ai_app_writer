@@ -1,13 +1,14 @@
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_app_template/src/core/components/layouts/buttons/app_cuppertino_button.dart';
-import 'package:flutter_app_template/src/core/components/layouts/buttons/gradient_button.dart';
-import 'package:flutter_app_template/src/core/components/pop_up/slide_up_pop_up.dart';
-import 'package:flutter_app_template/src/core/components/widgets/app_card.dart';
-import 'package:flutter_app_template/src/core/gen/assets.gen.dart';
-import 'package:flutter_app_template/src/core/services/theme/app_theme.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:phrasly_ai_tools/src/core/components/layouts/buttons/app_cuppertino_button.dart';
+import 'package:phrasly_ai_tools/src/core/components/layouts/buttons/gradient_button.dart';
+import 'package:phrasly_ai_tools/src/core/components/pop_up/slide_up_pop_up.dart';
+import 'package:phrasly_ai_tools/src/core/components/widgets/app_card.dart';
+import 'package:phrasly_ai_tools/src/core/gen/assets.gen.dart';
+import 'package:phrasly_ai_tools/src/core/services/theme/app_theme.dart';
+import 'package:phrasly_ai_tools/src/features/generator/presentation/pages/generator_page.dart';
 
 class LanguageModel {
   final String name;
@@ -89,6 +90,19 @@ class LanguageSelector extends StatelessWidget {
     if (result != null) {
       onSelected(languages.firstWhereOrNull((language) => language.name == result));
     }
+  }
+
+  static Future<LanguageModel?> pickLanguage(BuildContext parentContext, LanguageModel selectedLang) async {
+    return await SlideUpPopUp.show<LanguageModel>(
+      context: parentContext,
+      child: _LanguageSelectorContent(
+        selectedLang: selectedLang.name,
+        gradientColors: GeneratorPage.colors,
+        onSelected: (language) {
+          Navigator.of(parentContext).pop(language);
+        },
+      ),
+    );
   }
 }
 

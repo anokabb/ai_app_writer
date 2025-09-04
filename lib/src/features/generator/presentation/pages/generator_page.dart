@@ -1,23 +1,25 @@
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_app_template/src/core/components/forms/main_text_field.dart';
-import 'package:flutter_app_template/src/core/components/layouts/buttons/app_cuppertino_button.dart';
-import 'package:flutter_app_template/src/core/components/layouts/buttons/gradient_button.dart';
-import 'package:flutter_app_template/src/core/components/layouts/gradient_layout.dart';
-import 'package:flutter_app_template/src/core/components/widgets/app_card.dart';
-import 'package:flutter_app_template/src/core/components/widgets/language_selector.dart';
-import 'package:flutter_app_template/src/core/extensions/context_extension.dart';
-import 'package:flutter_app_template/src/core/extensions/extensions.dart';
-import 'package:flutter_app_template/src/core/gen/assets.gen.dart';
-import 'package:flutter_app_template/src/core/services/locator/locator.dart';
-import 'package:flutter_app_template/src/core/services/theme/app_theme.dart';
-import 'package:flutter_app_template/src/core/utils/utils.dart';
-import 'package:flutter_app_template/src/features/generator/data/repos/generator_repo.dart';
-import 'package:flutter_app_template/src/features/generator/presentation/cubit/generator_cubit.dart';
-import 'package:flutter_app_template/src/features/generator/presentation/pages/generator_result_widget.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:phrasly_ai_tools/src/core/components/forms/main_text_field.dart';
+import 'package:phrasly_ai_tools/src/core/components/layouts/buttons/app_cuppertino_button.dart';
+import 'package:phrasly_ai_tools/src/core/components/layouts/buttons/gradient_button.dart';
+import 'package:phrasly_ai_tools/src/core/components/layouts/gradient_layout.dart';
+import 'package:phrasly_ai_tools/src/core/components/widgets/app_card.dart';
+import 'package:phrasly_ai_tools/src/core/components/widgets/language_selector.dart';
+import 'package:phrasly_ai_tools/src/core/constants/hive_config.dart';
+import 'package:phrasly_ai_tools/src/core/extensions/context_extension.dart';
+import 'package:phrasly_ai_tools/src/core/extensions/extensions.dart';
+import 'package:phrasly_ai_tools/src/core/gen/assets.gen.dart';
+import 'package:phrasly_ai_tools/src/core/services/locator/locator.dart';
+import 'package:phrasly_ai_tools/src/core/services/theme/app_theme.dart';
+import 'package:phrasly_ai_tools/src/core/utils/utils.dart';
+import 'package:phrasly_ai_tools/src/features/generator/data/repos/generator_repo.dart';
+import 'package:phrasly_ai_tools/src/features/generator/presentation/cubit/generator_cubit.dart';
+import 'package:phrasly_ai_tools/src/features/generator/presentation/pages/generator_result_widget.dart';
 
 enum TypeOfWriting { paper, letter, email, story, blog, discussion_board }
 
@@ -70,7 +72,9 @@ class _GeneratorPageState extends State<GeneratorPage> {
 
   TypeOfWriting typeOfWriting = TypeOfWriting.paper;
   Tone tone = Tone.formal;
-  LanguageModel selectedLang = languages.first;
+  late LanguageModel selectedLang = languages.firstWhereOrNull(
+          (language) => language.name == settingsBox.get('preferredLanguage', defaultValue: 'English')) ??
+      languages.first;
 
   @override
   void dispose() {

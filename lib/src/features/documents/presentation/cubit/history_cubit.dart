@@ -1,15 +1,15 @@
 import 'dart:developer';
 
-import 'package:flutter_app_template/src/core/network/ai_api/models/text_analysis_model.dart';
-import 'package:flutter_app_template/src/core/network/ai_api/repos/ai_repo.dart';
-import 'package:flutter_app_template/src/core/network/models/app_error.dart';
-import 'package:flutter_app_template/src/core/utils/utils.dart';
-import 'package:flutter_app_template/src/features/detector/presentation/pages/detector_page.dart';
-import 'package:flutter_app_template/src/features/documents/data/models/history_item.dart';
-import 'package:flutter_app_template/src/features/documents/data/repos/history_repo.dart';
-import 'package:flutter_app_template/src/features/documents/presentation/cubit/history_state.dart';
-import 'package:flutter_app_template/src/features/generator/data/models/generator_model.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:phrasly_ai_tools/src/core/network/ai_api/models/text_analysis_model.dart';
+import 'package:phrasly_ai_tools/src/core/network/ai_api/repos/ai_repo.dart';
+import 'package:phrasly_ai_tools/src/core/network/models/app_error.dart';
+import 'package:phrasly_ai_tools/src/core/utils/utils.dart';
+import 'package:phrasly_ai_tools/src/features/detector/presentation/pages/detector_page.dart';
+import 'package:phrasly_ai_tools/src/features/documents/data/models/history_item.dart';
+import 'package:phrasly_ai_tools/src/features/documents/data/repos/history_repo.dart';
+import 'package:phrasly_ai_tools/src/features/documents/presentation/cubit/history_state.dart';
+import 'package:phrasly_ai_tools/src/features/generator/data/models/generator_model.dart';
 
 class HistoryCubit extends Cubit<HistoryState> {
   final HistoryRepo _historyRepo;

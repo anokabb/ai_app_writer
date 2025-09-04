@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_app_template/src/core/components/layouts/buttons/gradient_button.dart';
-import 'package:flutter_app_template/src/core/components/layouts/gradient_layout.dart';
-import 'package:flutter_app_template/src/core/components/widgets/app_card.dart';
-import 'package:flutter_app_template/src/core/components/widgets/markdown_text.dart';
-import 'package:flutter_app_template/src/core/gen/assets.gen.dart';
-import 'package:flutter_app_template/src/core/services/theme/app_theme.dart';
-import 'package:flutter_app_template/src/core/utils/utils.dart';
-import 'package:flutter_app_template/src/features/documents/data/models/history_item.dart';
-import 'package:flutter_app_template/src/features/export/presentation/widgets/export_modal.dart';
-import 'package:flutter_app_template/src/features/generator/data/models/generator_model.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:phrasly_ai_tools/src/core/components/layouts/buttons/gradient_button.dart';
+import 'package:phrasly_ai_tools/src/core/components/layouts/gradient_layout.dart';
+import 'package:phrasly_ai_tools/src/core/components/widgets/app_card.dart';
+import 'package:phrasly_ai_tools/src/core/components/widgets/markdown_text.dart';
+import 'package:phrasly_ai_tools/src/core/gen/assets.gen.dart';
+import 'package:phrasly_ai_tools/src/core/services/theme/app_theme.dart';
+import 'package:phrasly_ai_tools/src/core/utils/utils.dart';
+import 'package:phrasly_ai_tools/src/features/documents/data/models/history_item.dart';
+import 'package:phrasly_ai_tools/src/features/export/presentation/widgets/export_modal.dart';
+import 'package:phrasly_ai_tools/src/features/generator/data/models/generator_model.dart';
 
 class GeneratorDetailPage extends StatefulWidget {
   final String? text;

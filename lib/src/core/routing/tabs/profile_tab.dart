@@ -1,5 +1,5 @@
 import 'package:flutter/cupertino.dart';
-import 'package:flutter_app_template/src/features/profile/presentation/pages/profile_page.dart';
+import 'package:phrasly_ai_tools/src/features/profile/presentation/pages/profile_page.dart';
 import 'package:go_router/go_router.dart';
 
 final profileTabBranch = StatefulShellBranch(

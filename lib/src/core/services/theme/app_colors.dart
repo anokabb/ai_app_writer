@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_app_template/src/core/utils/utils.dart';
-import 'package:flutter_app_template/src/features/theme/presentation/cubit/theme_cubit.dart';
+import 'package:phrasly_ai_tools/src/core/utils/utils.dart';
+import 'package:phrasly_ai_tools/src/features/theme/presentation/cubit/theme_cubit.dart';
 
 abstract class AppColors {
   static const Color black = Color.fromRGBO(18, 18, 18, 1);

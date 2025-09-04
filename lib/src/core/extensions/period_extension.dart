@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_app_template/src/core/components/dropdown_button/dropdown_model.dart';
-import 'package:flutter_app_template/src/core/extensions/context_extension.dart';
-import 'package:flutter_app_template/src/core/routing/app_router.dart';
+import 'package:phrasly_ai_tools/src/core/components/dropdown_button/dropdown_model.dart';
+import 'package:phrasly_ai_tools/src/core/extensions/context_extension.dart';
+import 'package:phrasly_ai_tools/src/core/routing/app_router.dart';
 
 enum DateSelectionType { today, yesterday, thisWeek, lastWeek, lastMonth, lastThreeMonths, customRange }
 

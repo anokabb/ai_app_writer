@@ -1,21 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_app_template/src/core/components/forms/main_text_field.dart';
-import 'package:flutter_app_template/src/core/components/layouts/buttons/gradient_button.dart';
-import 'package:flutter_app_template/src/core/components/layouts/buttons/selector_buttons.dart';
-import 'package:flutter_app_template/src/core/components/layouts/buttons/transparent_app_button.dart';
-import 'package:flutter_app_template/src/core/components/layouts/gradient_layout.dart';
-import 'package:flutter_app_template/src/core/components/widgets/app_card.dart';
-import 'package:flutter_app_template/src/core/extensions/context_extension.dart';
-import 'package:flutter_app_template/src/core/gen/assets.gen.dart';
-import 'package:flutter_app_template/src/core/services/locator/locator.dart';
-import 'package:flutter_app_template/src/core/services/theme/app_theme.dart';
-import 'package:flutter_app_template/src/core/utils/utils.dart';
-import 'package:flutter_app_template/src/features/humanizer/data/repos/humanizer_repo.dart';
-import 'package:flutter_app_template/src/features/humanizer/presentation/cubit/humanizer_cubit.dart';
-import 'package:flutter_app_template/src/features/humanizer/presentation/pages/humanize_result_widget.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:phrasly_ai_tools/src/core/components/forms/main_text_field.dart';
+import 'package:phrasly_ai_tools/src/core/components/layouts/buttons/gradient_button.dart';
+import 'package:phrasly_ai_tools/src/core/components/layouts/buttons/selector_buttons.dart';
+import 'package:phrasly_ai_tools/src/core/components/layouts/buttons/transparent_app_button.dart';
+import 'package:phrasly_ai_tools/src/core/components/layouts/gradient_layout.dart';
+import 'package:phrasly_ai_tools/src/core/components/widgets/app_card.dart';
+import 'package:phrasly_ai_tools/src/core/extensions/context_extension.dart';
+import 'package:phrasly_ai_tools/src/core/gen/assets.gen.dart';
+import 'package:phrasly_ai_tools/src/core/services/locator/locator.dart';
+import 'package:phrasly_ai_tools/src/core/services/theme/app_theme.dart';
+import 'package:phrasly_ai_tools/src/core/utils/utils.dart';
+import 'package:phrasly_ai_tools/src/features/humanizer/data/repos/humanizer_repo.dart';
+import 'package:phrasly_ai_tools/src/features/humanizer/presentation/cubit/humanizer_cubit.dart';
+import 'package:phrasly_ai_tools/src/features/humanizer/presentation/pages/humanize_result_widget.dart';
 
 enum RewritingModes {
   easy,

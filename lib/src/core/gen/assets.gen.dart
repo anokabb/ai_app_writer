@@ -1,5 +1,3 @@
-// dart format width=150
-
 /// GENERATED CODE - DO NOT MODIFY BY HAND
 /// *****************************************************
 ///  FlutterGen
@@ -7,7 +5,7 @@
 
 // coverage:ignore-file
 // ignore_for_file: type=lint
-// ignore_for_file: deprecated_member_use,directives_ordering,implicit_dynamic_list_literal,unnecessary_import
+// ignore_for_file: directives_ordering,unnecessary_import,implicit_dynamic_list_literal,deprecated_member_use
 
 import 'package:flutter/widgets.dart';
 
@@ -26,11 +24,17 @@ class $AssetsImagesGen {
   /// File path: assets/images/app_icon_android_12.png
   AssetGenImage get appIconAndroid12 => const AssetGenImage('assets/images/app_icon_android_12.png');
 
+  /// File path: assets/images/bubbles.png
+  AssetGenImage get bubbles => const AssetGenImage('assets/images/bubbles.png');
+
   /// File path: assets/images/content_generator.png
   AssetGenImage get contentGenerator => const AssetGenImage('assets/images/content_generator.png');
 
+  /// Directory path: assets/images/onboarding
+  $AssetsImagesOnboardingGen get onboarding => const $AssetsImagesOnboardingGen();
+
   /// List of all assets
-  List<AssetGenImage> get values => [aiDetector, aiHumanizer, appIcon, appIconAndroid12, contentGenerator];
+  List<AssetGenImage> get values => [aiDetector, aiHumanizer, appIcon, appIconAndroid12, bubbles, contentGenerator];
 }
 
 class $AssetsSvgGen {
@@ -113,6 +117,46 @@ class $AssetsSvgGen {
       ];
 }
 
+class $AssetsImagesOnboardingGen {
+  const $AssetsImagesOnboardingGen();
+
+  /// File path: assets/images/onboarding/background.png
+  AssetGenImage get background => const AssetGenImage('assets/images/onboarding/background.png');
+
+  /// File path: assets/images/onboarding/bubbles.png
+  AssetGenImage get bubbles => const AssetGenImage('assets/images/onboarding/bubbles.png');
+
+  /// File path: assets/images/onboarding/continue_btn.png
+  AssetGenImage get continueBtn => const AssetGenImage('assets/images/onboarding/continue_btn.png');
+
+  /// File path: assets/images/onboarding/get_started_btn.png
+  AssetGenImage get getStartedBtn => const AssetGenImage('assets/images/onboarding/get_started_btn.png');
+
+  /// File path: assets/images/onboarding/logo.png
+  AssetGenImage get logo => const AssetGenImage('assets/images/onboarding/logo.png');
+
+  /// File path: assets/images/onboarding/scan_success.png
+  AssetGenImage get scanSuccess => const AssetGenImage('assets/images/onboarding/scan_success.png');
+
+  /// File path: assets/images/onboarding/scan_wrong.png
+  AssetGenImage get scanWrong => const AssetGenImage('assets/images/onboarding/scan_wrong.png');
+
+  /// File path: assets/images/onboarding/stars.png
+  AssetGenImage get stars => const AssetGenImage('assets/images/onboarding/stars.png');
+
+  /// File path: assets/images/onboarding/stats.png
+  AssetGenImage get stats => const AssetGenImage('assets/images/onboarding/stats.png');
+
+  /// File path: assets/images/onboarding/tools.png
+  AssetGenImage get tools => const AssetGenImage('assets/images/onboarding/tools.png');
+
+  /// File path: assets/images/onboarding/users.png
+  AssetGenImage get users => const AssetGenImage('assets/images/onboarding/users.png');
+
+  /// List of all assets
+  List<AssetGenImage> get values => [background, bubbles, continueBtn, getStartedBtn, logo, scanSuccess, scanWrong, stars, stats, tools, users];
+}
+
 class Assets {
   const Assets._();
 
@@ -129,14 +173,12 @@ class AssetGenImage {
     this._assetName, {
     this.size,
     this.flavors = const {},
-    this.animation,
   });
 
   final String _assetName;
 
   final Size? size;
   final Set<String> flavors;
-  final AssetGenImageAnimation? animation;
 
   Image image({
     Key? key,
@@ -205,16 +247,4 @@ class AssetGenImage {
   String get path => _assetName;
 
   String get keyName => _assetName;
-}
-
-class AssetGenImageAnimation {
-  const AssetGenImageAnimation({
-    required this.isAnimation,
-    required this.duration,
-    required this.frames,
-  });
-
-  final bool isAnimation;
-  final Duration duration;
-  final int frames;
 }
