@@ -9,7 +9,7 @@ abstract class AppColors {
   static Color darkGrey = Utils.hexToColor('#D1D0D7');
   static const Color red = Colors.red;
 
-  static Color green = Utils.hexToColor('#35C759');
+  static Color green = Utils.hexToColor('#35C790');
   static Color yellow = Utils.hexToColor('#FFCC02');
   static Color orange = Utils.hexToColor('#FF9500');
   static Color pink = Utils.hexToColor('#FF2C55');

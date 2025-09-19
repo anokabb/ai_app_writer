@@ -3,9 +3,9 @@ import 'package:go_router/go_router.dart';
 import 'package:phrasly_ai_tools/src/core/components/layouts/buttons/app_cuppertino_button.dart';
 import 'package:phrasly_ai_tools/src/core/extensions/context_extension.dart';
 import 'package:phrasly_ai_tools/src/core/gen/assets.gen.dart';
-import 'package:phrasly_ai_tools/src/core/routing/app_router.dart';
 import 'package:phrasly_ai_tools/src/core/services/theme/app_theme.dart';
 import 'package:phrasly_ai_tools/src/core/utils/utils.dart';
+import 'package:phrasly_ai_tools/src/features/onboarding/presentation/pages/reviews_page.dart';
 import 'package:phrasly_ai_tools/src/features/onboarding/presentation/pages/splash_page.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
@@ -106,7 +106,7 @@ class _OnboardingPageState extends State<OnboardingPage> {
   void _onNextPressed() {
     if (_pageController.page == _onboardingItems.length - 1) {
       SplashPage.setOnboardingCompleted();
-      context.push(AppRouter.baseRoute);
+      context.push(ReviewsPage.routeName);
     } else {
       _pageController.nextPage(duration: const Duration(milliseconds: 300), curve: Curves.easeInOut);
     }

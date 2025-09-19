@@ -74,7 +74,7 @@ class AuthCubit extends Cubit<AuthState> {
       },
       (firebaseUser) async {
         log('User registered successfully: $firebaseUser');
-        final userModel = UserModel.fromFirebaseUser(firebaseUser);
+        final userModel = UserModel.fromFirebaseUser(firebaseUser).copyWith(name: name);
         await setUser(userModel);
       },
     );

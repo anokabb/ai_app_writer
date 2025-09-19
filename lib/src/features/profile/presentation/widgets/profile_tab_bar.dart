@@ -1,16 +1,18 @@
-import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:phrasly_ai_tools/src/core/components/pop_up/slide_up_pop_up.dart';
 import 'package:phrasly_ai_tools/src/core/components/widgets/language_selector.dart';
 import 'package:phrasly_ai_tools/src/core/constants/hive_config.dart';
 import 'package:phrasly_ai_tools/src/core/routing/app_bottom_nav.dart';
 import 'package:phrasly_ai_tools/src/core/services/locator/locator.dart';
 import 'package:phrasly_ai_tools/src/core/services/theme/app_colors.dart';
 import 'package:phrasly_ai_tools/src/core/services/theme/app_theme.dart';
+import 'package:phrasly_ai_tools/src/core/utils/utils.dart';
 import 'package:phrasly_ai_tools/src/features/auth/data/models/user_model.dart';
 import 'package:phrasly_ai_tools/src/features/auth/presentation/cubit/auth_cubit.dart';
 import 'package:phrasly_ai_tools/src/features/auth/presentation/widgets/auth_card.dart';
+import 'package:phrasly_ai_tools/src/features/generator/presentation/pages/generator_page.dart';
 import 'package:phrasly_ai_tools/src/features/profile/presentation/widgets/settings_card_section.dart';
 import 'package:phrasly_ai_tools/src/features/settings/presentation/cubit/settings_cubit.dart';
 
@@ -25,9 +27,9 @@ class _ProfileTabState extends State<ProfileTab> {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<SettingsCubit, SettingsState>(
-      builder: (context, state) {
+      builder: (_, state) {
         return BlocBuilder<AuthCubit, AuthState>(
-          builder: (context, authState) {
+          builder: (_, authState) {
             UserModel? user = authState.maybeWhen(
               authenticated: (user) => user,
               orElse: () => null,
@@ -48,13 +50,14 @@ class _ProfileTabState extends State<ProfileTab> {
                       title: 'Name',
                       subTitle: user?.name ?? 'Guest User',
                       icon: Icon(Icons.person_outline, color: context.appColors.primary),
-                      onTap: () {},
                     ),
                     SettingsCardItem(
                       title: 'Rate Us',
                       subTitle: '★★★★★',
                       icon: Icon(Icons.star, color: context.appColors.primary),
-                      onTap: () {},
+                      onTap: () {
+                        Utils.requestReviewWithConfirmation(context);
+                      },
                     ),
                   ],
                 ),
@@ -71,25 +74,14 @@ class _ProfileTabState extends State<ProfileTab> {
                       title: 'Preferred Language',
                       subTitle: settingsBox.get('preferredLanguage', defaultValue: 'English'),
                       icon: Icon(Icons.language, color: context.appColors.primary),
-                      onTap: () async {
-                        final preferredLanguage = settingsBox.get('preferredLanguage', defaultValue: 'English');
-                        final result = await LanguageSelector.pickLanguage(
-                          context,
-                          languages.firstWhereOrNull((language) => language.name == preferredLanguage) ??
-                              languages.first,
-                        );
-                        if (result != null) {
-                          await settingsBox.put('preferredLanguage', result.name);
-                          setState(() {});
-                        }
-                      },
+                      onTap: pickLanguage,
                     ),
-                    SettingsCardItem(
-                      title: 'Writing Style',
-                      subTitle: 'Professional',
-                      icon: Icon(Icons.edit, color: context.appColors.primary),
-                      onTap: () {},
-                    ),
+                    // SettingsCardItem(
+                    //   title: 'Writing Style',
+                    //   subTitle: 'Professional',
+                    //   icon: Icon(Icons.edit, color: context.appColors.primary),
+                    //   onTap: () {},
+                    // ),
                     SettingsCardItem(
                       title: 'Auto Save',
                       reverseTextStyle: true,
@@ -177,5 +169,24 @@ class _ProfileTabState extends State<ProfileTab> {
         );
       },
     );
+  }
+
+  Future pickLanguage() async {
+    final preferredLanguage = settingsBox.get('preferredLanguage', defaultValue: 'English');
+
+    String? result = await SlideUpPopUp.show<String>(
+      context: context,
+      itemBuilder: (dialogContext) => LanguageSelectorContent(
+        selectedLang: preferredLanguage,
+        gradientColors: GeneratorPage.colors,
+        onSelected: (language) {
+          Navigator.pop(dialogContext, language);
+        },
+      ),
+    );
+    if (result != null) {
+      await settingsBox.put('preferredLanguage', result);
+      setState(() {});
+    }
   }
 }

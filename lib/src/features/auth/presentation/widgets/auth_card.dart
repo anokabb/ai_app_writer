@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -26,6 +27,7 @@ class _AuthCardState extends State<AuthCard> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _nameController = TextEditingController();
+  final TextEditingController _confirmPasswordController = TextEditingController();
 
   final _formKey = GlobalKey<FormState>();
 
@@ -34,6 +36,7 @@ class _AuthCardState extends State<AuthCard> {
     _emailController.dispose();
     _passwordController.dispose();
     _nameController.dispose();
+    _confirmPasswordController.dispose();
     super.dispose();
   }
 
@@ -96,6 +99,17 @@ class _AuthCardState extends State<AuthCard> {
                           hintText: 'Password',
                           inputType: InputType.password,
                         ),
+                        if (!isLogin)
+                          Padding(
+                            padding: const EdgeInsets.only(top: 16),
+                            child: AppTextFormField(
+                              controller: _confirmPasswordController,
+                              isMultiline: false,
+                              hintText: 'Confirm Password',
+                              inputType: InputType.password,
+                              parentMatchController: _passwordController,
+                            ),
+                          ),
                         Align(
                           alignment: Alignment.centerRight,
                           child: TextButton(
@@ -177,9 +191,13 @@ class _AuthCardState extends State<AuthCard> {
       if (isLogin) {
         await locator<AuthCubit>().login(_emailController.text, _passwordController.text);
       } else {
-        await locator<AuthCubit>().register(_nameController.text, _emailController.text, _passwordController.text);
+        await locator<AuthCubit>()
+            .register(_nameController.text.trim(), _emailController.text, _passwordController.text);
       }
-      context.go(HomePage.routeName);
+
+      if (FirebaseAuth.instance.currentUser != null) {
+        context.go(HomePage.routeName);
+      }
     }
   }
 

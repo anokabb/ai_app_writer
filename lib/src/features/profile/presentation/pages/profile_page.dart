@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:phrasly_ai_tools/src/core/services/theme/app_theme.dart';
 import 'package:phrasly_ai_tools/src/core/utils/utils.dart';
-import 'package:phrasly_ai_tools/src/features/profile/presentation/widgets/profile_tab.dart';
-import 'package:phrasly_ai_tools/src/features/profile/presentation/widgets/settings_tab.dart';
+import 'package:phrasly_ai_tools/src/features/profile/presentation/widgets/profile_tab_bar.dart';
+import 'package:phrasly_ai_tools/src/features/profile/presentation/widgets/settings_tab_bar.dart';
 import 'package:phrasly_ai_tools/src/features/profile/presentation/widgets/user_info.dart';
 
 class ProfilePage extends StatefulWidget {

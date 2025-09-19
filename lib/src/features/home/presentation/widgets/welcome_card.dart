@@ -1,3 +1,4 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -44,8 +45,9 @@ class WelcomeCard extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   spacing: 2,
                   children: <Widget>[
-                    Text(
+                    AutoSizeText(
                       _getTimeBasedGreeting() + (user?.name == null ? ' 👋' : ', ${user?.name ?? ''} 👋'),
+                      maxLines: 1,
                       style: context.appTextTheme.title4,
                     ),
                     Text(

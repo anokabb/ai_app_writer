@@ -1,11 +1,13 @@
 import 'package:dio/dio.dart';
+import 'package:phrasly_ai_tools/src/core/services/locator/locator.dart';
+import 'package:phrasly_ai_tools/src/core/services/remote_config/remote_config_service.dart';
 
 import 'ai_api.dart';
 
 class OpenAIApi extends AiApi {
   OpenAIApi(super.dio);
 
-  final baseUrl = 'https://api.openai.com/v1';
+  final baseUrl = locator<RemoteConfigService>().data.api.openaiBaseUrl;
 
   @override
   Future<Map<String, dynamic>> analyzeText(String authorization, Map<String, dynamic> request) async {

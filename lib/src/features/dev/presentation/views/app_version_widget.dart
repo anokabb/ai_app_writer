@@ -56,10 +56,7 @@ class _DevViewGestureDetectorState extends State<DevViewGestureDetector> {
           }
         });
       },
-      child: SafeArea(
-        bottom: widget.safeArea,
-        child: widget.child,
-      ),
+      child: widget.child,
     );
   }
 }
@@ -81,13 +78,10 @@ class _AppVersionWidgetState extends State<AppVersionWidget> {
           if (!snapshot.hasData) return const SizedBox();
           PackageInfo packageInfo = snapshot.data as PackageInfo;
           return DevViewGestureDetector(
-            child: Padding(
-              padding: const EdgeInsets.only(bottom: 8),
-              child: Text(
-                '${context.localization.version} ${packageInfo.version}',
-                style: context.theme.appTextTheme.body3.copyWith(
-                  color: context.theme.appColors.textColor.withOpacity(0.6),
-                ),
+            child: Text(
+              '${context.localization.version} ${packageInfo.version}',
+              style: context.theme.appTextTheme.body3.copyWith(
+                color: context.theme.appColors.textColor.withOpacity(0.6),
               ),
             ),
           );

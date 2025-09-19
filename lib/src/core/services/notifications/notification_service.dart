@@ -68,7 +68,7 @@ class NotificationService {
       requestSoundPermission: true,
       notificationCategories: [
         DarwinNotificationCategory(
-          'virtual_queue_notification_category_id',
+          'phrasly_ai_tools_notification_category_id',
           options: <DarwinNotificationCategoryOption>{
             DarwinNotificationCategoryOption.allowAnnouncement,
           },
@@ -130,7 +130,7 @@ class NotificationService {
     }
 
     final androidDetails = const AndroidNotificationDetails(
-      'virtual_queue_channel_notification_id',
+      'phrasly_ai_tools_channel_notification_id',
       'Virtual Queue',
       importance: Importance.max,
       priority: Priority.high,
@@ -141,7 +141,7 @@ class NotificationService {
       presentAlert: true,
       presentBadge: true,
       presentSound: true,
-      categoryIdentifier: 'virtual_queue_notification_category_id',
+      categoryIdentifier: 'phrasly_ai_tools_notification_category_id',
     );
 
     final platformDetails = NotificationDetails(

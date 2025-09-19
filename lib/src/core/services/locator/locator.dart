@@ -4,7 +4,6 @@ import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
-import 'package:phrasly_ai_tools/src/core/constants/env_config.dart';
 import 'package:phrasly_ai_tools/src/core/network/ai_api/ai_api.dart';
 import 'package:phrasly_ai_tools/src/core/network/ai_api/openai_api.dart';
 import 'package:phrasly_ai_tools/src/core/network/ai_api/repos/ai_repo.dart';
@@ -13,6 +12,7 @@ import 'package:phrasly_ai_tools/src/core/network/ai_api/repos/openai_repo.dart'
 import 'package:phrasly_ai_tools/src/core/network/client/dio_factory.dart';
 import 'package:phrasly_ai_tools/src/core/network/client/interceptors/logger_interceptor.dart';
 import 'package:phrasly_ai_tools/src/core/network/client/interceptors/mock_logger_interceptor.dart';
+import 'package:phrasly_ai_tools/src/core/services/remote_config/remote_config_service.dart';
 import 'package:phrasly_ai_tools/src/features/auth/data/repos/auth_repo.dart';
 import 'package:phrasly_ai_tools/src/features/auth/data/repos/firebase_auth_repo.dart';
 import 'package:phrasly_ai_tools/src/features/auth/presentation/cubit/auth_cubit.dart';
@@ -37,7 +37,7 @@ void setupLocator() {
   // 1. Dio Client
   locator.registerLazySingleton<Dio>(
     () => DioFactory.create(
-      baseUrl: EnvConfig.baseUrl,
+      baseUrl: locator<RemoteConfigService>().data.api.openaiBaseUrl,
       interceptors: [
         // AuthInterceptor(() => locator<AuthRepo>().getToken() ?? ''),
         isMockTesting ? MockLoggerInterceptor() : LoggerInterceptor(),
@@ -50,20 +50,23 @@ void setupLocator() {
 
   locator.registerLazySingleton<AiApi>(() => OpenAIApi(locator<Dio>()));
 
-  // 3. Repositories
+  // 3. Services
+  locator.registerLazySingleton<RemoteConfigService>(() => RemoteConfigService());
+
+  // 4. Repositories
   locator.registerLazySingleton<HistoryRepo>(() => HistoryRepo());
   locator.registerLazySingleton<AuthRepo>(() => FirebaseAuthRepo());
 
   if (isMockTesting) {
     locator.registerLazySingleton<AiRepo>(() => MockAiRepo());
   } else {
-    locator.registerLazySingleton<AiRepo>(() => OpenAIRepo(api: locator<AiApi>(), apiKey: EnvConfig.OPENAI_API_KEY));
+    locator.registerLazySingleton<AiRepo>(() => OpenAIRepo(api: locator<AiApi>()));
   }
   locator.registerLazySingleton<DetectorRepo>(() => DetectorRepoImpl(locator<AiRepo>()));
   locator.registerLazySingleton<HumanizerRepo>(() => HumanizerRepoImpl(locator<AiRepo>()));
   locator.registerLazySingleton<GeneratorRepo>(() => GeneratorRepoImpl(locator<AiRepo>()));
 
-  // 4. Cubits
+  // 5. Cubits
   locator.registerLazySingleton<ThemeCubit>(() => ThemeCubit());
   locator.registerLazySingleton<LanguageCubit>(() => LanguageCubit());
   locator.registerLazySingleton<HistoryCubit>(() => HistoryCubit(locator<HistoryRepo>(), locator<AiRepo>()));

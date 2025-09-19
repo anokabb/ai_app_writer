@@ -12,7 +12,12 @@
           "package_name": "com.phrasly.aitools"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "354927083610-j9okp037209tj71o5630t0rt0tskpben.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyBF6iHKmBLvJf0Ypv55l0-1BKwfrRV7Kp0"
@@ -20,7 +25,19 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "354927083610-j9okp037209tj71o5630t0rt0tskpben.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "354927083610-stisaefjq72eu5o81n5gf12u4vpib9td.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.phrasly.aitools"
+              }
+            }
+          ]
         }
       }
     }

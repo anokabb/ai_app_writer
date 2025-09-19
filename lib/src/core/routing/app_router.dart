@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:go_router/go_router.dart';
 import 'package:phrasly_ai_tools/src/core/routing/app_shell.dart';
 import 'package:phrasly_ai_tools/src/core/routing/guards/auth_guard.dart';
 import 'package:phrasly_ai_tools/src/core/routing/page_transitions.dart';
@@ -16,9 +17,9 @@ import 'package:phrasly_ai_tools/src/features/humanizer/presentation/pages/human
 import 'package:phrasly_ai_tools/src/features/humanizer/presentation/pages/humanizer_page.dart';
 import 'package:phrasly_ai_tools/src/features/languages/presentation/pages/language_page.dart';
 import 'package:phrasly_ai_tools/src/features/onboarding/presentation/pages/onboarding_page.dart';
+import 'package:phrasly_ai_tools/src/features/onboarding/presentation/pages/reviews_page.dart';
 import 'package:phrasly_ai_tools/src/features/onboarding/presentation/pages/splash_page.dart';
 import 'package:phrasly_ai_tools/src/features/theme/presentation/pages/theme_page.dart';
-import 'package:go_router/go_router.dart';
 
 final GlobalKey<NavigatorState> rootNavigatorKey = GlobalKey<NavigatorState>(debugLabel: 'root');
 
@@ -114,6 +115,10 @@ class AppRouter {
       GoRoute(
         path: OnboardingPage.routeName,
         pageBuilder: (context, state) => PageTransitions.fadeTransition(child: OnboardingPage()),
+      ),
+      GoRoute(
+        path: ReviewsPage.routeName,
+        pageBuilder: (context, state) => CupertinoPage(child: ReviewsPage()),
       ),
     ];
   }

@@ -1,22 +1,24 @@
 import 'dart:convert';
 import 'dart:developer';
 
-import 'package:phrasly_ai_tools/src/core/constants/env_config.dart';
+import 'package:fpdart/fpdart.dart';
 import 'package:phrasly_ai_tools/src/core/network/ai_api/ai_api.dart';
 import 'package:phrasly_ai_tools/src/core/network/ai_api/models/text_analysis_model.dart';
 import 'package:phrasly_ai_tools/src/core/network/models/app_error.dart';
+import 'package:phrasly_ai_tools/src/core/services/locator/locator.dart';
 import 'package:phrasly_ai_tools/src/core/services/logger/logger.dart';
+import 'package:phrasly_ai_tools/src/core/services/remote_config/remote_config_service.dart';
 import 'package:phrasly_ai_tools/src/features/detector/presentation/pages/detector_page.dart';
-import 'package:phrasly_ai_tools/src/features/documents/data/models/history_item.dart';
-import 'package:fpdart/fpdart.dart';
 
 import 'ai_repo.dart';
 
 class OpenAIRepo implements AiRepo {
-  final String apiKey;
   final AiApi _api;
 
-  OpenAIRepo({required this.apiKey, required AiApi api}) : _api = api;
+  String model = locator<RemoteConfigService>().data.api.defaultModel;
+  String apiKey = locator<RemoteConfigService>().data.api.openaiApiKey;
+
+  OpenAIRepo({required AiApi api}) : _api = api;
 
   @override
   Future<Either<AppError, TextAnalysisResult>> analyzeText({required String text, required DetectorModes mode}) async {
@@ -25,7 +27,7 @@ class OpenAIRepo implements AiRepo {
       final modePrompt = _getModeSpecificPrompt(mode);
 
       final requestBody = {
-        'model': 'gpt-3.5-turbo',
+        'model': model,
         'messages': [
           {
             'role': 'system',
@@ -169,7 +171,7 @@ Analyze each sentence individually and identify which ones are likely AI-generat
       final creativityLevel = creativity != null ? (creativity * 100).round() : 0;
 
       final requestBody = {
-        'model': 'gpt-3.5-turbo',
+        'model': model,
         'messages': [
           {
             'role': 'system',
@@ -362,7 +364,7 @@ Provide the humanized version that sounds like it was written by a real person.
       final typePrompt = _getTypeOfWritingPrompt(typeOfWriting);
 
       final requestBody = {
-        'model': 'gpt-3.5-turbo',
+        'model': model,
         'messages': [
           {
             'role': 'system',
@@ -628,47 +630,6 @@ Generate content that is well-structured, engaging, and meets all the specified 
       return '**MEDIUM CREATIVITY MODE:**\n- Balanced humanization.\n- Natural conversational tone.\n- Personal touches and informal expressions.';
     } else {
       return '**HIGH CREATIVITY MODE:**\n- Very human-like, conversational, and casual.\n- Rich personal perspective and emotional expression.\n- More creative and imaginative language.';
-    }
-  }
-
-  @override
-  Future<Either<AppError, String>> generateTitle(String prompt) async {
-    try {
-      final apiKey = EnvConfig.OPENAI_API_KEY;
-
-      if (apiKey.isEmpty) {
-        return Left(AppError.server(message: 'API key not found'));
-      }
-
-      final requestBody = {
-        'model': 'gpt-3.5-turbo',
-        'messages': [
-          {
-            'role': 'system',
-            'content':
-                'You are a title generator. Generate descriptive, complete titles (8-15 words) that fully capture the main topic and essence of the content. Avoid cutting off mid-sentence or creating incomplete phrases. Return ONLY the title text - no quotes, no prefixes like "Title:" or "Generated:", no markdown formatting, no extra punctuation. Just the complete, meaningful title.'
-          },
-          {'role': 'user', 'content': prompt}
-        ],
-        'temperature': 0.7,
-        'max_tokens': 100,
-      };
-
-      final response = await _api.generateTitle('Bearer $apiKey', requestBody);
-      final responseData = response.data as Map<String, dynamic>;
-
-      if (responseData['choices'] != null &&
-          responseData['choices'].isNotEmpty &&
-          responseData['choices'][0]['message'] != null &&
-          responseData['choices'][0]['message']['content'] != null) {
-        final title = responseData['choices'][0]['message']['content'] as String;
-        return Right(HistoryItem.cleanTitle(title));
-      }
-
-      return Left(AppError.server(message: 'Invalid response from AI service'));
-    } catch (e) {
-      log('Error generating title: $e');
-      return Left(AppError.fromException(e));
     }
   }
 }

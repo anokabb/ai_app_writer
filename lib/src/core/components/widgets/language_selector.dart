@@ -8,7 +8,6 @@ import 'package:phrasly_ai_tools/src/core/components/pop_up/slide_up_pop_up.dart
 import 'package:phrasly_ai_tools/src/core/components/widgets/app_card.dart';
 import 'package:phrasly_ai_tools/src/core/gen/assets.gen.dart';
 import 'package:phrasly_ai_tools/src/core/services/theme/app_theme.dart';
-import 'package:phrasly_ai_tools/src/features/generator/presentation/pages/generator_page.dart';
 
 class LanguageModel {
   final String name;
@@ -78,7 +77,7 @@ class LanguageSelector extends StatelessWidget {
   Future<void> _showLanguageSelector(BuildContext context) async {
     final result = await SlideUpPopUp.show<String>(
       context: context,
-      child: _LanguageSelectorContent(
+      child: LanguageSelectorContent(
         selectedLang: selectedLang.name,
         gradientColors: gradientColors,
         onSelected: (language) {
@@ -91,27 +90,15 @@ class LanguageSelector extends StatelessWidget {
       onSelected(languages.firstWhereOrNull((language) => language.name == result));
     }
   }
-
-  static Future<LanguageModel?> pickLanguage(BuildContext parentContext, LanguageModel selectedLang) async {
-    return await SlideUpPopUp.show<LanguageModel>(
-      context: parentContext,
-      child: _LanguageSelectorContent(
-        selectedLang: selectedLang.name,
-        gradientColors: GeneratorPage.colors,
-        onSelected: (language) {
-          Navigator.of(parentContext).pop(language);
-        },
-      ),
-    );
-  }
 }
 
-class _LanguageSelectorContent extends StatelessWidget {
+class LanguageSelectorContent extends StatelessWidget {
   final String selectedLang;
   final void Function(String) onSelected;
   final List<Color> gradientColors;
 
-  const _LanguageSelectorContent({
+  const LanguageSelectorContent({
+    super.key,
     required this.selectedLang,
     required this.onSelected,
     required this.gradientColors,

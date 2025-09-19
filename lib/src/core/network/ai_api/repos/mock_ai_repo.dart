@@ -1,8 +1,8 @@
+import 'package:fpdart/fpdart.dart';
 import 'package:phrasly_ai_tools/src/core/network/ai_api/models/text_analysis_model.dart';
 import 'package:phrasly_ai_tools/src/core/network/ai_api/repos/ai_repo.dart';
 import 'package:phrasly_ai_tools/src/core/network/models/app_error.dart';
 import 'package:phrasly_ai_tools/src/features/detector/presentation/pages/detector_page.dart';
-import 'package:fpdart/fpdart.dart';
 
 class MockAiRepo implements AiRepo {
   @override
@@ -299,21 +299,6 @@ Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo
       ],
       explanation: 'Content has been generated based on your specifications with appropriate tone and style.',
     ));
-  }
-
-  @override
-  Future<Either<AppError, String>> generateTitle(String prompt) async {
-    // Simulate AI title generation delay
-    await Future.delayed(const Duration(milliseconds: 300));
-
-    // Extract content from prompt and generate a mock title
-    if (prompt.contains('humanized')) {
-      return right('Enhanced Human Text with Natural Language Patterns');
-    } else if (prompt.contains('generated')) {
-      return right('AI-Generated Content with Professional Writing Style');
-    } else {
-      return right('Smart AI Title for Content Management');
-    }
   }
 
   String _getExplanation(TextSource source, double aiProb, double humanProb) {

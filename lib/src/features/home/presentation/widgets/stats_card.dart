@@ -43,29 +43,33 @@ class StatsCard extends StatelessWidget {
                     loaded: (history) => history.length,
                     error: (error) => 0,
                   );
-                  return _StatsItem(
-                    title: context.localization.documents,
-                    svgIcon: Assets.svg.docs,
-                    value: value.toString(),
-                    gradientColors: [
-                      Utils.hexToColor('#0584FB'),
-                      Utils.hexToColor('#0E6DAB'),
+                  return Row(
+                    children: [
+                      _StatsItem(
+                        title: context.localization.documents,
+                        svgIcon: Assets.svg.docs,
+                        value: value.toString(),
+                        gradientColors: [
+                          Utils.hexToColor('#0584FB'),
+                          Utils.hexToColor('#0E6DAB'),
+                        ],
+                        onPressed: () {
+                          context.go(DocumentsPage.routeName);
+                        },
+                      ),
+                      SizedBox(width: 16),
+                      _StatsItem(
+                        title: context.localization.hoursSaved,
+                        svgIcon: Assets.svg.clock,
+                        value: (value * 3).toString(),
+                        gradientColors: [
+                          Utils.hexToColor('#2FC76F'),
+                          Utils.hexToColor('#21CCAF'),
+                        ],
+                      ),
                     ],
-                    onPressed: () {
-                      context.go(DocumentsPage.routeName);
-                    },
                   );
                 },
-              ),
-              SizedBox(width: 16),
-              _StatsItem(
-                title: context.localization.hoursSaved,
-                svgIcon: Assets.svg.clock,
-                value: '17',
-                gradientColors: [
-                  Utils.hexToColor('#2FC76F'),
-                  Utils.hexToColor('#21CCAF'),
-                ],
               ),
               SizedBox(width: 16),
               _StatsItem(

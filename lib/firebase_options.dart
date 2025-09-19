@@ -63,6 +63,7 @@ class DefaultFirebaseOptions {
     messagingSenderId: '354927083610',
     projectId: 'phrasly-ai',
     storageBucket: 'phrasly-ai.firebasestorage.app',
+    iosClientId: '354927083610-stisaefjq72eu5o81n5gf12u4vpib9td.apps.googleusercontent.com',
     iosBundleId: 'com.phrasly.aitools',
   );
 

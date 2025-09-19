@@ -23,6 +23,14 @@ Future initHive() async {
   await Hive.openBox('persistsData', encryptionCipher: HiveAesCipher(encryptionKey));
 }
 
+Future<void> clearAllHiveBoxes() async {
+  await userBox.clear();
+  await cacheBox.clear();
+  await settingsBox.clear();
+  await devBox.clear();
+  await persistsData.clear();
+}
+
 Future<Uint8List> getEncryptionKey() async {
   const secureStorage = FlutterSecureStorage(aOptions: AndroidOptions(encryptedSharedPreferences: true));
 

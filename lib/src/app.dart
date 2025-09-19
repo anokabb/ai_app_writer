@@ -3,13 +3,14 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:phrasly_ai_tools/l10n/app_localizations.dart';
-import 'package:phrasly_ai_tools/src/core/components/layouts/buttons/app_button.dart';
+import 'package:phrasly_ai_tools/src/core/components/layouts/buttons/gradient_button.dart';
 import 'package:phrasly_ai_tools/src/core/components/pop_up/app_pop_up.dart';
 import 'package:phrasly_ai_tools/src/core/constants/env_config.dart';
 import 'package:phrasly_ai_tools/src/core/constants/hive_config.dart';
 import 'package:phrasly_ai_tools/src/core/extensions/context_extension.dart';
 import 'package:phrasly_ai_tools/src/core/routing/app_router.dart';
 import 'package:phrasly_ai_tools/src/core/services/locator/locator.dart';
+import 'package:phrasly_ai_tools/src/core/services/remote_config/remote_config_service.dart';
 import 'package:phrasly_ai_tools/src/core/services/theme/app_theme.dart';
 import 'package:phrasly_ai_tools/src/features/languages/presentation/cubit/language_cubit.dart';
 import 'package:phrasly_ai_tools/src/features/theme/presentation/cubit/theme_cubit.dart';
@@ -45,7 +46,7 @@ class App extends StatelessWidget {
                 builder: (context, child) {
                   Widget upgraderChild = UpgradeAlert(
                     navigatorKey: rootNavigatorKey,
-                    barrierDismissible: !EnvConfig.FORCE_UPDATE,
+                    barrierDismissible: !locator<RemoteConfigService>().isForceUpdate,
                     dialogStyle: UpgradeDialogStyle.cupertino,
                     upgrader: Upgrader(
                       debugDisplayAlways: devBox.get('debugUpgrader', defaultValue: false),
@@ -65,15 +66,20 @@ class App extends StatelessWidget {
                       Function() onCancel,
                     ) {
                       return AppPopUp(
-                        title: title,
+                        title: 'Update Available',
                         description: message,
                         confirmText: context.localization.updateNow.toUpperCase(),
                         onConfirm: onUpdate,
+                        confirmButtonColor: context.theme.appColors.primary,
                         actions: [
-                          if (!EnvConfig.FORCE_UPDATE)
-                            AppButton(
+                          if (!locator<RemoteConfigService>().isForceUpdate)
+                            GradientButton(
                               label: context.localization.later.toUpperCase(),
-                              backgroundColor: context.theme.appColors.secondaryBackground,
+                              textColor: context.theme.appColors.textColor,
+                              gradientColors: [
+                                context.theme.appColors.secondaryBackground,
+                                context.theme.appColors.secondaryBackground
+                              ],
                               onPressed: onIgnore,
                             ),
                         ],
@@ -81,13 +87,6 @@ class App extends StatelessWidget {
                     },
                   );
 
-                  if (EnvConfig.showEnvBanner) {
-                    return Banner(
-                      message: EnvConfig.currentEnv.toUpperCase(),
-                      location: BannerLocation.bottomEnd,
-                      child: upgraderChild,
-                    );
-                  }
                   return upgraderChild;
                 },
               );
