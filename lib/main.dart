@@ -1,4 +1,5 @@
 import 'dart:developer';
+import 'dart:io';
 
 import 'package:appsflyer_sdk/appsflyer_sdk.dart';
 import 'package:clarity_flutter/clarity_flutter.dart';
@@ -11,6 +12,8 @@ import 'package:phrasly_ai_tools/src/app.dart';
 import 'package:phrasly_ai_tools/src/core/constants/hive_config.dart';
 import 'package:phrasly_ai_tools/src/core/routing/app_router.dart';
 import 'package:phrasly_ai_tools/src/core/services/locator/locator.dart';
+import 'package:phrasly_ai_tools/src/core/services/purchases/revenue_cat_service.dart';
+import 'package:phrasly_ai_tools/src/core/services/purchases/subscription_cubit.dart';
 import 'package:phrasly_ai_tools/src/core/services/remote_config/remote_config_service.dart';
 import 'package:phrasly_ai_tools/src/features/auth/presentation/cubit/auth_cubit.dart';
 
@@ -32,6 +35,9 @@ void main() async {
   // Initialize Remote Config
   await locator<RemoteConfigService>().initialize();
   await locator<RemoteConfigService>().fetchAndActivate();
+
+  // Initialize RevenueCat
+  await _initializeRevenueCat();
 
   await locator<AuthCubit>().checkAuthStatus();
 
@@ -83,5 +89,28 @@ Future<void> _initializeMixpanel() async {
     mixpanel.track('App Launched');
   } catch (e) {
     log('Error initializing Mixpanel: $e');
+  }
+}
+
+Future<void> _initializeRevenueCat() async {
+  try {
+    log('RevenueCat free limit: ${locator<RemoteConfigService>().data.revenueCat.freeLimit}');
+    // You can get this from your RevenueCat dashboard
+    String revenueCatApiKey = Platform.isIOS
+        ? locator<RemoteConfigService>().data.revenueCat.revenueIOSApiKey
+        : locator<RemoteConfigService>().data.revenueCat.revenueAndroidApiKey;
+
+    await locator<RevenueCatService>().initialize(
+      apiKey: revenueCatApiKey,
+      // Optionally set user ID if you have one
+      // appUserId: locator<AuthCubit>().currentUser?.uid,
+    );
+
+    // Check subscription status after initialization
+    await locator<SubscriptionCubit>().checkSubscriptionStatus();
+
+    log('RevenueCat initialized successfully');
+  } catch (e) {
+    log('Error initializing RevenueCat: $e');
   }
 }

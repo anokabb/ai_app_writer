@@ -13,6 +13,7 @@ import 'package:phrasly_ai_tools/src/core/services/notifications/notification_se
 import 'package:phrasly_ai_tools/src/core/services/remote_config/remote_config_service.dart';
 import 'package:phrasly_ai_tools/src/core/services/theme/app_colors.dart';
 import 'package:phrasly_ai_tools/src/core/services/theme/app_theme.dart';
+import 'package:restart_app/restart_app.dart';
 
 class DevModeView extends StatefulWidget {
   static const routeName = '/dev-mode';
@@ -28,6 +29,7 @@ class _DevModeViewState extends State<DevModeView> {
   Timer? _timer;
 
   bool debugUpgrader = devBox.get('debugUpgrader', defaultValue: false);
+  bool isPro = devBox.get('isDevPro', defaultValue: false);
 
   @override
   void initState() {
@@ -126,6 +128,29 @@ class _DevModeViewState extends State<DevModeView> {
                     debugUpgrader = value;
                   });
                   await devBox.put('debugUpgrader', value);
+                },
+              ),
+            ),
+            SizedBox(height: 16),
+            ListTile(
+              title: const Text('Is Pro'),
+              subtitle: Text(
+                '(only for dev should be removed later)',
+                style: context.theme.appTextTheme.body3Light.copyWith(fontSize: 12),
+              ),
+              contentPadding: EdgeInsets.zero,
+              trailing: Switch(
+                activeTrackColor: Colors.green,
+                inactiveTrackColor: Colors.grey.withOpacity(0.4),
+                trackOutlineColor: WidgetStateProperty.all(Colors.transparent),
+                thumbColor: WidgetStateProperty.all(Colors.white),
+                value: isPro,
+                onChanged: (value) async {
+                  setState(() {
+                    isPro = value;
+                  });
+                  await devBox.put('isDevPro', value);
+                  Restart.restartApp();
                 },
               ),
             ),

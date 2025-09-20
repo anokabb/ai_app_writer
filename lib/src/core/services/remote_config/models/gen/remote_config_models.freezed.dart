@@ -22,6 +22,7 @@ RemoteConfigModel _$RemoteConfigModelFromJson(Map<String, dynamic> json) {
 mixin _$RemoteConfigModel {
   ApiConfigModel get api => throw _privateConstructorUsedError;
   SettingsConfigModel get settings => throw _privateConstructorUsedError;
+  RevenueCatConfigModel get revenueCat => throw _privateConstructorUsedError;
 
   /// Serializes this RemoteConfigModel to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -39,10 +40,14 @@ abstract class $RemoteConfigModelCopyWith<$Res> {
           RemoteConfigModel value, $Res Function(RemoteConfigModel) then) =
       _$RemoteConfigModelCopyWithImpl<$Res, RemoteConfigModel>;
   @useResult
-  $Res call({ApiConfigModel api, SettingsConfigModel settings});
+  $Res call(
+      {ApiConfigModel api,
+      SettingsConfigModel settings,
+      RevenueCatConfigModel revenueCat});
 
   $ApiConfigModelCopyWith<$Res> get api;
   $SettingsConfigModelCopyWith<$Res> get settings;
+  $RevenueCatConfigModelCopyWith<$Res> get revenueCat;
 }
 
 /// @nodoc
@@ -62,6 +67,7 @@ class _$RemoteConfigModelCopyWithImpl<$Res, $Val extends RemoteConfigModel>
   $Res call({
     Object? api = null,
     Object? settings = null,
+    Object? revenueCat = null,
   }) {
     return _then(_value.copyWith(
       api: null == api
@@ -72,6 +78,10 @@ class _$RemoteConfigModelCopyWithImpl<$Res, $Val extends RemoteConfigModel>
           ? _value.settings
           : settings // ignore: cast_nullable_to_non_nullable
               as SettingsConfigModel,
+      revenueCat: null == revenueCat
+          ? _value.revenueCat
+          : revenueCat // ignore: cast_nullable_to_non_nullable
+              as RevenueCatConfigModel,
     ) as $Val);
   }
 
@@ -94,6 +104,16 @@ class _$RemoteConfigModelCopyWithImpl<$Res, $Val extends RemoteConfigModel>
       return _then(_value.copyWith(settings: value) as $Val);
     });
   }
+
+  /// Create a copy of RemoteConfigModel
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @pragma('vm:prefer-inline')
+  $RevenueCatConfigModelCopyWith<$Res> get revenueCat {
+    return $RevenueCatConfigModelCopyWith<$Res>(_value.revenueCat, (value) {
+      return _then(_value.copyWith(revenueCat: value) as $Val);
+    });
+  }
 }
 
 /// @nodoc
@@ -104,12 +124,17 @@ abstract class _$$RemoteConfigModelImplCopyWith<$Res>
       __$$RemoteConfigModelImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({ApiConfigModel api, SettingsConfigModel settings});
+  $Res call(
+      {ApiConfigModel api,
+      SettingsConfigModel settings,
+      RevenueCatConfigModel revenueCat});
 
   @override
   $ApiConfigModelCopyWith<$Res> get api;
   @override
   $SettingsConfigModelCopyWith<$Res> get settings;
+  @override
+  $RevenueCatConfigModelCopyWith<$Res> get revenueCat;
 }
 
 /// @nodoc
@@ -127,6 +152,7 @@ class __$$RemoteConfigModelImplCopyWithImpl<$Res>
   $Res call({
     Object? api = null,
     Object? settings = null,
+    Object? revenueCat = null,
   }) {
     return _then(_$RemoteConfigModelImpl(
       api: null == api
@@ -137,6 +163,10 @@ class __$$RemoteConfigModelImplCopyWithImpl<$Res>
           ? _value.settings
           : settings // ignore: cast_nullable_to_non_nullable
               as SettingsConfigModel,
+      revenueCat: null == revenueCat
+          ? _value.revenueCat
+          : revenueCat // ignore: cast_nullable_to_non_nullable
+              as RevenueCatConfigModel,
     ));
   }
 }
@@ -146,7 +176,8 @@ class __$$RemoteConfigModelImplCopyWithImpl<$Res>
 class _$RemoteConfigModelImpl implements _RemoteConfigModel {
   const _$RemoteConfigModelImpl(
       {this.api = const ApiConfigModel(),
-      this.settings = const SettingsConfigModel()});
+      this.settings = const SettingsConfigModel(),
+      this.revenueCat = const RevenueCatConfigModel()});
 
   factory _$RemoteConfigModelImpl.fromJson(Map<String, dynamic> json) =>
       _$$RemoteConfigModelImplFromJson(json);
@@ -157,10 +188,13 @@ class _$RemoteConfigModelImpl implements _RemoteConfigModel {
   @override
   @JsonKey()
   final SettingsConfigModel settings;
+  @override
+  @JsonKey()
+  final RevenueCatConfigModel revenueCat;
 
   @override
   String toString() {
-    return 'RemoteConfigModel(api: $api, settings: $settings)';
+    return 'RemoteConfigModel(api: $api, settings: $settings, revenueCat: $revenueCat)';
   }
 
   @override
@@ -170,12 +204,14 @@ class _$RemoteConfigModelImpl implements _RemoteConfigModel {
             other is _$RemoteConfigModelImpl &&
             (identical(other.api, api) || other.api == api) &&
             (identical(other.settings, settings) ||
-                other.settings == settings));
+                other.settings == settings) &&
+            (identical(other.revenueCat, revenueCat) ||
+                other.revenueCat == revenueCat));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  int get hashCode => Object.hash(runtimeType, api, settings);
+  int get hashCode => Object.hash(runtimeType, api, settings, revenueCat);
 
   /// Create a copy of RemoteConfigModel
   /// with the given fields replaced by the non-null parameter values.
@@ -197,7 +233,8 @@ class _$RemoteConfigModelImpl implements _RemoteConfigModel {
 abstract class _RemoteConfigModel implements RemoteConfigModel {
   const factory _RemoteConfigModel(
       {final ApiConfigModel api,
-      final SettingsConfigModel settings}) = _$RemoteConfigModelImpl;
+      final SettingsConfigModel settings,
+      final RevenueCatConfigModel revenueCat}) = _$RemoteConfigModelImpl;
 
   factory _RemoteConfigModel.fromJson(Map<String, dynamic> json) =
       _$RemoteConfigModelImpl.fromJson;
@@ -206,6 +243,8 @@ abstract class _RemoteConfigModel implements RemoteConfigModel {
   ApiConfigModel get api;
   @override
   SettingsConfigModel get settings;
+  @override
+  RevenueCatConfigModel get revenueCat;
 
   /// Create a copy of RemoteConfigModel
   /// with the given fields replaced by the non-null parameter values.
@@ -213,6 +252,235 @@ abstract class _RemoteConfigModel implements RemoteConfigModel {
   @JsonKey(includeFromJson: false, includeToJson: false)
   _$$RemoteConfigModelImplCopyWith<_$RemoteConfigModelImpl> get copyWith =>
       throw _privateConstructorUsedError;
+}
+
+RevenueCatConfigModel _$RevenueCatConfigModelFromJson(
+    Map<String, dynamic> json) {
+  return _RevenueCatConfigModel.fromJson(json);
+}
+
+/// @nodoc
+mixin _$RevenueCatConfigModel {
+  String get revenueIOSApiKey => throw _privateConstructorUsedError;
+  String get revenueAndroidApiKey => throw _privateConstructorUsedError;
+  String get defaultEntitlementIdentifier => throw _privateConstructorUsedError;
+  int get freeLimit => throw _privateConstructorUsedError;
+
+  /// Serializes this RevenueCatConfigModel to a JSON map.
+  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
+
+  /// Create a copy of RevenueCatConfigModel
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  $RevenueCatConfigModelCopyWith<RevenueCatConfigModel> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class $RevenueCatConfigModelCopyWith<$Res> {
+  factory $RevenueCatConfigModelCopyWith(RevenueCatConfigModel value,
+          $Res Function(RevenueCatConfigModel) then) =
+      _$RevenueCatConfigModelCopyWithImpl<$Res, RevenueCatConfigModel>;
+  @useResult
+  $Res call(
+      {String revenueIOSApiKey,
+      String revenueAndroidApiKey,
+      String defaultEntitlementIdentifier,
+      int freeLimit});
+}
+
+/// @nodoc
+class _$RevenueCatConfigModelCopyWithImpl<$Res,
+        $Val extends RevenueCatConfigModel>
+    implements $RevenueCatConfigModelCopyWith<$Res> {
+  _$RevenueCatConfigModelCopyWithImpl(this._value, this._then);
+
+  // ignore: unused_field
+  final $Val _value;
+  // ignore: unused_field
+  final $Res Function($Val) _then;
+
+  /// Create a copy of RevenueCatConfigModel
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? revenueIOSApiKey = null,
+    Object? revenueAndroidApiKey = null,
+    Object? defaultEntitlementIdentifier = null,
+    Object? freeLimit = null,
+  }) {
+    return _then(_value.copyWith(
+      revenueIOSApiKey: null == revenueIOSApiKey
+          ? _value.revenueIOSApiKey
+          : revenueIOSApiKey // ignore: cast_nullable_to_non_nullable
+              as String,
+      revenueAndroidApiKey: null == revenueAndroidApiKey
+          ? _value.revenueAndroidApiKey
+          : revenueAndroidApiKey // ignore: cast_nullable_to_non_nullable
+              as String,
+      defaultEntitlementIdentifier: null == defaultEntitlementIdentifier
+          ? _value.defaultEntitlementIdentifier
+          : defaultEntitlementIdentifier // ignore: cast_nullable_to_non_nullable
+              as String,
+      freeLimit: null == freeLimit
+          ? _value.freeLimit
+          : freeLimit // ignore: cast_nullable_to_non_nullable
+              as int,
+    ) as $Val);
+  }
+}
+
+/// @nodoc
+abstract class _$$RevenueCatConfigModelImplCopyWith<$Res>
+    implements $RevenueCatConfigModelCopyWith<$Res> {
+  factory _$$RevenueCatConfigModelImplCopyWith(
+          _$RevenueCatConfigModelImpl value,
+          $Res Function(_$RevenueCatConfigModelImpl) then) =
+      __$$RevenueCatConfigModelImplCopyWithImpl<$Res>;
+  @override
+  @useResult
+  $Res call(
+      {String revenueIOSApiKey,
+      String revenueAndroidApiKey,
+      String defaultEntitlementIdentifier,
+      int freeLimit});
+}
+
+/// @nodoc
+class __$$RevenueCatConfigModelImplCopyWithImpl<$Res>
+    extends _$RevenueCatConfigModelCopyWithImpl<$Res,
+        _$RevenueCatConfigModelImpl>
+    implements _$$RevenueCatConfigModelImplCopyWith<$Res> {
+  __$$RevenueCatConfigModelImplCopyWithImpl(_$RevenueCatConfigModelImpl _value,
+      $Res Function(_$RevenueCatConfigModelImpl) _then)
+      : super(_value, _then);
+
+  /// Create a copy of RevenueCatConfigModel
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? revenueIOSApiKey = null,
+    Object? revenueAndroidApiKey = null,
+    Object? defaultEntitlementIdentifier = null,
+    Object? freeLimit = null,
+  }) {
+    return _then(_$RevenueCatConfigModelImpl(
+      revenueIOSApiKey: null == revenueIOSApiKey
+          ? _value.revenueIOSApiKey
+          : revenueIOSApiKey // ignore: cast_nullable_to_non_nullable
+              as String,
+      revenueAndroidApiKey: null == revenueAndroidApiKey
+          ? _value.revenueAndroidApiKey
+          : revenueAndroidApiKey // ignore: cast_nullable_to_non_nullable
+              as String,
+      defaultEntitlementIdentifier: null == defaultEntitlementIdentifier
+          ? _value.defaultEntitlementIdentifier
+          : defaultEntitlementIdentifier // ignore: cast_nullable_to_non_nullable
+              as String,
+      freeLimit: null == freeLimit
+          ? _value.freeLimit
+          : freeLimit // ignore: cast_nullable_to_non_nullable
+              as int,
+    ));
+  }
+}
+
+/// @nodoc
+@JsonSerializable()
+class _$RevenueCatConfigModelImpl implements _RevenueCatConfigModel {
+  const _$RevenueCatConfigModelImpl(
+      {this.revenueIOSApiKey = '',
+      this.revenueAndroidApiKey = '',
+      this.defaultEntitlementIdentifier = 'pro',
+      this.freeLimit = 1});
+
+  factory _$RevenueCatConfigModelImpl.fromJson(Map<String, dynamic> json) =>
+      _$$RevenueCatConfigModelImplFromJson(json);
+
+  @override
+  @JsonKey()
+  final String revenueIOSApiKey;
+  @override
+  @JsonKey()
+  final String revenueAndroidApiKey;
+  @override
+  @JsonKey()
+  final String defaultEntitlementIdentifier;
+  @override
+  @JsonKey()
+  final int freeLimit;
+
+  @override
+  String toString() {
+    return 'RevenueCatConfigModel(revenueIOSApiKey: $revenueIOSApiKey, revenueAndroidApiKey: $revenueAndroidApiKey, defaultEntitlementIdentifier: $defaultEntitlementIdentifier, freeLimit: $freeLimit)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$RevenueCatConfigModelImpl &&
+            (identical(other.revenueIOSApiKey, revenueIOSApiKey) ||
+                other.revenueIOSApiKey == revenueIOSApiKey) &&
+            (identical(other.revenueAndroidApiKey, revenueAndroidApiKey) ||
+                other.revenueAndroidApiKey == revenueAndroidApiKey) &&
+            (identical(other.defaultEntitlementIdentifier,
+                    defaultEntitlementIdentifier) ||
+                other.defaultEntitlementIdentifier ==
+                    defaultEntitlementIdentifier) &&
+            (identical(other.freeLimit, freeLimit) ||
+                other.freeLimit == freeLimit));
+  }
+
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  int get hashCode => Object.hash(runtimeType, revenueIOSApiKey,
+      revenueAndroidApiKey, defaultEntitlementIdentifier, freeLimit);
+
+  /// Create a copy of RevenueCatConfigModel
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$RevenueCatConfigModelImplCopyWith<_$RevenueCatConfigModelImpl>
+      get copyWith => __$$RevenueCatConfigModelImplCopyWithImpl<
+          _$RevenueCatConfigModelImpl>(this, _$identity);
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$$RevenueCatConfigModelImplToJson(
+      this,
+    );
+  }
+}
+
+abstract class _RevenueCatConfigModel implements RevenueCatConfigModel {
+  const factory _RevenueCatConfigModel(
+      {final String revenueIOSApiKey,
+      final String revenueAndroidApiKey,
+      final String defaultEntitlementIdentifier,
+      final int freeLimit}) = _$RevenueCatConfigModelImpl;
+
+  factory _RevenueCatConfigModel.fromJson(Map<String, dynamic> json) =
+      _$RevenueCatConfigModelImpl.fromJson;
+
+  @override
+  String get revenueIOSApiKey;
+  @override
+  String get revenueAndroidApiKey;
+  @override
+  String get defaultEntitlementIdentifier;
+  @override
+  int get freeLimit;
+
+  /// Create a copy of RevenueCatConfigModel
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  _$$RevenueCatConfigModelImplCopyWith<_$RevenueCatConfigModelImpl>
+      get copyWith => throw _privateConstructorUsedError;
 }
 
 ApiConfigModel _$ApiConfigModelFromJson(Map<String, dynamic> json) {

@@ -11,6 +11,7 @@ import 'package:phrasly_ai_tools/src/core/components/widgets/app_card.dart';
 import 'package:phrasly_ai_tools/src/core/extensions/context_extension.dart';
 import 'package:phrasly_ai_tools/src/core/gen/assets.gen.dart';
 import 'package:phrasly_ai_tools/src/core/services/locator/locator.dart';
+import 'package:phrasly_ai_tools/src/core/services/purchases/subscription_cubit.dart';
 import 'package:phrasly_ai_tools/src/core/services/theme/app_theme.dart';
 import 'package:phrasly_ai_tools/src/core/utils/utils.dart';
 import 'package:phrasly_ai_tools/src/features/humanizer/data/repos/humanizer_repo.dart';
@@ -224,6 +225,7 @@ class _HumanizerPageState extends State<HumanizerPage> {
   }
 
   Future<void> humanizeText() async {
+    if (!await locator<SubscriptionCubit>().canUseAiTools()) return;
     setState(() {
       isLoading = true;
     });

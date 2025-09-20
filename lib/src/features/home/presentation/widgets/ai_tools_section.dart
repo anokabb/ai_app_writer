@@ -1,8 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:phrasly_ai_tools/src/core/components/layouts/buttons/app_cuppertino_button.dart';
 import 'package:phrasly_ai_tools/src/core/components/widgets/app_card.dart';
 import 'package:phrasly_ai_tools/src/core/gen/assets.gen.dart';
+import 'package:phrasly_ai_tools/src/core/services/locator/locator.dart';
+import 'package:phrasly_ai_tools/src/core/services/purchases/revenue_cat_service.dart';
+import 'package:phrasly_ai_tools/src/core/services/purchases/subscription_cubit.dart';
 import 'package:phrasly_ai_tools/src/core/services/theme/app_theme.dart';
 import 'package:phrasly_ai_tools/src/core/utils/utils.dart';
 import 'package:phrasly_ai_tools/src/features/detector/presentation/pages/detector_page.dart';
@@ -18,9 +23,47 @@ class AItoolsSection extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       spacing: 16,
       children: [
-        Text(
-          'AI Power Tools 🚀',
-          style: context.appTextTheme.title5,
+        Row(
+          children: [
+            Expanded(
+              child: Text(
+                'AI Power Tools 🚀',
+                style: context.appTextTheme.title5,
+              ),
+            ),
+            BlocBuilder<SubscriptionCubit, SubscriptionState>(
+              builder: (context, state) {
+                if (state.isSubscriber) {
+                  return SizedBox.shrink();
+                }
+                return AppCupertinoButton(
+                  onTap: () {
+                    locator<SubscriptionCubit>().showPaywall(PaywallOffers.third_offer);
+                  },
+                  child: Row(
+                    spacing: 4,
+                    children: [
+                      Text(
+                        'Get Pro',
+                        style: context.appTextTheme.subtitle1.copyWith(
+                          color: Utils.hexToColor('#FFA607'),
+                          height: 1,
+                        ),
+                      ),
+                      SvgPicture.asset(
+                        Assets.svg.taj,
+                        height: 20,
+                        colorFilter: ColorFilter.mode(
+                          Utils.hexToColor('#FFA607'),
+                          BlendMode.srcIn,
+                        ),
+                      ),
+                    ],
+                  ),
+                );
+              },
+            ),
+          ],
         ),
         _AItoolsItem(
           imagePath: Assets.images.contentGenerator.path,

@@ -5,6 +5,9 @@ import 'package:go_router/go_router.dart';
 import 'package:phrasly_ai_tools/src/core/components/layouts/buttons/app_cuppertino_button.dart';
 import 'package:phrasly_ai_tools/src/core/extensions/context_extension.dart';
 import 'package:phrasly_ai_tools/src/core/gen/assets.gen.dart';
+import 'package:phrasly_ai_tools/src/core/services/locator/locator.dart';
+import 'package:phrasly_ai_tools/src/core/services/purchases/revenue_cat_service.dart';
+import 'package:phrasly_ai_tools/src/core/services/purchases/subscription_cubit.dart';
 import 'package:phrasly_ai_tools/src/core/services/theme/app_theme.dart';
 import 'package:phrasly_ai_tools/src/core/utils/utils.dart';
 import 'package:phrasly_ai_tools/src/features/documents/presentation/cubit/history_cubit.dart';
@@ -72,15 +75,21 @@ class StatsCard extends StatelessWidget {
                 },
               ),
               SizedBox(width: 16),
-              _StatsItem(
-                title: context.localization.freePlan,
-                svgIcon: Assets.svg.taj,
-                value: 'Current',
-                gradientColors: [
-                  Utils.hexToColor('#FFA000'),
-                  Utils.hexToColor('#FFBA15'),
-                ],
-                onPressed: () {},
+              BlocBuilder<SubscriptionCubit, SubscriptionState>(
+                builder: (context, state) {
+                  return _StatsItem(
+                    title: state.isSubscriber ? 'Premium Plan' : context.localization.freePlan,
+                    svgIcon: Assets.svg.taj,
+                    value: 'Current',
+                    gradientColors: [
+                      Utils.hexToColor('#FFA000'),
+                      Utils.hexToColor('#FFBA15'),
+                    ],
+                    onPressed: () {
+                      locator<SubscriptionCubit>().showPaywall(PaywallOffers.third_offer);
+                    },
+                  );
+                },
               ),
             ],
           ),
@@ -142,6 +151,8 @@ class _StatsItem extends StatelessWidget {
                     Expanded(
                       child: Text(
                         title,
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
                         style: context.appTextTheme.body2.copyWith(
                           color: Colors.white,
                         ),

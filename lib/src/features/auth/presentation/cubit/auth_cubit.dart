@@ -3,6 +3,8 @@ import 'dart:developer';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:phrasly_ai_tools/src/core/network/models/app_error.dart';
+import 'package:phrasly_ai_tools/src/core/services/locator/locator.dart';
+import 'package:phrasly_ai_tools/src/core/services/purchases/revenue_cat_service.dart';
 import 'package:phrasly_ai_tools/src/features/auth/data/models/user_model.dart';
 import 'package:phrasly_ai_tools/src/features/auth/data/repos/auth_repo.dart';
 
@@ -83,6 +85,7 @@ class AuthCubit extends Cubit<AuthState> {
   Future<void> logout() async {
     emit(const AuthState.loading());
     final result = await _authRepo.logout();
+    locator<RevenueCatService>().logout();
     result.match(
       (error) => emit(AuthState.error(error)),
       (_) => emit(const AuthState.unauthenticated()),
@@ -91,5 +94,6 @@ class AuthCubit extends Cubit<AuthState> {
 
   Future setUser(UserModel user) async {
     emit(AuthState.authenticated(user));
+    locator<RevenueCatService>().login(user.id);
   }
 }

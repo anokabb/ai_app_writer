@@ -10,6 +10,7 @@ final settingsBox = Hive.box('settings');
 final devBox = Hive.box('dev');
 // used for storing data that should persist even after logout
 final persistsData = Hive.box('persistsData');
+final purchasesBox = Hive.box('purchases');
 
 Future initHive() async {
   Uint8List encryptionKey = await getEncryptionKey();
@@ -21,6 +22,7 @@ Future initHive() async {
   await Hive.openBox('dev', encryptionCipher: HiveAesCipher(encryptionKey));
   await Hive.openBox('localization', encryptionCipher: HiveAesCipher(encryptionKey));
   await Hive.openBox('persistsData', encryptionCipher: HiveAesCipher(encryptionKey));
+  await Hive.openBox('purchases', encryptionCipher: HiveAesCipher(encryptionKey));
 }
 
 Future<void> clearAllHiveBoxes() async {

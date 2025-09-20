@@ -12,6 +12,8 @@ import 'package:phrasly_ai_tools/src/core/network/ai_api/repos/openai_repo.dart'
 import 'package:phrasly_ai_tools/src/core/network/client/dio_factory.dart';
 import 'package:phrasly_ai_tools/src/core/network/client/interceptors/logger_interceptor.dart';
 import 'package:phrasly_ai_tools/src/core/network/client/interceptors/mock_logger_interceptor.dart';
+import 'package:phrasly_ai_tools/src/core/services/purchases/revenue_cat_service.dart';
+import 'package:phrasly_ai_tools/src/core/services/purchases/subscription_cubit.dart';
 import 'package:phrasly_ai_tools/src/core/services/remote_config/remote_config_service.dart';
 import 'package:phrasly_ai_tools/src/features/auth/data/repos/auth_repo.dart';
 import 'package:phrasly_ai_tools/src/features/auth/data/repos/firebase_auth_repo.dart';
@@ -52,6 +54,7 @@ void setupLocator() {
 
   // 3. Services
   locator.registerLazySingleton<RemoteConfigService>(() => RemoteConfigService());
+  locator.registerLazySingleton<RevenueCatService>(() => RevenueCatService());
 
   // 4. Repositories
   locator.registerLazySingleton<HistoryRepo>(() => HistoryRepo());
@@ -72,6 +75,8 @@ void setupLocator() {
   locator.registerLazySingleton<HistoryCubit>(() => HistoryCubit(locator<HistoryRepo>(), locator<AiRepo>()));
   locator.registerLazySingleton<SettingsCubit>(() => SettingsCubit());
   locator.registerLazySingleton<AuthCubit>(() => AuthCubit(locator<AuthRepo>()));
+  locator.registerLazySingleton<SubscriptionCubit>(
+      () => SubscriptionCubit(locator<RevenueCatService>(), locator<RemoteConfigService>()));
 }
 
 void onLoggedIn(GetIt instance) async {
@@ -84,4 +89,5 @@ List<BlocProvider> blocProviders = [
   BlocProvider<HistoryCubit>.value(value: locator<HistoryCubit>()),
   BlocProvider<SettingsCubit>.value(value: locator<SettingsCubit>()),
   BlocProvider<AuthCubit>(create: (_) => locator<AuthCubit>(), lazy: false),
+  BlocProvider<SubscriptionCubit>.value(value: locator<SubscriptionCubit>()),
 ];

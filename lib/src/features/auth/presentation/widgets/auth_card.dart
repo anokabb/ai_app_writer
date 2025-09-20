@@ -1,10 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:go_router/go_router.dart';
 import 'package:phrasly_ai_tools/src/core/components/forms/app_text_form_field.dart';
-import 'package:phrasly_ai_tools/src/core/components/layouts/buttons/app_cuppertino_button.dart';
 import 'package:phrasly_ai_tools/src/core/components/layouts/buttons/gradient_button.dart';
 import 'package:phrasly_ai_tools/src/core/components/widgets/app_card.dart';
 import 'package:phrasly_ai_tools/src/core/extensions/context_extension.dart';
@@ -133,48 +131,48 @@ class _AuthCardState extends State<AuthCard> {
                       ],
                       label: isLogin ? 'Login' : 'Register',
                     ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      spacing: 16,
-                      children: [
-                        AppCupertinoButton(
-                          onTap: () {},
-                          child: Container(
-                            padding: const EdgeInsets.all(8),
-                            decoration: BoxDecoration(
-                              color: context.theme.appColors.background,
-                              border: Border.all(
-                                color: context.theme.appColors.borderColor,
-                              ),
-                              borderRadius: BorderRadius.circular(10),
-                            ),
-                            child: Icon(
-                              FontAwesomeIcons.apple,
-                              color: Utils.hexToColor('#1A5DAB'),
-                              size: 30,
-                            ),
-                          ),
-                        ),
-                        AppCupertinoButton(
-                          onTap: locator<AuthCubit>().signInWithGoogle,
-                          child: Container(
-                            padding: const EdgeInsets.all(8),
-                            decoration: BoxDecoration(
-                              color: context.theme.appColors.background,
-                              border: Border.all(
-                                color: context.theme.appColors.borderColor,
-                              ),
-                              borderRadius: BorderRadius.circular(10),
-                            ),
-                            child: Icon(
-                              FontAwesomeIcons.google,
-                              color: Utils.hexToColor('#1A5DAB'),
-                              size: 30,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
+                    // Row(
+                    //   mainAxisAlignment: MainAxisAlignment.center,
+                    //   spacing: 16,
+                    //   children: [
+                    //     AppCupertinoButton(
+                    //       onTap: () {},
+                    //       child: Container(
+                    //         padding: const EdgeInsets.all(8),
+                    //         decoration: BoxDecoration(
+                    //           color: context.theme.appColors.background,
+                    //           border: Border.all(
+                    //             color: context.theme.appColors.borderColor,
+                    //           ),
+                    //           borderRadius: BorderRadius.circular(10),
+                    //         ),
+                    //         child: Icon(
+                    //           FontAwesomeIcons.apple,
+                    //           color: Utils.hexToColor('#1A5DAB'),
+                    //           size: 30,
+                    //         ),
+                    //       ),
+                    //     ),
+                    //     AppCupertinoButton(
+                    //       onTap: locator<AuthCubit>().signInWithGoogle,
+                    //       child: Container(
+                    //         padding: const EdgeInsets.all(8),
+                    //         decoration: BoxDecoration(
+                    //           color: context.theme.appColors.background,
+                    //           border: Border.all(
+                    //             color: context.theme.appColors.borderColor,
+                    //           ),
+                    //           borderRadius: BorderRadius.circular(10),
+                    //         ),
+                    //         child: Icon(
+                    //           FontAwesomeIcons.google,
+                    //           color: Utils.hexToColor('#1A5DAB'),
+                    //           size: 30,
+                    //         ),
+                    //       ),
+                    //     ),
+                    //   ],
+                    // ),
                   ],
                 ),
               ),

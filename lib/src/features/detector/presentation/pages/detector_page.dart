@@ -11,6 +11,7 @@ import 'package:phrasly_ai_tools/src/core/components/widgets/app_card.dart';
 import 'package:phrasly_ai_tools/src/core/extensions/context_extension.dart';
 import 'package:phrasly_ai_tools/src/core/gen/assets.gen.dart';
 import 'package:phrasly_ai_tools/src/core/services/locator/locator.dart';
+import 'package:phrasly_ai_tools/src/core/services/purchases/subscription_cubit.dart';
 import 'package:phrasly_ai_tools/src/core/services/theme/app_theme.dart';
 import 'package:phrasly_ai_tools/src/core/utils/utils.dart';
 import 'package:phrasly_ai_tools/src/features/detector/data/repos/detector_repo.dart';
@@ -180,6 +181,8 @@ class _DetectorPageState extends State<DetectorPage> {
               gradientColors: DetectorPage.colors,
               isAsync: true,
               onPressed: () async {
+                if (!await locator<SubscriptionCubit>().canUseAiTools()) return;
+
                 if (_formKey.currentState?.validate() ?? false) {
                   await detectorCubit.analyzeText(_textController.text, mode: detectorMode);
                   Future.delayed(const Duration(milliseconds: 100), () {

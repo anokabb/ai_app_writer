@@ -58,6 +58,11 @@ class RemoteConfigService {
       RemoteConfigKeys.enableDataDeletion: true,
       RemoteConfigKeys.accountDeletionUrl: '',
       RemoteConfigKeys.forceUpdate: false,
+
+      // RevenueCat Config defaults
+      RemoteConfigKeys.revenueIOSApiKey: '',
+      RemoteConfigKeys.revenueAndroidApiKey: '',
+      RemoteConfigKeys.freeLimit: 1,
     };
 
     await _remoteConfig.setDefaults(defaultValues);
@@ -86,6 +91,11 @@ class RemoteConfigService {
         enableDataDeletion: _remoteConfig.getBool(RemoteConfigKeys.enableDataDeletion),
         accountDeletionUrl: _remoteConfig.getString(RemoteConfigKeys.accountDeletionUrl),
         forceUpdate: _remoteConfig.getBool(RemoteConfigKeys.forceUpdate),
+      ),
+      revenueCat: RevenueCatConfigModel(
+        revenueIOSApiKey: _remoteConfig.getString(RemoteConfigKeys.revenueIOSApiKey),
+        revenueAndroidApiKey: _remoteConfig.getString(RemoteConfigKeys.revenueAndroidApiKey),
+        freeLimit: _remoteConfig.getInt(RemoteConfigKeys.freeLimit),
       ),
     );
   }

@@ -16,6 +16,10 @@ _$RemoteConfigModelImpl _$$RemoteConfigModelImplFromJson(
           ? const SettingsConfigModel()
           : SettingsConfigModel.fromJson(
               json['settings'] as Map<String, dynamic>),
+      revenueCat: json['revenue_cat'] == null
+          ? const RevenueCatConfigModel()
+          : RevenueCatConfigModel.fromJson(
+              json['revenue_cat'] as Map<String, dynamic>),
     );
 
 Map<String, dynamic> _$$RemoteConfigModelImplToJson(
@@ -23,6 +27,26 @@ Map<String, dynamic> _$$RemoteConfigModelImplToJson(
     <String, dynamic>{
       'api': instance.api,
       'settings': instance.settings,
+      'revenue_cat': instance.revenueCat,
+    };
+
+_$RevenueCatConfigModelImpl _$$RevenueCatConfigModelImplFromJson(
+        Map<String, dynamic> json) =>
+    _$RevenueCatConfigModelImpl(
+      revenueIOSApiKey: json['revenue_i_o_s_api_key'] as String? ?? '',
+      revenueAndroidApiKey: json['revenue_android_api_key'] as String? ?? '',
+      defaultEntitlementIdentifier:
+          json['default_entitlement_identifier'] as String? ?? 'pro',
+      freeLimit: (json['free_limit'] as num?)?.toInt() ?? 1,
+    );
+
+Map<String, dynamic> _$$RevenueCatConfigModelImplToJson(
+        _$RevenueCatConfigModelImpl instance) =>
+    <String, dynamic>{
+      'revenue_i_o_s_api_key': instance.revenueIOSApiKey,
+      'revenue_android_api_key': instance.revenueAndroidApiKey,
+      'default_entitlement_identifier': instance.defaultEntitlementIdentifier,
+      'free_limit': instance.freeLimit,
     };
 
 _$ApiConfigModelImpl _$$ApiConfigModelImplFromJson(Map<String, dynamic> json) =>

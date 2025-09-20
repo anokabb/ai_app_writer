@@ -9,9 +9,23 @@ class RemoteConfigModel with _$RemoteConfigModel {
   const factory RemoteConfigModel({
     @Default(ApiConfigModel()) ApiConfigModel api,
     @Default(SettingsConfigModel()) SettingsConfigModel settings,
+    @Default(RevenueCatConfigModel()) RevenueCatConfigModel revenueCat,
   }) = _RemoteConfigModel;
 
   factory RemoteConfigModel.fromJson(Map<String, dynamic> json) => _$RemoteConfigModelFromJson(json);
+}
+
+/// RevenueCat configuration settings
+@freezed
+class RevenueCatConfigModel with _$RevenueCatConfigModel {
+  const factory RevenueCatConfigModel({
+    @Default('') String revenueIOSApiKey,
+    @Default('') String revenueAndroidApiKey,
+    @Default('pro') String defaultEntitlementIdentifier,
+    @Default(1) int freeLimit,
+  }) = _RevenueCatConfigModel;
+
+  factory RevenueCatConfigModel.fromJson(Map<String, dynamic> json) => _$RevenueCatConfigModelFromJson(json);
 }
 
 /// API configuration settings
@@ -69,4 +83,9 @@ class RemoteConfigKeys {
   static const String accountDeletionUrl = 'account_deletion_url';
   static const String contactUsEmail = 'contact_us_email';
   static const String forceUpdate = 'force_update';
+
+  // RevenueCat Config
+  static const String revenueIOSApiKey = 'revenue_ios_api_key';
+  static const String revenueAndroidApiKey = 'revenue_android_api_key';
+  static const String freeLimit = 'free_limit';
 }

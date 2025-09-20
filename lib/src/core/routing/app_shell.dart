@@ -3,7 +3,9 @@ import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:phrasly_ai_tools/src/core/gen/assets.gen.dart';
 import 'package:phrasly_ai_tools/src/core/routing/app_bottom_nav.dart';
+import 'package:phrasly_ai_tools/src/core/services/locator/locator.dart';
 import 'package:phrasly_ai_tools/src/core/services/notifications/notification_service.dart';
+import 'package:phrasly_ai_tools/src/core/services/purchases/subscription_cubit.dart';
 import 'package:phrasly_ai_tools/src/core/services/theme/app_theme.dart';
 
 class AppShell extends StatefulWidget {
@@ -28,7 +30,9 @@ class _AppShellState extends State<AppShell> with SingleTickerProviderStateMixin
   @override
   void initState() {
     super.initState();
-    NotificationService().initialize();
+    NotificationService().initialize().then((_) {
+      locator<SubscriptionCubit>().showAppOpenPaywall();
+    });
   }
 
   @override
