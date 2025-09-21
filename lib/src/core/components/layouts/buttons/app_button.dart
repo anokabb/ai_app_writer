@@ -88,7 +88,7 @@ class _AppButtonState extends State<AppButton> {
                 }
               : widget.onPressed,
       child: isLoading
-          ? _CircularProgressIndicator(
+          ? ButtonProgressIndicator(
               height: widget.height,
               color: textColor,
             )
@@ -120,7 +120,7 @@ class _AppButtonState extends State<AppButton> {
                 }
               : widget.onPressed,
       child: isLoading
-          ? _CircularProgressIndicator(
+          ? ButtonProgressIndicator(
               height: widget.height,
               color: textColor,
             )
@@ -134,7 +134,7 @@ class _AppButtonState extends State<AppButton> {
       style: _raisedButtonStyle(),
       label: isLoading
           ? Center(
-              child: _CircularProgressIndicator(
+              child: ButtonProgressIndicator(
                 height: widget.height,
                 color: textColor,
               ),
@@ -207,20 +207,20 @@ class _AppButtonState extends State<AppButton> {
   }
 }
 
-class _CircularProgressIndicator extends StatelessWidget {
+class ButtonProgressIndicator extends StatelessWidget {
   final double height;
   final Color? color;
 
-  const _CircularProgressIndicator({required this.height, this.color});
+  const ButtonProgressIndicator({super.key, required this.height, this.color});
 
   @override
   Widget build(BuildContext context) {
     return SizedBox(
       height: height * 0.4,
       width: height * 0.4,
-      child: CircularProgressIndicator(
+      child: CircularProgressIndicator.adaptive(
         strokeWidth: 2,
-        color: color ?? context.theme.appColors.textColor,
+        backgroundColor: color ?? context.theme.appColors.textColor,
       ),
     );
   }

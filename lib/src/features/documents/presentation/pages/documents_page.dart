@@ -103,7 +103,7 @@ class _DocumentsPageState extends State<DocumentsPage> {
       child: Scaffold(
         appBar: AppBar(
           title: Text(
-            'Documents',
+            'History',
             style: context.appTextTheme.subtitle1,
           ),
           forceMaterialTransparency: true,

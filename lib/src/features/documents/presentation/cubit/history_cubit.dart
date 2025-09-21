@@ -84,9 +84,9 @@ class HistoryCubit extends Cubit<HistoryState> {
       saved = false;
     }
     if (saved) {
-      Utils.showToast('Saved to docs');
+      Utils.showToast('Saved to history');
     } else {
-      Utils.showToast('Failed to save to docs');
+      Utils.showToast('Failed to save to history');
     }
     return saved;
   }
@@ -122,9 +122,9 @@ class HistoryCubit extends Cubit<HistoryState> {
       saved = false;
     }
     if (saved) {
-      Utils.showToast('Saved to docs');
+      Utils.showToast('Saved to history');
     } else {
-      Utils.showToast('Failed to save to docs');
+      Utils.showToast('Failed to save to history');
     }
     return saved;
   }

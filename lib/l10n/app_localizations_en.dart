@@ -24,7 +24,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get customDate => 'Custom Date';
 
   @override
-  String get documents => 'Documents';
+  String get documents => 'History';
 
   @override
   String get donTHaveAnAccount => 'Don\'t have an account?';

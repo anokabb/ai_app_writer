@@ -137,6 +137,9 @@ class $AssetsImagesOnboardingGen {
   /// File path: assets/images/onboarding/logo.png
   AssetGenImage get logo => const AssetGenImage('assets/images/onboarding/logo.png');
 
+  /// Directory path: assets/images/onboarding/profiles
+  $AssetsImagesOnboardingProfilesGen get profiles => const $AssetsImagesOnboardingProfilesGen();
+
   /// File path: assets/images/onboarding/scan_success.png
   AssetGenImage get scanSuccess => const AssetGenImage('assets/images/onboarding/scan_success.png');
 
@@ -157,6 +160,25 @@ class $AssetsImagesOnboardingGen {
 
   /// List of all assets
   List<AssetGenImage> get values => [background, bubbles, continueBtn, getStartedBtn, logo, scanSuccess, scanWrong, stars, stats, tools, users];
+}
+
+class $AssetsImagesOnboardingProfilesGen {
+  const $AssetsImagesOnboardingProfilesGen();
+
+  /// File path: assets/images/onboarding/profiles/profile1.png
+  AssetGenImage get profile1 => const AssetGenImage('assets/images/onboarding/profiles/profile1.png');
+
+  /// File path: assets/images/onboarding/profiles/profile2.png
+  AssetGenImage get profile2 => const AssetGenImage('assets/images/onboarding/profiles/profile2.png');
+
+  /// File path: assets/images/onboarding/profiles/profile3.png
+  AssetGenImage get profile3 => const AssetGenImage('assets/images/onboarding/profiles/profile3.png');
+
+  /// File path: assets/images/onboarding/profiles/profile4.png
+  AssetGenImage get profile4 => const AssetGenImage('assets/images/onboarding/profiles/profile4.png');
+
+  /// List of all assets
+  List<AssetGenImage> get values => [profile1, profile2, profile3, profile4];
 }
 
 class Assets {

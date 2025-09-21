@@ -1,5 +1,6 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:collection/collection.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -65,8 +66,8 @@ class _GeneratorPageState extends State<GeneratorPage> {
   bool isLoading = false;
   final TextEditingController _textController = TextEditingController();
 
-  int wordCount = 500;
-  final TextEditingController _wordCountController = TextEditingController(text: '500');
+  int wordCount = kDebugMode ? 50 : 200;
+  late final TextEditingController _wordCountController = TextEditingController(text: wordCount.toString());
 
   final _formKey = GlobalKey<FormState>();
   final scrollController = ScrollController();

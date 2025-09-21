@@ -8,7 +8,7 @@ part of '../settings_model.dart';
 
 _$SettingsModelImpl _$$SettingsModelImplFromJson(Map<String, dynamic> json) =>
     _$SettingsModelImpl(
-      autoSaveEnabled: json['auto_save_enabled'] as bool? ?? false,
+      autoSaveEnabled: json['auto_save_enabled'] as bool? ?? true,
       writingTips: json['writing_tips'] as bool? ?? true,
     );
 

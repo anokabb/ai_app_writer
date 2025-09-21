@@ -152,7 +152,7 @@ class _GeneratorResultWidgetState extends State<GeneratorResultWidget> {
                           gradientColors: widget.gradientColors,
                         ),
                         GradientButton(
-                          label: 'Save to Docs',
+                          label: 'Save to History',
                           disabled: widget.isLoading,
                           isAsync: true,
                           onPressed: () async {

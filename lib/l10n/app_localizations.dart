@@ -128,7 +128,7 @@ abstract class AppLocalizations {
   /// No description provided for @documents.
   ///
   /// In en, this message translates to:
-  /// **'Documents'**
+  /// **'History'**
   String get documents;
 
   /// No description provided for @donTHaveAnAccount.

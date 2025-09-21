@@ -1,6 +1,8 @@
 import 'dart:convert';
+import 'dart:developer';
 import 'dart:io';
 
+import 'package:flutter/material.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
@@ -15,6 +17,7 @@ class ExportService {
     required String text,
     required ExportType type,
   }) async {
+    log('exporting type: $type text: $text');
     try {
       switch (type) {
         case ExportType.clipboard:
@@ -89,7 +92,6 @@ ${text.split('\n').map((line) => line.isEmpty ? '<br>' : '<p>$line</p>').join(''
       // Share the file
       await Share.shareXFiles(
         [XFile(file.path)],
-        text: text,
       );
     } catch (e) {
       throw Exception('Failed to save document: $e');
@@ -97,29 +99,25 @@ ${text.split('\n').map((line) => line.isEmpty ? '<br>' : '<p>$line</p>').join(''
   }
 
   static Future<void> _exportAsPdf(String text) async {
+    debugPrint(text);
+
     try {
       // Create PDF document
       final pdf = pw.Document();
 
-      // Add page to PDF
       pdf.addPage(
         pw.Page(
           pageFormat: PdfPageFormat.a4,
           build: (pw.Context context) {
-            return pw.Column(
-              crossAxisAlignment: pw.CrossAxisAlignment.start,
-              children: [
-                // Header
-                pw.Text(
-                  text,
-                  style: const pw.TextStyle(
-                    fontSize: 12,
-                    lineSpacing: 1.5,
-                  ),
+            return pw.Padding(
+              padding: const pw.EdgeInsets.all(16),
+              child: pw.Text(
+                cleanMarkdown(text),
+                style: const pw.TextStyle(
+                  fontSize: 11,
+                  lineSpacing: 1.4,
                 ),
-
-                // Footer
-              ],
+              ),
             );
           },
         ),
@@ -138,7 +136,6 @@ ${text.split('\n').map((line) => line.isEmpty ? '<br>' : '<p>$line</p>').join(''
       // Share the PDF file
       await Share.shareXFiles(
         [XFile(file.path)],
-        text: text,
       );
     } catch (e) {
       throw Exception('Failed to export PDF: $e');
@@ -154,18 +151,15 @@ ${text.split('\n').map((line) => line.isEmpty ? '<br>' : '<p>$line</p>').join(''
         pw.Page(
           pageFormat: PdfPageFormat.a4,
           build: (pw.Context context) {
-            return pw.Column(
-              crossAxisAlignment: pw.CrossAxisAlignment.start,
-              children: [
-                // Content
-                pw.Text(
-                  text,
-                  style: const pw.TextStyle(
-                    fontSize: 11,
-                    lineSpacing: 1.4,
-                  ),
+            return pw.Padding(
+              padding: const pw.EdgeInsets.all(16),
+              child: pw.Text(
+                cleanMarkdown(text),
+                style: const pw.TextStyle(
+                  fontSize: 11,
+                  lineSpacing: 1.4,
                 ),
-              ],
+              ),
             );
           },
         ),
@@ -179,5 +173,12 @@ ${text.split('\n').map((line) => line.isEmpty ? '<br>' : '<p>$line</p>').join(''
     } catch (e) {
       throw Exception('Failed to print: $e');
     }
+  }
+
+  static String cleanMarkdown(String text) {
+    return text;
+    // return md
+    //     .markdownToHtml(text) // Converts Markdown to HTML
+    //     .replaceAll(RegExp(r'<[^>]*>'), '');
   }
 }

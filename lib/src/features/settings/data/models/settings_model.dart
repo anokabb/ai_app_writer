@@ -6,7 +6,7 @@ part 'gen/settings_model.g.dart';
 @freezed
 class SettingsModel with _$SettingsModel {
   const factory SettingsModel({
-    @Default(false) bool autoSaveEnabled,
+    @Default(true) bool autoSaveEnabled,
     @Default(true) bool writingTips,
   }) = _SettingsModel;
 

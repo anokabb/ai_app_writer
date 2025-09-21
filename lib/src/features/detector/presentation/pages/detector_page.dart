@@ -7,6 +7,7 @@ import 'package:phrasly_ai_tools/src/core/components/layouts/buttons/gradient_bu
 import 'package:phrasly_ai_tools/src/core/components/layouts/buttons/selector_buttons.dart';
 import 'package:phrasly_ai_tools/src/core/components/layouts/buttons/transparent_app_button.dart';
 import 'package:phrasly_ai_tools/src/core/components/layouts/gradient_layout.dart';
+import 'package:phrasly_ai_tools/src/core/components/pop_up/file_upload_modal.dart';
 import 'package:phrasly_ai_tools/src/core/components/widgets/app_card.dart';
 import 'package:phrasly_ai_tools/src/core/extensions/context_extension.dart';
 import 'package:phrasly_ai_tools/src/core/gen/assets.gen.dart';
@@ -114,7 +115,19 @@ class _DetectorPageState extends State<DetectorPage> {
                         primaryColor: primaryColor,
                         title: 'Upload file',
                         icon: Assets.svg.link,
-                        onTap: () {},
+                        isAsync: true,
+                        onTap: () async {
+                          FileUploadModal.show(
+                            context,
+                            color: primaryColor,
+                            onFileUploaded: (String text) {
+                              _textController.text = text;
+                            },
+                            onError: () {
+                              // Handle error if needed
+                            },
+                          );
+                        },
                       ),
                       TransparentButton(
                         primaryColor: primaryColor,

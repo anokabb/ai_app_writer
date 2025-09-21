@@ -117,7 +117,7 @@ class __$$SettingsModelImplCopyWithImpl<$Res>
 @JsonSerializable()
 class _$SettingsModelImpl implements _SettingsModel {
   const _$SettingsModelImpl(
-      {this.autoSaveEnabled = false, this.writingTips = true});
+      {this.autoSaveEnabled = true, this.writingTips = true});
 
   factory _$SettingsModelImpl.fromJson(Map<String, dynamic> json) =>
       _$$SettingsModelImplFromJson(json);

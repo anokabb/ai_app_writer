@@ -150,7 +150,9 @@ class _DevModeViewState extends State<DevModeView> {
                     isPro = value;
                   });
                   await devBox.put('isDevPro', value);
-                  Restart.restartApp();
+                  if (!kDebugMode) {
+                    Restart.restartApp();
+                  }
                 },
               ),
             ),

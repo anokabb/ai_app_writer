@@ -11,6 +11,7 @@ import 'package:phrasly_ai_tools/src/core/services/locator/locator.dart';
 import 'package:phrasly_ai_tools/src/core/services/remote_config/remote_config_service.dart';
 import 'package:phrasly_ai_tools/src/core/services/theme/app_colors.dart';
 import 'package:phrasly_ai_tools/src/core/services/theme/app_theme.dart';
+import 'package:phrasly_ai_tools/src/core/utils/app_web_view_pop_up.dart';
 import 'package:phrasly_ai_tools/src/core/utils/utils.dart';
 import 'package:phrasly_ai_tools/src/features/auth/presentation/cubit/auth_cubit.dart';
 import 'package:phrasly_ai_tools/src/features/dev/presentation/views/app_version_widget.dart';
@@ -53,7 +54,10 @@ class SettingsTab extends StatelessWidget {
                       color: AppColors.green,
                     ),
                     onTap: () {
-                      launchUrl(Uri.parse(configData.privacyPolicyUrl));
+                      AppWebViewPopUp.show(
+                        title: 'Privacy Policy',
+                        url: configData.privacyPolicyUrl,
+                      );
                     },
                   ),
                 if (configData.termsOfServiceUrl.isNotEmpty)
@@ -66,7 +70,10 @@ class SettingsTab extends StatelessWidget {
                       color: context.appColors.primary,
                     ),
                     onTap: () {
-                      launchUrl(Uri.parse(configData.termsOfServiceUrl));
+                      AppWebViewPopUp.show(
+                        title: 'Terms of Service',
+                        url: configData.termsOfServiceUrl,
+                      );
                     },
                   ),
                 if (configData.aboutUrl.isNotEmpty)
@@ -79,7 +86,10 @@ class SettingsTab extends StatelessWidget {
                       color: AppColors.purple,
                     ),
                     onTap: () {
-                      launchUrl(Uri.parse(configData.aboutUrl));
+                      AppWebViewPopUp.show(
+                        title: 'About',
+                        url: configData.aboutUrl,
+                      );
                     },
                   ),
                 if (configData.helpAndSupportUrl.isNotEmpty)
@@ -92,7 +102,10 @@ class SettingsTab extends StatelessWidget {
                       color: AppColors.orange,
                     ),
                     onTap: () {
-                      launchUrl(Uri.parse(configData.helpAndSupportUrl));
+                      AppWebViewPopUp.show(
+                        title: 'Help & Support',
+                        url: configData.helpAndSupportUrl,
+                      );
                     },
                   ),
                 if (configData.contactUsEmail.isNotEmpty)
@@ -143,7 +156,10 @@ class SettingsTab extends StatelessWidget {
                   padding: const EdgeInsets.only(top: 16),
                   child: AppCupertinoButton(
                     onTap: () {
-                      launchUrl(Uri.parse(configData.accountDeletionUrl));
+                      AppWebViewPopUp.show(
+                        title: 'Delete Account',
+                        url: configData.accountDeletionUrl,
+                      );
                     },
                     child: Container(
                       padding: const EdgeInsets.all(12),

@@ -72,18 +72,22 @@ class _ReviewsPageState extends State<ReviewsPage> {
                     ...[
                       _Review(
                           name: 'Sarah Chen',
+                          image: Assets.images.onboarding.profiles.profile3.path,
                           review:
                               'This app is a game-changer for my academic writing! The content generator helped me create a research paper outline in minutes, and the AI humanizer made my text sound completely natural. Saved me hours of work!'),
                       _Review(
                           name: 'Marcus Johnson',
+                          image: Assets.images.onboarding.profiles.profile2.path,
                           review:
                               'As a content creator, I was skeptical about AI tools, but Phrasly AI exceeded my expectations. The detector feature helps me ensure my content is original, and the humanizer makes my AI-generated drafts sound authentic. Highly recommend!'),
                       _Review(
                           name: 'Emily Rodriguez',
+                          image: Assets.images.onboarding.profiles.profile4.path,
                           review:
                               'The interface is so clean and easy to use. I love how I can generate different types of content and then humanize it to avoid detection. Perfect for students and professionals who need quality writing assistance.'),
                       _Review(
                           name: 'David Kim',
+                          image: Assets.images.onboarding.profiles.profile1.path,
                           review:
                               'Finally, an AI tool that actually works as advertised! The content generator produces coherent, well-structured text, and the humanizer does an amazing job making it sound human-written. Worth every penny!'),
                     ].map(
@@ -100,13 +104,17 @@ class _ReviewsPageState extends State<ReviewsPage> {
                             children: [
                               Row(
                                 children: [
+                                  Image.asset(e.image, width: 40, height: 40),
+                                  const SizedBox(width: 10),
                                   Expanded(child: Text(e.name, style: context.appTextTheme.subtitle2)),
-                                  Text('★★★★★',
-                                      style: context.appTextTheme.body2.copyWith(
-                                        color: Utils.hexToColor(
-                                          '#0B64CF',
-                                        ),
-                                      )),
+                                  Text(
+                                    '★★★★★',
+                                    style: context.appTextTheme.body2.copyWith(
+                                      color: Utils.hexToColor(
+                                        '#0B64CF',
+                                      ),
+                                    ),
+                                  ),
                                 ],
                               ),
                               const SizedBox(height: 10),
@@ -142,8 +150,9 @@ class _ReviewsPageState extends State<ReviewsPage> {
 }
 
 class _Review {
+  final String image;
   final String name;
   final String review;
 
-  _Review({required this.name, required this.review});
+  _Review({required this.image, required this.name, required this.review});
 }

@@ -6,6 +6,8 @@ import 'package:phrasly_ai_tools/src/core/components/widgets/language_selector.d
 import 'package:phrasly_ai_tools/src/core/constants/hive_config.dart';
 import 'package:phrasly_ai_tools/src/core/routing/app_bottom_nav.dart';
 import 'package:phrasly_ai_tools/src/core/services/locator/locator.dart';
+import 'package:phrasly_ai_tools/src/core/services/purchases/revenue_cat_service.dart';
+import 'package:phrasly_ai_tools/src/core/services/purchases/subscription_cubit.dart';
 import 'package:phrasly_ai_tools/src/core/services/theme/app_colors.dart';
 import 'package:phrasly_ai_tools/src/core/services/theme/app_theme.dart';
 import 'package:phrasly_ai_tools/src/core/utils/utils.dart';
@@ -15,6 +17,7 @@ import 'package:phrasly_ai_tools/src/features/auth/presentation/widgets/auth_car
 import 'package:phrasly_ai_tools/src/features/generator/presentation/pages/generator_page.dart';
 import 'package:phrasly_ai_tools/src/features/profile/presentation/widgets/settings_card_section.dart';
 import 'package:phrasly_ai_tools/src/features/settings/presentation/cubit/settings_cubit.dart';
+import 'package:share_plus/share_plus.dart';
 
 class ProfileTab extends StatefulWidget {
   const ProfileTab({super.key});
@@ -125,16 +128,23 @@ class _ProfileTabState extends State<ProfileTab> {
                     color: context.appColors.primary,
                   ),
                   children: <Widget>[
-                    SettingsCardItem(
-                      title: 'Upgrade to Pro',
-                      reverseTextStyle: true,
-                      subTitle: 'Unlock all features & remove limits',
-                      icon: Icon(
-                        Icons.arrow_circle_up_outlined,
-                        color: AppColors.orange,
-                      ),
-                      onTap: () {
-                        // TODO: Implement upgrade to pro action
+                    BlocBuilder<SubscriptionCubit, SubscriptionState>(
+                      builder: (context, subscriptionState) {
+                        if (subscriptionState.isSubscriber) {
+                          return SizedBox.shrink();
+                        }
+                        return SettingsCardItem(
+                          title: 'Upgrade to Pro',
+                          reverseTextStyle: true,
+                          subTitle: 'Unlock all features & remove limits',
+                          icon: Icon(
+                            Icons.arrow_circle_up_outlined,
+                            color: AppColors.orange,
+                          ),
+                          onTap: () {
+                            locator<SubscriptionCubit>().showPaywall(PaywallOffers.third_offer);
+                          },
+                        );
                       },
                     ),
                     // SettingsCardItem(
@@ -158,7 +168,7 @@ class _ProfileTabState extends State<ProfileTab> {
                         color: AppColors.purple,
                       ),
                       onTap: () {
-                        // TODO: Implement share app action
+                        Share.share('https://apps.apple.com/us/app/phrasly/id6752734913');
                       },
                     ),
                   ],

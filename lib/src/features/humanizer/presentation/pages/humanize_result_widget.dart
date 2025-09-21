@@ -179,7 +179,7 @@ class _HumanizeResultWidgetState extends State<HumanizeResultWidget> {
                           gradientColors: widget.gradientColors,
                         ),
                         GradientButton(
-                          label: 'Save to Docs',
+                          label: 'Save to History',
                           disabled: widget.isLoading,
                           isAsync: true,
                           onPressed: () async {

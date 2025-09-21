@@ -7,16 +7,16 @@ class PageTransitions {
   }) {
     return CustomTransitionPage(
       child: child,
-      transitionsBuilder: (context, animation, secondaryAnimation, child) {
+      transitionsBuilder: (context, animation, secondaryAnimation, screen) {
         return SlideTransition(
           position: Tween<Offset>(
             begin: const Offset(0, 1),
             end: Offset.zero,
           ).animate(CurvedAnimation(
             parent: animation,
-            curve: Curves.easeInOutCubic,
+            curve: Curves.easeInOut,
           )),
-          child: child,
+          child: screen,
         );
       },
     );

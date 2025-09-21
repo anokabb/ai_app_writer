@@ -41,6 +41,8 @@
 		<string>Main</string>
 		<key>UIStatusBarHidden</key>
 		<false />
+		<key>LSSupportsOpeningDocumentsInPlace</key>
+		<true />
 		<key>ITSAppUsesNonExemptEncryption</key>
 		<false />
 		<key>UISupportedInterfaceOrientations</key>
@@ -56,5 +58,7 @@
 			<string>UIInterfaceOrientationLandscapeLeft</string>
 			<string>UIInterfaceOrientationLandscapeRight</string>
 		</array>
+		<key>NSPhotoLibraryUsageDescription</key>
+		<string>Phrasly Ai needs access to your photos to extract text from images.</string>
 	</dict>
 </plist>

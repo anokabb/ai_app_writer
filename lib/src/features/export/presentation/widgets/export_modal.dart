@@ -1,4 +1,5 @@
-import 'package:flutter/cupertino.dart';
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:phrasly_ai_tools/src/core/components/layouts/buttons/app_cuppertino_button.dart';
 import 'package:phrasly_ai_tools/src/core/components/pop_up/slide_up_pop_up.dart';
@@ -92,7 +93,7 @@ class _ExportOptionState extends State<_ExportOption> {
   late final Color? color = widget.color;
   late final ExportOptions option = widget.option;
   late final String text = widget.text;
-  bool isLoading = false;
+  // bool isLoading = false;
 
   @override
   Widget build(BuildContext context) {
@@ -102,13 +103,17 @@ class _ExportOptionState extends State<_ExportOption> {
         color: Colors.transparent,
         child: AppCupertinoButton(
           onTap: () async {
-            if (isLoading) return;
-            setState(() => isLoading = true);
-            await ExportService.exportText(
-              text: text,
-              type: option.type,
-            );
-            setState(() => isLoading = false);
+            // if (isLoading) return;
+            // setState(() => isLoading = true);
+            try {
+              await ExportService.exportText(
+                text: text,
+                type: option.type,
+              );
+            } catch (e) {
+              log('Failed to export text: $e');
+            }
+            // setState(() => isLoading = false);
           },
           child: Container(
             padding: const EdgeInsets.all(14),
@@ -120,39 +125,41 @@ class _ExportOptionState extends State<_ExportOption> {
             ),
             child: AnimatedSize(
               duration: const Duration(milliseconds: 300),
-              child: isLoading
-                  ? const Center(
-                      child: CupertinoActivityIndicator(),
-                    )
-                  : Row(
-                      children: [
-                        Container(
-                          width: 40,
-                          height: 40,
-                          decoration: BoxDecoration(
-                            color: (color ?? context.theme.primaryColor).withValues(alpha: 0.1),
-                            borderRadius: BorderRadius.circular(8),
-                          ),
-                          child: Icon(
-                            option.icon,
-                            color: (color ?? context.theme.primaryColor),
-                            size: 20,
-                          ),
-                        ),
-                        const SizedBox(width: 12),
-                        Expanded(
-                          child: Text(
-                            option.label,
-                            style: context.theme.appTextTheme.subtitle3,
-                          ),
-                        ),
-                        Icon(
-                          Icons.arrow_forward_ios,
-                          color: Colors.grey[400],
-                          size: 16,
-                        ),
-                      ],
+              child:
+                  //  isLoading
+                  //     ? const Center(
+                  //         child: CupertinoActivityIndicator(),
+                  //       )
+                  //     :
+                  Row(
+                children: [
+                  Container(
+                    width: 40,
+                    height: 40,
+                    decoration: BoxDecoration(
+                      color: (color ?? context.theme.primaryColor).withValues(alpha: 0.1),
+                      borderRadius: BorderRadius.circular(8),
                     ),
+                    child: Icon(
+                      option.icon,
+                      color: (color ?? context.theme.primaryColor),
+                      size: 20,
+                    ),
+                  ),
+                  const SizedBox(width: 12),
+                  Expanded(
+                    child: Text(
+                      option.label,
+                      style: context.theme.appTextTheme.subtitle3,
+                    ),
+                  ),
+                  Icon(
+                    Icons.arrow_forward_ios,
+                    color: Colors.grey[400],
+                    size: 16,
+                  ),
+                ],
+              ),
             ),
           ),
         ),
