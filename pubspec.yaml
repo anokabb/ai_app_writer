@@ -3,7 +3,7 @@ description: "A new Flutter project."
 
 publish_to: "none"
 
-version: 1.0.0+8
+version: 1.0.0+9
 
 environment:
   sdk: ">=3.5.4 <4.0.0"
@@ -107,10 +107,10 @@ flutter_launcher_icons:
 
 # fvm dart run flutter_native_splash:create
 flutter_native_splash:
-  color: "#173481"
-  image: assets/images/app_icon.png
+  color: "#CEDFF3"
+  image: assets/images/app_splash.png
   android_12:
-    color: "#173481"
-    image: "assets/images/app_icon_android_12.png"
+    color: "#CEDFF3"
+    image: "assets/images/app_splash_android_12.png"
   android: true
   ios: true
