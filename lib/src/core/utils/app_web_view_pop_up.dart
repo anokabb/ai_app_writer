@@ -34,11 +34,16 @@ class _AppWebViewPopUpState extends CustomPopUpViewState<AppWebViewPopUp> {
     setHeaders(widget.url);
   }
 
-  void setHeaders(String? url) {
+  bool isLoading = true;
+  void setHeaders(String? url) async {
     if (url == null) return;
-    controller.loadRequest(
-      Uri.parse(url),
-    );
+    setState(() => isLoading = true);
+    try {
+      await controller.loadRequest(
+        Uri.parse(url),
+      );
+    } catch (e) {}
+    setState(() => isLoading = false);
   }
 
   @override
@@ -79,12 +84,14 @@ class _AppWebViewPopUpState extends CustomPopUpViewState<AppWebViewPopUp> {
         Expanded(
           child: Container(
             color: context.theme.scaffoldBackgroundColor,
-            child: WebViewWidget(
-              controller: controller,
-              gestureRecognizers: <Factory<OneSequenceGestureRecognizer>>{}..add(
-                  Factory<EagerGestureRecognizer>(() => EagerGestureRecognizer()),
-                ),
-            ),
+            child: isLoading
+                ? const Center(child: CircularProgressIndicator.adaptive())
+                : WebViewWidget(
+                    controller: controller,
+                    gestureRecognizers: <Factory<OneSequenceGestureRecognizer>>{}..add(
+                        Factory<EagerGestureRecognizer>(() => EagerGestureRecognizer()),
+                      ),
+                  ),
           ),
         ),
       ],

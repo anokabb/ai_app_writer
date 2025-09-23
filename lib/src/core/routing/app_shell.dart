@@ -31,8 +31,8 @@ class _AppShellState extends State<AppShell> with SingleTickerProviderStateMixin
   void initState() {
     super.initState();
 
-    locator<SubscriptionCubit>().showAppOpenPaywall().then((_) {
-      locator<NotificationService>().initialize();
+    locator<SubscriptionCubit>().showAppOpenPaywall().then((value) {
+      NotificationService().initialize();
     });
   }
 
