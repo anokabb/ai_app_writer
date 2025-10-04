@@ -1,6 +1,7 @@
 import 'dart:developer';
 import 'dart:io';
 
+import 'package:app_tracking_transparency/app_tracking_transparency.dart';
 import 'package:appsflyer_sdk/appsflyer_sdk.dart';
 import 'package:clarity_flutter/clarity_flutter.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -23,11 +24,7 @@ void main() async {
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   await initHive();
 
-  // Initialize AppsFlyer
-  _initializeAppsFlyer();
-
-  // Initialize Mixpanel
-  _initializeMixpanel();
+  _initializeAppTrackingTransparency();
 
   setupLocator();
   await locator.allReady();
@@ -49,6 +46,24 @@ void main() async {
       ),
     ),
   );
+}
+
+Future<void> _initializeAppTrackingTransparency() async {
+  if (Platform.isIOS) {
+    final status = await AppTrackingTransparency.requestTrackingAuthorization();
+    log('App Tracking Transparency status: $status');
+
+    if (status == TrackingStatus.authorized) {
+      _initializeAppsFlyer();
+      _initializeMixpanel();
+    } else if (status == TrackingStatus.notSupported) {
+      _initializeAppsFlyer();
+      _initializeMixpanel();
+    }
+  } else {
+    _initializeAppsFlyer();
+    _initializeMixpanel();
+  }
 }
 
 Future<void> _initializeAppsFlyer() async {

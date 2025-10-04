@@ -3,7 +3,7 @@ description: "A new Flutter project."
 
 publish_to: "none"
 
-version: 1.0.0+10
+version: 1.0.0+12
 
 environment:
   sdk: ">=3.5.4 <4.0.0"
@@ -19,6 +19,8 @@ dependencies:
   firebase_messaging: ^15.2.5
   firebase_auth: ^5.5.1
   firebase_remote_config: ^5.5.0
+  firebase_crashlytics: ^4.3.10
+  firebase_analytics: ^11.6.0
   google_sign_in: ^6.2.1
   flutter:
     sdk: flutter
@@ -73,6 +75,7 @@ dependencies:
   read_pdf_text: ^0.3.1
   google_mlkit_text_recognition: ^0.15.0
   doc_text_extractor: ^1.0.0
+  app_tracking_transparency: ^2.0.6+1
 
 dev_dependencies:
   build_runner: null

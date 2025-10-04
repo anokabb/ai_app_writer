@@ -51,6 +51,8 @@ post_install do |installer|
         '$(inherited)',
         # dart: PermissionGroup.notification
         'PERMISSION_NOTIFICATIONS=1',
+        # dart: PermissionGroup.appTrackingTransparency
+        'PERMISSION_APP_TRACKING_TRANSPARENCY=1',
       ]
       if Gem::Version.new('15.5') > Gem::Version.new(config.build_settings['IPHONEOS_DEPLOYMENT_TARGET'])
         config.build_settings['IPHONEOS_DEPLOYMENT_TARGET'] = '15.5'
