@@ -173,7 +173,7 @@ class _DetectorResultWidgetState extends State<DetectorResultWidget> with Ticker
                       fadeAnimation: _analysisDetailsFadeAnimation,
                     ),
                   ),
-                  if (settingsState.settings.writingTips) ...[
+                  if (settingsState.settings.writingTips && (result.explanation?.isNotEmpty ?? false)) ...[
                     SizedBox(height: 16),
                     Row(
                       children: <Widget>[
@@ -200,7 +200,7 @@ class _DetectorResultWidgetState extends State<DetectorResultWidget> with Ticker
                           ),
                           padding: EdgeInsets.all(14),
                           child: Text(
-                            result.explanation ?? 'Analysis completed',
+                            result.explanation ?? '',
                             style: context.appTextTheme.body3,
                           ),
                         ),

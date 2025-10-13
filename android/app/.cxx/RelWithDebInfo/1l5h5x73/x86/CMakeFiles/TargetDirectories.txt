@@ -1,0 +1,2 @@
+/Users/anouar/Desktop/apps/Freelance/ai_app_writer/android/app/.cxx/RelWithDebInfo/1l5h5x73/x86/CMakeFiles/edit_cache.dir
+/Users/anouar/Desktop/apps/Freelance/ai_app_writer/android/app/.cxx/RelWithDebInfo/1l5h5x73/x86/CMakeFiles/rebuild_cache.dir

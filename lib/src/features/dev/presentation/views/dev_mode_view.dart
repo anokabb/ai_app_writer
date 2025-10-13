@@ -132,30 +132,31 @@ class _DevModeViewState extends State<DevModeView> {
               ),
             ),
             SizedBox(height: 16),
-            ListTile(
-              title: const Text('Is Pro'),
-              subtitle: Text(
-                '(only for dev should be removed later)',
-                style: context.theme.appTextTheme.body3Light.copyWith(fontSize: 12),
+            if (kDebugMode)
+              ListTile(
+                title: const Text('Is Pro'),
+                subtitle: Text(
+                  '(only for dev should be removed later)',
+                  style: context.theme.appTextTheme.body3Light.copyWith(fontSize: 12),
+                ),
+                contentPadding: EdgeInsets.zero,
+                trailing: Switch(
+                  activeTrackColor: Colors.green,
+                  inactiveTrackColor: Colors.grey.withOpacity(0.4),
+                  trackOutlineColor: WidgetStateProperty.all(Colors.transparent),
+                  thumbColor: WidgetStateProperty.all(Colors.white),
+                  value: isPro,
+                  onChanged: (value) async {
+                    setState(() {
+                      isPro = value;
+                    });
+                    await devBox.put('isDevPro', value);
+                    if (!kDebugMode) {
+                      Restart.restartApp();
+                    }
+                  },
+                ),
               ),
-              contentPadding: EdgeInsets.zero,
-              trailing: Switch(
-                activeTrackColor: Colors.green,
-                inactiveTrackColor: Colors.grey.withOpacity(0.4),
-                trackOutlineColor: WidgetStateProperty.all(Colors.transparent),
-                thumbColor: WidgetStateProperty.all(Colors.white),
-                value: isPro,
-                onChanged: (value) async {
-                  setState(() {
-                    isPro = value;
-                  });
-                  await devBox.put('isDevPro', value);
-                  if (!kDebugMode) {
-                    Restart.restartApp();
-                  }
-                },
-              ),
-            ),
             SizedBox(height: 16),
             if (kDebugMode)
               AppButton(

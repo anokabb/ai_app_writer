@@ -9,6 +9,7 @@ class MainTextField extends StatefulWidget {
   final bool isMultiline;
   final String? hintText;
   final bool obscureText;
+  final void Function(String)? onChanged;
   const MainTextField(
       {super.key,
       required this.controller,
@@ -16,7 +17,8 @@ class MainTextField extends StatefulWidget {
       this.primaryColor,
       this.isMultiline = true,
       this.hintText,
-      this.obscureText = false});
+      this.obscureText = false,
+      this.onChanged});
 
   @override
   State<MainTextField> createState() => _MainTextFieldState();
@@ -54,6 +56,7 @@ class _MainTextFieldState extends State<MainTextField> {
               expands: widget.isMultiline,
               textAlignVertical: TextAlignVertical.top,
               obscureText: widget.obscureText,
+              onChanged: widget.onChanged,
               validator: (value) {
                 if (value?.trim().isEmpty ?? true) {
                   return '*';

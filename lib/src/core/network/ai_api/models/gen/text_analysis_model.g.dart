@@ -58,7 +58,6 @@ _$TextAnalysisResultImpl _$$TextAnalysisResultImplFromJson(
         Map<String, dynamic> json) =>
     _$TextAnalysisResultImpl(
       source: $enumDecode(_$TextSourceEnumMap, json['source']),
-      aiProbability: (json['ai_probability'] as num).toDouble(),
       humanProbability: (json['human_probability'] as num).toDouble(),
       suggestions: (json['suggestions'] as List<dynamic>?)
           ?.map((e) => e as String)
@@ -77,7 +76,6 @@ Map<String, dynamic> _$$TextAnalysisResultImplToJson(
         _$TextAnalysisResultImpl instance) =>
     <String, dynamic>{
       'source': _$TextSourceEnumMap[instance.source]!,
-      'ai_probability': instance.aiProbability,
       'human_probability': instance.humanProbability,
       'suggestions': instance.suggestions,
       'explanation': instance.explanation,

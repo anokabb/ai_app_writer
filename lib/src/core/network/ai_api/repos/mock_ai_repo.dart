@@ -57,14 +57,13 @@ class MockAiRepo implements AiRepo {
     humanScore += (DateTime.now().second % 25);
 
     final total = aiScore + humanScore;
-    final aiProbability = total > 0 ? aiScore / total : 0.5;
-    final humanProbability = 1.0 - aiProbability;
+    final humanProbability = total > 0 ? humanScore / total : 0.5;
 
     TextSource source;
-    if (aiProbability > 0.6) {
-      source = TextSource.ai;
-    } else if (humanProbability > 0.6) {
+    if (humanProbability >= 0.7) {
       source = TextSource.human;
+    } else if (humanProbability <= 0.3) {
+      source = TextSource.ai;
     } else {
       source = TextSource.mixed;
     }
@@ -139,10 +138,9 @@ class MockAiRepo implements AiRepo {
 
     return right(TextAnalysisResult(
       source: source,
-      aiProbability: aiProbability,
       humanProbability: humanProbability,
       suggestions: suggestions,
-      explanation: _getExplanation(source, aiProbability, humanProbability),
+      explanation: _getExplanation(source, humanProbability),
       totalSentences: totalSentences,
       aiGeneratedSentences: aiSentenceCount,
       highlightedSentences: aiGeneratedSentences,
@@ -301,14 +299,14 @@ Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo
     ));
   }
 
-  String _getExplanation(TextSource source, double aiProb, double humanProb) {
+  String _getExplanation(TextSource source, double humanProb) {
     switch (source) {
       case TextSource.ai:
-        return 'This text shows characteristics typical of AI-generated content, such as formal language patterns and technical terminology. AI probability: ${(aiProb * 100).toStringAsFixed(1)}%';
+        return 'This text shows characteristics typical of AI-generated content, such as formal language patterns and technical terminology. Human probability: ${(humanProb * 100).toStringAsFixed(1)}%';
       case TextSource.human:
         return 'This text appears to be written by a human, with natural language patterns and personal elements. Human probability: ${(humanProb * 100).toStringAsFixed(1)}%';
       case TextSource.mixed:
-        return 'This text shows mixed characteristics of both AI and human writing. Further analysis may be needed to determine the primary source.';
+        return 'This text shows mixed characteristics of both AI and human writing. Human probability: ${(humanProb * 100).toStringAsFixed(1)}%';
     }
   }
 }

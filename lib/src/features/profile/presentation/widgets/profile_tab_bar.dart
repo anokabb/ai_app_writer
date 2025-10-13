@@ -49,11 +49,12 @@ class _ProfileTabState extends State<ProfileTab> {
                     color: context.appColors.primary,
                   ),
                   children: <Widget>[
-                    SettingsCardItem(
-                      title: 'Name',
-                      subTitle: user?.name ?? 'Guest User',
-                      icon: Icon(Icons.person_outline, color: context.appColors.primary),
-                    ),
+                    if (user != null)
+                      SettingsCardItem(
+                        title: 'Name',
+                        subTitle: user.name ?? 'Guest User',
+                        icon: Icon(Icons.person_outline, color: context.appColors.primary),
+                      ),
                     SettingsCardItem(
                       title: 'Rate Us',
                       subTitle: '★★★★★',

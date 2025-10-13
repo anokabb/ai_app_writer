@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -40,6 +41,7 @@ class DetectorPage extends StatefulWidget {
 
 class _DetectorPageState extends State<DetectorPage> {
   final DetectorCubit detectorCubit = DetectorCubit(locator<DetectorRepo>());
+  final ValueNotifier<int> _wordCountNotifier = ValueNotifier<int>(0);
 
   final Color primaryColor = Utils.hexToColor('#FD5348');
 
@@ -52,6 +54,7 @@ class _DetectorPageState extends State<DetectorPage> {
     scrollController.dispose();
     _textController.dispose();
     _formKey.currentState?.dispose();
+    _wordCountNotifier.dispose();
     super.dispose();
   }
 
@@ -70,6 +73,11 @@ class _DetectorPageState extends State<DetectorPage> {
         alignment: 0.1,
       );
     }
+  }
+
+  void _updateWordCount() {
+    _wordCountNotifier.value =
+        _textController.text.trim().isEmpty ? 0 : _textController.text.trim().split(RegExp(r'\s+')).length;
   }
 
   @override
@@ -105,6 +113,26 @@ class _DetectorPageState extends State<DetectorPage> {
                     child: MainTextField(
                       controller: _textController,
                       primaryColor: primaryColor,
+                      onChanged: (value) {
+                        _updateWordCount();
+                      },
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 10),
+                    child: Align(
+                      alignment: Alignment.centerRight,
+                      child: ValueListenableBuilder<int>(
+                        valueListenable: _wordCountNotifier,
+                        builder: (context, wordCount, child) {
+                          return Text(
+                            '$wordCount words',
+                            style: context.appTextTheme.body3.copyWith(
+                              color: context.appColors.lightTextColor,
+                            ),
+                          );
+                        },
+                      ),
                     ),
                   ),
                   Row(
@@ -135,6 +163,7 @@ class _DetectorPageState extends State<DetectorPage> {
                         icon: Assets.svg.clear,
                         onTap: () {
                           _textController.clear();
+                          _updateWordCount();
                         },
                       ),
                       TransparentButton(
@@ -146,6 +175,7 @@ class _DetectorPageState extends State<DetectorPage> {
                           if (data?.text != null) {
                             _textController.text = data!.text!;
                           }
+                          _updateWordCount();
                         },
                       ),
                     ],
@@ -194,6 +224,10 @@ class _DetectorPageState extends State<DetectorPage> {
               gradientColors: DetectorPage.colors,
               isAsync: true,
               onPressed: () async {
+                if (_wordCountNotifier.value < (kDebugMode ? 2 : 30)) {
+                  showTopError('Your text is too short, please enter more than 30 words to scan.');
+                  return;
+                }
                 if (!await locator<SubscriptionCubit>().canUseAiTools()) return;
 
                 if (_formKey.currentState?.validate() ?? false) {

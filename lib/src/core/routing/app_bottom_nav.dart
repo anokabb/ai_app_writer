@@ -1,8 +1,10 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:phrasly_ai_tools/src/core/extensions/context_extension.dart';
 import 'package:phrasly_ai_tools/src/core/gen/assets.gen.dart';
 import 'package:phrasly_ai_tools/src/core/services/theme/app_theme.dart';
-import 'package:flutter_svg/svg.dart';
 
 class AppBottomNavigationBar extends StatefulWidget {
   static const double fabBottomPadding = 40;
@@ -39,11 +41,11 @@ class _AppBottomNavigationBarState extends State<AppBottomNavigationBar> {
       child: ClipPath(
         clipper: _BottomNavClipper(),
         child: Container(
-          height: kBottomNavigationBarHeight + MediaQuery.of(context).padding.bottom,
+          height: kBottomNavigationBarHeight + MediaQuery.of(context).padding.bottom + (Platform.isAndroid ? 16 : 0),
           decoration: BoxDecoration(
             color: context.appColors.secondaryBackground,
           ),
-          padding: EdgeInsets.only(bottom: 20),
+          padding: EdgeInsets.only(bottom: Platform.isAndroid ? 0 : 20),
           child: Row(
             children: [
               Expanded(

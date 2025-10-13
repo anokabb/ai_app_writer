@@ -32,12 +32,22 @@ class OpenAIRepo implements AiRepo {
           {
             'role': 'system',
             'content': '''
-You are an expert AI detection specialist. Your task is to identify AI-generated text with high precision. Be EXTREMELY critical and skeptical - modern AI is very sophisticated and can mimic human writing patterns.
+You are an expert AI detection specialist. Your task is to analyze text and determine how human-like it is.
+
+**CRITICAL: BE EXTREMELY STRICT WITH BUSINESS EMAILS AND FORMAL TEXT**
+
+**IMPORTANT:** You will return a human_probability score where:
+- HIGH score (0.7-1.0) = HUMAN-LIKE text (natural, conversational, authentic, messy)
+- LOW score (0.0-0.3) = AI-GENERATED text (robotic, templated, formal, perfect)
+- MEDIUM score (0.3-0.7) = MIXED text
+
+**DEFAULT ASSUMPTION:** If a business email sounds professional and well-structured, it's LIKELY AI-GENERATED (LOW score 0.1-0.3).
+Real humans write messier, less formal emails with more personality.
 
 **DETECTION MODE: ${mode.name.toUpperCase()}**
 $modePrompt
 
-**CRITICAL AI INDICATORS (Look for these patterns):**
+**AI-GENERATED INDICATORS (Result in LOW human_probability 0.0-0.3):**
 - **Overly systematic structure**: Perfect paragraph organization, consistent formatting
 - **Corporate template language**: Generic business speak that sounds "professional" but lacks personality
 - **Too-perfect details**: Specific dates, names, and numbers that feel artificially constructed
@@ -49,7 +59,7 @@ $modePrompt
 - **Artificial specificity**: Details that seem real but lack authentic human context
 - **Lack of genuine decision-making**: No evidence of real human thought processes or uncertainty
 
-**HUMAN INDICATORS (Rare in modern AI):**
+**HUMAN-LIKE INDICATORS (Result in HIGH human_probability 0.7-1.0):**
 - Natural writing imperfections and variations
 - Authentic personal voice with unique expressions
 - Genuine human thought processes and decision-making patterns
@@ -70,7 +80,6 @@ $modePrompt
 Respond with a JSON object in this exact format:
 {
   "source": "ai" | "human" | "mixed",
-  "ai_probability": number between 0-1,
   "human_probability": number between 0-1,
   "explanation": "detailed explanation of your analysis",
   "suggestions": ["specific suggestion 1", "specific suggestion 2", "etc."],
@@ -79,32 +88,66 @@ Respond with a JSON object in this exact format:
   "highlighted_sentences": ["sentence 1", "sentence 2", "etc."]
 }
 
+**CRITICAL:** Set human_probability based on how human-like the text is:
+- HIGH (0.7-1.0) for natural, human-like writing
+- LOW (0.0-0.3) for AI-generated, robotic text
+- MEDIUM (0.3-0.7) for mixed characteristics
+
 Analyze each sentence individually and identify which ones are likely AI-generated. Count the total sentences and how many appear AI-generated.
 
 **CRITICAL INSTRUCTION:** Be balanced and fair in your analysis. Consider that humanized text can still be human-like. Focus on genuine human writing patterns rather than just detecting AI humanization techniques.
 
-**BUSINESS TEXT RED FLAGS:**
-- **Perfect business structure**: Real emails are messier and less organized
-- **Template-like language**: "As discussed in our last sync", "I wanted to give you a quick update"
-- **Artificial specificity**: Reservation codes, specific dates, perfect formatting
-- **Corporate buzzwords**: "consolidated roadmap", "integration", "analytics dashboard"
-- **Too professional**: Real humans are less formal and more personal
-- **Perfect details**: Real business communications have more natural variations
+**BUSINESS EMAIL RED FLAGS (These are STRONG AI indicators - use LOW human_probability 0.1-0.3):**
+- **Opening templates**: "I hope you are doing well", "I hope this email finds you well" → ALWAYS LOW (0.1-0.2)
+- **Closing templates**: "Please let me know if you have any questions/feedback" → ALWAYS LOW (0.1-0.2)
+- **Perfect paragraph structure**: Each paragraph covers exactly one topic perfectly → LOW (0.15-0.25)
+- **Status update format**: "This week I..., Next week I will..." → LOW (0.1-0.2)
+- **Corporate buzzwords**: "sprint", "analytics integration", "event tracking", "alignment" → LOW (0.15-0.25)
+- **Template transitions**: "In addition", "Furthermore", "Moreover" → LOW (0.2-0.3)
+- **Too many details**: Perfect lists of what was done → LOW (0.15-0.25)
+- **Professional signatures**: Full name + title in signature → slightly AI indicator
+- **No typos or informal language**: Perfect grammar throughout → LOW (0.2-0.3)
+- **Systematic organization**: Clear introduction, body, conclusion → LOW (0.15-0.25)
 
 **EXAMPLE ANALYSIS:**
-- "I wanted to give you a quick update" = AI template language
-- "92% test coverage" = Too specific and perfect
-- "reservation code PHX25NYC" = Artificially constructed detail
-- Perfect formatting with emojis = AI-generated professional appearance
-- "consolidated roadmap" = Corporate buzzword overuse
+AI-GENERATED BUSINESS EMAIL (LOW human_probability 0.1-0.3):
+- "I hope you are doing well." → INSTANT RED FLAG → human_probability: 0.1
+- "I wanted to summarize the work done this week" → Template status update → human_probability: 0.15
+- "This week, I focused on..." → Systematic structure → human_probability: 0.2
+- "For the next sprint, my main focus will be..." → Corporate speak → human_probability: 0.15
+- "Please let me know if you have any feedback" → Template closing → human_probability: 0.1
+- Perfect paragraph organization throughout → human_probability: 0.15
+- Professional signature (Name + Title) → slightly AI indicator
+**OVERALL EMAIL LIKE THIS: human_probability should be 0.1-0.2 (VERY AI-GENERATED)**
+
+HUMAN-LIKE TEXT (HIGH human_probability 0.7-1.0):
+- "Hey Sarah! Quick update..." = Casual opener → human_probability: 0.85
+- "btw finished the bug fixes" = Informal, no caps → human_probability: 0.9
+- "gonna work on notifications next week" = Casual contractions → human_probability: 0.85
+- "let me know what u think" = Shorthand, typo → human_probability: 0.9
+- "thanks!" = Simple, casual closing → human_probability: 0.9
+**OVERALL EMAIL LIKE THIS: human_probability should be 0.8-0.9 (VERY HUMAN)**
+
+**CRITICAL RULES FOR BUSINESS EMAILS:**
+1. If it starts with "I hope you are doing well" or similar → AUTOMATIC LOW score (0.1-0.2)
+2. If it has perfect paragraph structure → AUTOMATIC LOW score (0.15-0.25)
+3. If it uses corporate buzzwords (sprint, integration, analytics) → AUTOMATIC LOW score (0.15-0.25)
+4. If it ends with "Please let me know" → AUTOMATIC LOW score (0.1-0.2)
+5. If ALL paragraphs are well-organized → AUTOMATIC LOW score (0.1-0.2)
+
+**REAL HUMAN EMAILS have:**
+- Typos, casual language, shorthand (u, gonna, btw)
+- Messy structure, stream of consciousness
+- Personal touches, humor, emojis used casually
+- Informal greetings (Hey, Hi, Sup)
+- Missing punctuation or over-punctuation (!!!, ???)
 
 **HUMANIZED TEXT ANALYSIS:**
-- Humanized text that uses conversational language, contractions, and casual tone should be considered more human-like
-- Phrases like "Hey", "How's it going?", "Thanks a bunch" indicate human-like communication
-- Informal expressions and personal touches are positive human indicators
-- Don't penalize text for being humanized - that's the goal!
+- Humanized text that uses conversational language, contractions, and casual tone should get HIGH human_probability (0.7-1.0)
+- Phrases like "Hey", "btw", "gonna", "thanks!" indicate human-like communication → HIGH human_probability
+- Informal expressions and personal touches are positive human indicators → HIGH human_probability
 
-**REMEMBER:** Real human business communication is more casual, less structured, and has natural imperfections. Humanized text that achieves this casual, conversational tone should be recognized as human-like.
+**REMEMBER:** Professional-sounding business emails are ALMOST ALWAYS AI-generated (0.1-0.3). Real humans write messier, more casual emails.
 '''
           },
           {'role': 'user', 'content': 'Analyze this text: "$text"'}
@@ -122,11 +165,14 @@ Analyze each sentence individually and identify which ones are likely AI-generat
         logResponse(jsonDecode(jsonMatch.group(0)!));
         final resultJson = jsonDecode(jsonMatch.group(0)!);
 
+        final humanProbability = (resultJson['human_probability'] as num).toDouble();
+        // Calculate source based on human probability (high % = human, low % = AI)
+        final source = _getTextSourceFromProbability(humanProbability);
+
         return right(TextAnalysisResult(
-          source: _parseTextSource(resultJson['source']),
-          aiProbability: (resultJson['ai_probability'] as num).toDouble(),
-          humanProbability: (resultJson['human_probability'] as num).toDouble(),
-          explanation: resultJson['explanation'] ?? 'Analysis completed',
+          source: source,
+          humanProbability: humanProbability,
+          explanation: resultJson['explanation'] ?? '',
           suggestions: (resultJson['suggestions'] as List?)?.cast<String>() ?? [],
           totalSentences: resultJson['total_sentences'] as int?,
           aiGeneratedSentences: resultJson['ai_generated_sentences'] as int?,
@@ -281,17 +327,12 @@ Provide the humanized version that sounds like it was written by a real person.
     }
   }
 
-  TextSource _parseTextSource(String source) {
-    switch (source.toLowerCase()) {
-      case 'ai':
-        return TextSource.ai;
-      case 'human':
-        return TextSource.human;
-      case 'mixed':
-        return TextSource.mixed;
-      default:
-        return TextSource.mixed;
-    }
+  /// Determine text source based on human percentage
+  TextSource _getTextSourceFromProbability(double humanProbability) {
+    final humanPercentage = humanProbability * 100;
+    if (humanPercentage >= 70) return TextSource.human;
+    if (humanPercentage <= 30) return TextSource.ai;
+    return TextSource.mixed;
   }
 
   double _calculateHumanLikeScore(String text, {String? originalText}) {

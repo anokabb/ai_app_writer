@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -40,6 +41,7 @@ class _HumanizerPageState extends State<HumanizerPage> {
 
   final Color primaryColor = Utils.hexToColor('#29C987');
   final TextEditingController _controller = TextEditingController();
+  final ValueNotifier<int> _wordCountNotifier = ValueNotifier<int>(0);
 
   List<Color> colors = [
     Utils.hexToColor('#2CC76E'),
@@ -62,10 +64,16 @@ class _HumanizerPageState extends State<HumanizerPage> {
 
   bool isLoading = false;
 
+  void _updateWordCount() {
+    _wordCountNotifier.value =
+        _controller.text.trim().isEmpty ? 0 : _controller.text.trim().split(RegExp(r'\s+')).length;
+  }
+
   @override
   void dispose() {
     humanizerCubit.close();
     _controller.dispose();
+    _wordCountNotifier.dispose();
     _formKey.currentState?.dispose();
     super.dispose();
   }
@@ -76,6 +84,7 @@ class _HumanizerPageState extends State<HumanizerPage> {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (widget.text != null) {
         _controller.text = widget.text!;
+        _updateWordCount();
         Future.delayed(const Duration(milliseconds: 100), () {
           humanizeText();
         });
@@ -116,6 +125,26 @@ class _HumanizerPageState extends State<HumanizerPage> {
                     child: MainTextField(
                       controller: _controller,
                       primaryColor: primaryColor,
+                      onChanged: (value) {
+                        _updateWordCount();
+                      },
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 10),
+                    child: Align(
+                      alignment: Alignment.centerRight,
+                      child: ValueListenableBuilder<int>(
+                        valueListenable: _wordCountNotifier,
+                        builder: (context, wordCount, child) {
+                          return Text(
+                            '$wordCount words',
+                            style: context.appTextTheme.body3.copyWith(
+                              color: context.appColors.lightTextColor,
+                            ),
+                          );
+                        },
+                      ),
                     ),
                   ),
                   Row(
@@ -145,6 +174,7 @@ class _HumanizerPageState extends State<HumanizerPage> {
                         icon: Assets.svg.clear,
                         onTap: () {
                           _controller.clear();
+                          _updateWordCount();
                           context.read<HumanizerCubit>().reset();
                         },
                       ),
@@ -157,6 +187,7 @@ class _HumanizerPageState extends State<HumanizerPage> {
                           if (data?.text != null) {
                             _controller.text = data!.text!;
                           }
+                          _updateWordCount();
                         },
                       ),
                     ],
@@ -238,6 +269,10 @@ class _HumanizerPageState extends State<HumanizerPage> {
   }
 
   Future<void> humanizeText() async {
+    if (_wordCountNotifier.value < (kDebugMode ? 2 : 30)) {
+      showTopError('Your text is too short, please enter more than 30 words to humanize.');
+      return;
+    }
     if (!await locator<SubscriptionCubit>().canUseAiTools()) return;
     setState(() {
       isLoading = true;

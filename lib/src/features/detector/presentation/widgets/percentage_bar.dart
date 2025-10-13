@@ -30,7 +30,7 @@ class _PercentageBarState extends State<PercentageBar> with SingleTickerProvider
     );
     _animation = Tween<double>(
       begin: 0.0,
-      end: widget.result.aiProbability,
+      end: widget.result.humanProbability,
     ).animate(CurvedAnimation(
       parent: _animationController,
       curve: Curves.easeInOutCubic,
@@ -48,10 +48,10 @@ class _PercentageBarState extends State<PercentageBar> with SingleTickerProvider
   @override
   void didUpdateWidget(PercentageBar oldWidget) {
     super.didUpdateWidget(oldWidget);
-    if (oldWidget.result.aiProbability != widget.result.aiProbability) {
+    if (oldWidget.result.humanProbability != widget.result.humanProbability) {
       _animation = Tween<double>(
         begin: _currentPercentage,
-        end: widget.result.aiProbability,
+        end: widget.result.humanProbability,
       ).animate(CurvedAnimation(
         parent: _animationController,
         curve: Curves.easeInOutCubic,
@@ -76,16 +76,16 @@ class _PercentageBarState extends State<PercentageBar> with SingleTickerProvider
     // Convert to percent
     final percentValue = (_currentPercentage * 100).clamp(0, 100).toInt();
 
-    // Color logic
+    // Color logic (inverted: high % = human/green, low % = AI/red)
     late List<Color> activeGradient;
     late Color inactiveColor;
-    if (percentValue <= 40) {
+    if (percentValue >= 70) {
       activeGradient = [
         Utils.hexToColor('#21CCAE'),
         Utils.hexToColor('#2CC76E'),
       ];
       inactiveColor = Utils.hexToColor('#CCF6E0');
-    } else if (percentValue <= 70) {
+    } else if (percentValue >= 30) {
       activeGradient = [
         Utils.hexToColor('#FFC413'),
         Utils.hexToColor('#FFDB60'),
@@ -144,10 +144,10 @@ class _PercentageBarState extends State<PercentageBar> with SingleTickerProvider
                 SizedBox(
                   width: widget.size - 38,
                   child: AutoSizeText(
-                    widget.result.source == TextSource.ai
-                        ? 'AI Generated'
-                        : widget.result.source == TextSource.human
-                            ? 'Human Generated'
+                    widget.result.humanProbability >= 0.7
+                        ? 'Human Generated'
+                        : widget.result.humanProbability <= 0.3
+                            ? 'AI Generated'
                             : 'AI Assisted',
                     maxLines: 1,
                     textAlign: TextAlign.center,

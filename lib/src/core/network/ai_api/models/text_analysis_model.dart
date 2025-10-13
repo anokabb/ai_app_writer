@@ -44,7 +44,6 @@ enum TextSource { ai, human, mixed }
 class TextAnalysisResult with _$TextAnalysisResult {
   const factory TextAnalysisResult({
     required TextSource source,
-    @JsonKey(name: 'ai_probability') required double aiProbability,
     @JsonKey(name: 'human_probability') required double humanProbability,
     List<String>? suggestions,
     String? explanation,
@@ -83,7 +82,11 @@ class TextAnalysisResult with _$TextAnalysisResult {
     return null;
   }
 
-  int get aiPercentage => (aiProbability * 100).round();
+  // Return human percentage (high % = human, low % = AI)
+  int get humanPercentage => (humanProbability * 100).round();
+
+  // Keep aiPercentage for backwards compatibility (returns inverse)
+  int get aiPercentage => humanPercentage;
 }
 
 @freezed

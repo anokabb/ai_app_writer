@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
@@ -107,17 +108,20 @@ class SlideUpPopUp extends StatelessWidget {
   Widget build(BuildContext context) {
     return Align(
       alignment: Alignment.bottomCenter,
-      child: Container(
-        width: width,
-        margin: margin,
-        child: Material(
-          color: Colors.transparent,
-          child: Container(
-            decoration: BoxDecoration(
-              color: backgroundColor,
-              borderRadius: borderRadius,
+      child: Padding(
+        padding: EdgeInsets.only(bottom: Platform.isAndroid ? 24 : 0),
+        child: Container(
+          width: width,
+          margin: margin,
+          child: Material(
+            color: Colors.transparent,
+            child: Container(
+              decoration: BoxDecoration(
+                color: backgroundColor,
+                borderRadius: borderRadius,
+              ),
+              child: child,
             ),
-            child: child,
           ),
         ),
       ),

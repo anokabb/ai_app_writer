@@ -23,8 +23,11 @@ class $AssetsImagesGen {
   /// File path: assets/images/app_icon.png
   AssetGenImage get appIcon => const AssetGenImage('assets/images/app_icon.png');
 
-  /// File path: assets/images/app_icon_android_12.png
-  AssetGenImage get appIconAndroid12 => const AssetGenImage('assets/images/app_icon_android_12.png');
+  /// File path: assets/images/app_splash.png
+  AssetGenImage get appSplash => const AssetGenImage('assets/images/app_splash.png');
+
+  /// File path: assets/images/app_splash_android_12.png
+  AssetGenImage get appSplashAndroid12 => const AssetGenImage('assets/images/app_splash_android_12.png');
 
   /// File path: assets/images/bubbles.png
   AssetGenImage get bubbles => const AssetGenImage('assets/images/bubbles.png');
@@ -36,7 +39,7 @@ class $AssetsImagesGen {
   $AssetsImagesOnboardingGen get onboarding => const $AssetsImagesOnboardingGen();
 
   /// List of all assets
-  List<AssetGenImage> get values => [aiDetector, aiHumanizer, appIcon, appIconAndroid12, bubbles, contentGenerator];
+  List<AssetGenImage> get values => [aiDetector, aiHumanizer, appIcon, appSplash, appSplashAndroid12, bubbles, contentGenerator];
 }
 
 class $AssetsSvgGen {

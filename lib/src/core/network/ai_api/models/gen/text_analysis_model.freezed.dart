@@ -603,8 +603,6 @@ TextAnalysisResult _$TextAnalysisResultFromJson(Map<String, dynamic> json) {
 /// @nodoc
 mixin _$TextAnalysisResult {
   TextSource get source => throw _privateConstructorUsedError;
-  @JsonKey(name: 'ai_probability')
-  double get aiProbability => throw _privateConstructorUsedError;
   @JsonKey(name: 'human_probability')
   double get humanProbability => throw _privateConstructorUsedError;
   List<String>? get suggestions => throw _privateConstructorUsedError;
@@ -639,7 +637,6 @@ abstract class $TextAnalysisResultCopyWith<$Res> {
   @useResult
   $Res call(
       {TextSource source,
-      @JsonKey(name: 'ai_probability') double aiProbability,
       @JsonKey(name: 'human_probability') double humanProbability,
       List<String>? suggestions,
       String? explanation,
@@ -667,7 +664,6 @@ class _$TextAnalysisResultCopyWithImpl<$Res, $Val extends TextAnalysisResult>
   @override
   $Res call({
     Object? source = null,
-    Object? aiProbability = null,
     Object? humanProbability = null,
     Object? suggestions = freezed,
     Object? explanation = freezed,
@@ -682,10 +678,6 @@ class _$TextAnalysisResultCopyWithImpl<$Res, $Val extends TextAnalysisResult>
           ? _value.source
           : source // ignore: cast_nullable_to_non_nullable
               as TextSource,
-      aiProbability: null == aiProbability
-          ? _value.aiProbability
-          : aiProbability // ignore: cast_nullable_to_non_nullable
-              as double,
       humanProbability: null == humanProbability
           ? _value.humanProbability
           : humanProbability // ignore: cast_nullable_to_non_nullable
@@ -732,7 +724,6 @@ abstract class _$$TextAnalysisResultImplCopyWith<$Res>
   @useResult
   $Res call(
       {TextSource source,
-      @JsonKey(name: 'ai_probability') double aiProbability,
       @JsonKey(name: 'human_probability') double humanProbability,
       List<String>? suggestions,
       String? explanation,
@@ -758,7 +749,6 @@ class __$$TextAnalysisResultImplCopyWithImpl<$Res>
   @override
   $Res call({
     Object? source = null,
-    Object? aiProbability = null,
     Object? humanProbability = null,
     Object? suggestions = freezed,
     Object? explanation = freezed,
@@ -773,10 +763,6 @@ class __$$TextAnalysisResultImplCopyWithImpl<$Res>
           ? _value.source
           : source // ignore: cast_nullable_to_non_nullable
               as TextSource,
-      aiProbability: null == aiProbability
-          ? _value.aiProbability
-          : aiProbability // ignore: cast_nullable_to_non_nullable
-              as double,
       humanProbability: null == humanProbability
           ? _value.humanProbability
           : humanProbability // ignore: cast_nullable_to_non_nullable
@@ -818,7 +804,6 @@ class __$$TextAnalysisResultImplCopyWithImpl<$Res>
 class _$TextAnalysisResultImpl extends _TextAnalysisResult {
   const _$TextAnalysisResultImpl(
       {required this.source,
-      @JsonKey(name: 'ai_probability') required this.aiProbability,
       @JsonKey(name: 'human_probability') required this.humanProbability,
       final List<String>? suggestions,
       this.explanation,
@@ -837,9 +822,6 @@ class _$TextAnalysisResultImpl extends _TextAnalysisResult {
 
   @override
   final TextSource source;
-  @override
-  @JsonKey(name: 'ai_probability')
-  final double aiProbability;
   @override
   @JsonKey(name: 'human_probability')
   final double humanProbability;
@@ -883,7 +865,7 @@ class _$TextAnalysisResultImpl extends _TextAnalysisResult {
 
   @override
   String toString() {
-    return 'TextAnalysisResult(source: $source, aiProbability: $aiProbability, humanProbability: $humanProbability, suggestions: $suggestions, explanation: $explanation, totalSentences: $totalSentences, aiGeneratedSentences: $aiGeneratedSentences, highlightedSentences: $highlightedSentences, detailedTitle: $detailedTitle, summaryText: $summaryText)';
+    return 'TextAnalysisResult(source: $source, humanProbability: $humanProbability, suggestions: $suggestions, explanation: $explanation, totalSentences: $totalSentences, aiGeneratedSentences: $aiGeneratedSentences, highlightedSentences: $highlightedSentences, detailedTitle: $detailedTitle, summaryText: $summaryText)';
   }
 
   @override
@@ -892,8 +874,6 @@ class _$TextAnalysisResultImpl extends _TextAnalysisResult {
         (other.runtimeType == runtimeType &&
             other is _$TextAnalysisResultImpl &&
             (identical(other.source, source) || other.source == source) &&
-            (identical(other.aiProbability, aiProbability) ||
-                other.aiProbability == aiProbability) &&
             (identical(other.humanProbability, humanProbability) ||
                 other.humanProbability == humanProbability) &&
             const DeepCollectionEquality()
@@ -917,7 +897,6 @@ class _$TextAnalysisResultImpl extends _TextAnalysisResult {
   int get hashCode => Object.hash(
       runtimeType,
       source,
-      aiProbability,
       humanProbability,
       const DeepCollectionEquality().hash(_suggestions),
       explanation,
@@ -947,7 +926,6 @@ class _$TextAnalysisResultImpl extends _TextAnalysisResult {
 abstract class _TextAnalysisResult extends TextAnalysisResult {
   const factory _TextAnalysisResult(
       {required final TextSource source,
-      @JsonKey(name: 'ai_probability') required final double aiProbability,
       @JsonKey(name: 'human_probability')
       required final double humanProbability,
       final List<String>? suggestions,
@@ -966,9 +944,6 @@ abstract class _TextAnalysisResult extends TextAnalysisResult {
 
   @override
   TextSource get source;
-  @override
-  @JsonKey(name: 'ai_probability')
-  double get aiProbability;
   @override
   @JsonKey(name: 'human_probability')
   double get humanProbability;

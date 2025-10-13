@@ -233,14 +233,14 @@ class HistoryItemCard extends StatelessWidget {
                         Container(
                           padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
                           decoration: BoxDecoration(
-                            color: _getSourceColor(item.analysisResult!.source).withValues(alpha: 0.1),
+                            color: Colors.green.withValues(alpha: 0.1),
                             borderRadius: BorderRadius.circular(8),
                           ),
                           child: Text(
-                            '${item.analysisResult!.aiPercentage}% AI',
+                            '${((1 - item.humanizationResult!.humanLike) * 100).toStringAsFixed(0)}% AI',
                             style: TextStyle(
                               fontSize: 10,
-                              color: _getSourceColor(item.analysisResult!.source),
+                              color: Colors.green,
                               fontWeight: FontWeight.w500,
                             ),
                           ),
