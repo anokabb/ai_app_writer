@@ -46,3 +46,4 @@ app.*.map.json
 # Deployment related
 deployment/*
 staging.env
+android/app/.cxx/*
