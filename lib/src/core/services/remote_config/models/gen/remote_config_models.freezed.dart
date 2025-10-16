@@ -265,6 +265,7 @@ mixin _$RevenueCatConfigModel {
   String get revenueAndroidApiKey => throw _privateConstructorUsedError;
   String get defaultEntitlementIdentifier => throw _privateConstructorUsedError;
   int get freeLimit => throw _privateConstructorUsedError;
+  bool get showDiscountAfterPaywall => throw _privateConstructorUsedError;
 
   /// Serializes this RevenueCatConfigModel to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -286,7 +287,8 @@ abstract class $RevenueCatConfigModelCopyWith<$Res> {
       {String revenueIOSApiKey,
       String revenueAndroidApiKey,
       String defaultEntitlementIdentifier,
-      int freeLimit});
+      int freeLimit,
+      bool showDiscountAfterPaywall});
 }
 
 /// @nodoc
@@ -309,6 +311,7 @@ class _$RevenueCatConfigModelCopyWithImpl<$Res,
     Object? revenueAndroidApiKey = null,
     Object? defaultEntitlementIdentifier = null,
     Object? freeLimit = null,
+    Object? showDiscountAfterPaywall = null,
   }) {
     return _then(_value.copyWith(
       revenueIOSApiKey: null == revenueIOSApiKey
@@ -327,6 +330,10 @@ class _$RevenueCatConfigModelCopyWithImpl<$Res,
           ? _value.freeLimit
           : freeLimit // ignore: cast_nullable_to_non_nullable
               as int,
+      showDiscountAfterPaywall: null == showDiscountAfterPaywall
+          ? _value.showDiscountAfterPaywall
+          : showDiscountAfterPaywall // ignore: cast_nullable_to_non_nullable
+              as bool,
     ) as $Val);
   }
 }
@@ -344,7 +351,8 @@ abstract class _$$RevenueCatConfigModelImplCopyWith<$Res>
       {String revenueIOSApiKey,
       String revenueAndroidApiKey,
       String defaultEntitlementIdentifier,
-      int freeLimit});
+      int freeLimit,
+      bool showDiscountAfterPaywall});
 }
 
 /// @nodoc
@@ -365,6 +373,7 @@ class __$$RevenueCatConfigModelImplCopyWithImpl<$Res>
     Object? revenueAndroidApiKey = null,
     Object? defaultEntitlementIdentifier = null,
     Object? freeLimit = null,
+    Object? showDiscountAfterPaywall = null,
   }) {
     return _then(_$RevenueCatConfigModelImpl(
       revenueIOSApiKey: null == revenueIOSApiKey
@@ -383,6 +392,10 @@ class __$$RevenueCatConfigModelImplCopyWithImpl<$Res>
           ? _value.freeLimit
           : freeLimit // ignore: cast_nullable_to_non_nullable
               as int,
+      showDiscountAfterPaywall: null == showDiscountAfterPaywall
+          ? _value.showDiscountAfterPaywall
+          : showDiscountAfterPaywall // ignore: cast_nullable_to_non_nullable
+              as bool,
     ));
   }
 }
@@ -394,7 +407,8 @@ class _$RevenueCatConfigModelImpl implements _RevenueCatConfigModel {
       {this.revenueIOSApiKey = '',
       this.revenueAndroidApiKey = '',
       this.defaultEntitlementIdentifier = 'pro',
-      this.freeLimit = 1});
+      this.freeLimit = 1,
+      this.showDiscountAfterPaywall = false});
 
   factory _$RevenueCatConfigModelImpl.fromJson(Map<String, dynamic> json) =>
       _$$RevenueCatConfigModelImplFromJson(json);
@@ -411,10 +425,13 @@ class _$RevenueCatConfigModelImpl implements _RevenueCatConfigModel {
   @override
   @JsonKey()
   final int freeLimit;
+  @override
+  @JsonKey()
+  final bool showDiscountAfterPaywall;
 
   @override
   String toString() {
-    return 'RevenueCatConfigModel(revenueIOSApiKey: $revenueIOSApiKey, revenueAndroidApiKey: $revenueAndroidApiKey, defaultEntitlementIdentifier: $defaultEntitlementIdentifier, freeLimit: $freeLimit)';
+    return 'RevenueCatConfigModel(revenueIOSApiKey: $revenueIOSApiKey, revenueAndroidApiKey: $revenueAndroidApiKey, defaultEntitlementIdentifier: $defaultEntitlementIdentifier, freeLimit: $freeLimit, showDiscountAfterPaywall: $showDiscountAfterPaywall)';
   }
 
   @override
@@ -431,13 +448,21 @@ class _$RevenueCatConfigModelImpl implements _RevenueCatConfigModel {
                 other.defaultEntitlementIdentifier ==
                     defaultEntitlementIdentifier) &&
             (identical(other.freeLimit, freeLimit) ||
-                other.freeLimit == freeLimit));
+                other.freeLimit == freeLimit) &&
+            (identical(
+                    other.showDiscountAfterPaywall, showDiscountAfterPaywall) ||
+                other.showDiscountAfterPaywall == showDiscountAfterPaywall));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  int get hashCode => Object.hash(runtimeType, revenueIOSApiKey,
-      revenueAndroidApiKey, defaultEntitlementIdentifier, freeLimit);
+  int get hashCode => Object.hash(
+      runtimeType,
+      revenueIOSApiKey,
+      revenueAndroidApiKey,
+      defaultEntitlementIdentifier,
+      freeLimit,
+      showDiscountAfterPaywall);
 
   /// Create a copy of RevenueCatConfigModel
   /// with the given fields replaced by the non-null parameter values.
@@ -461,7 +486,8 @@ abstract class _RevenueCatConfigModel implements RevenueCatConfigModel {
       {final String revenueIOSApiKey,
       final String revenueAndroidApiKey,
       final String defaultEntitlementIdentifier,
-      final int freeLimit}) = _$RevenueCatConfigModelImpl;
+      final int freeLimit,
+      final bool showDiscountAfterPaywall}) = _$RevenueCatConfigModelImpl;
 
   factory _RevenueCatConfigModel.fromJson(Map<String, dynamic> json) =
       _$RevenueCatConfigModelImpl.fromJson;
@@ -474,6 +500,8 @@ abstract class _RevenueCatConfigModel implements RevenueCatConfigModel {
   String get defaultEntitlementIdentifier;
   @override
   int get freeLimit;
+  @override
+  bool get showDiscountAfterPaywall;
 
   /// Create a copy of RevenueCatConfigModel
   /// with the given fields replaced by the non-null parameter values.

@@ -76,7 +76,9 @@ class SubscriptionCubit extends Cubit<SubscriptionState> {
       // Check status after paywall interaction
       await checkSubscriptionStatus();
 
-      if (!state.isSubscriber && paywallOffer != PaywallOffers.second_offer) {
+      if (!state.isSubscriber &&
+          paywallOffer != PaywallOffers.second_offer &&
+          _remoteConfigService.data.revenueCat.showDiscountAfterPaywall) {
         await showPaywall(PaywallOffers.second_offer);
       }
     } catch (e) {

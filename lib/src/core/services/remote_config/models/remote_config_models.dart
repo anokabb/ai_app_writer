@@ -23,6 +23,7 @@ class RevenueCatConfigModel with _$RevenueCatConfigModel {
     @Default('') String revenueAndroidApiKey,
     @Default('pro') String defaultEntitlementIdentifier,
     @Default(1) int freeLimit,
+    @Default(false) bool showDiscountAfterPaywall,
   }) = _RevenueCatConfigModel;
 
   factory RevenueCatConfigModel.fromJson(Map<String, dynamic> json) => _$RevenueCatConfigModelFromJson(json);
@@ -88,4 +89,5 @@ class RemoteConfigKeys {
   static const String revenueIOSApiKey = 'revenue_ios_api_key';
   static const String revenueAndroidApiKey = 'revenue_android_api_key';
   static const String freeLimit = 'free_limit';
+  static const String showDiscountAfterPaywall = 'show_discount_after_paywall';
 }

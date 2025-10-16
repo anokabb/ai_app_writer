@@ -38,6 +38,8 @@ _$RevenueCatConfigModelImpl _$$RevenueCatConfigModelImplFromJson(
       defaultEntitlementIdentifier:
           json['default_entitlement_identifier'] as String? ?? 'pro',
       freeLimit: (json['free_limit'] as num?)?.toInt() ?? 1,
+      showDiscountAfterPaywall:
+          json['show_discount_after_paywall'] as bool? ?? false,
     );
 
 Map<String, dynamic> _$$RevenueCatConfigModelImplToJson(
@@ -47,6 +49,7 @@ Map<String, dynamic> _$$RevenueCatConfigModelImplToJson(
       'revenue_android_api_key': instance.revenueAndroidApiKey,
       'default_entitlement_identifier': instance.defaultEntitlementIdentifier,
       'free_limit': instance.freeLimit,
+      'show_discount_after_paywall': instance.showDiscountAfterPaywall,
     };
 
 _$ApiConfigModelImpl _$$ApiConfigModelImplFromJson(Map<String, dynamic> json) =>
