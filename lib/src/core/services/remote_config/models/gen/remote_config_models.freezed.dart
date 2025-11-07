@@ -265,7 +265,10 @@ mixin _$RevenueCatConfigModel {
   String get revenueAndroidApiKey => throw _privateConstructorUsedError;
   String get defaultEntitlementIdentifier => throw _privateConstructorUsedError;
   int get freeLimit => throw _privateConstructorUsedError;
+  int get closeButtonDelay => throw _privateConstructorUsedError;
   bool get showDiscountAfterPaywall => throw _privateConstructorUsedError;
+  String get hideDiscountPaywallForVersion =>
+      throw _privateConstructorUsedError;
 
   /// Serializes this RevenueCatConfigModel to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -288,7 +291,9 @@ abstract class $RevenueCatConfigModelCopyWith<$Res> {
       String revenueAndroidApiKey,
       String defaultEntitlementIdentifier,
       int freeLimit,
-      bool showDiscountAfterPaywall});
+      int closeButtonDelay,
+      bool showDiscountAfterPaywall,
+      String hideDiscountPaywallForVersion});
 }
 
 /// @nodoc
@@ -311,7 +316,9 @@ class _$RevenueCatConfigModelCopyWithImpl<$Res,
     Object? revenueAndroidApiKey = null,
     Object? defaultEntitlementIdentifier = null,
     Object? freeLimit = null,
+    Object? closeButtonDelay = null,
     Object? showDiscountAfterPaywall = null,
+    Object? hideDiscountPaywallForVersion = null,
   }) {
     return _then(_value.copyWith(
       revenueIOSApiKey: null == revenueIOSApiKey
@@ -330,10 +337,18 @@ class _$RevenueCatConfigModelCopyWithImpl<$Res,
           ? _value.freeLimit
           : freeLimit // ignore: cast_nullable_to_non_nullable
               as int,
+      closeButtonDelay: null == closeButtonDelay
+          ? _value.closeButtonDelay
+          : closeButtonDelay // ignore: cast_nullable_to_non_nullable
+              as int,
       showDiscountAfterPaywall: null == showDiscountAfterPaywall
           ? _value.showDiscountAfterPaywall
           : showDiscountAfterPaywall // ignore: cast_nullable_to_non_nullable
               as bool,
+      hideDiscountPaywallForVersion: null == hideDiscountPaywallForVersion
+          ? _value.hideDiscountPaywallForVersion
+          : hideDiscountPaywallForVersion // ignore: cast_nullable_to_non_nullable
+              as String,
     ) as $Val);
   }
 }
@@ -352,7 +367,9 @@ abstract class _$$RevenueCatConfigModelImplCopyWith<$Res>
       String revenueAndroidApiKey,
       String defaultEntitlementIdentifier,
       int freeLimit,
-      bool showDiscountAfterPaywall});
+      int closeButtonDelay,
+      bool showDiscountAfterPaywall,
+      String hideDiscountPaywallForVersion});
 }
 
 /// @nodoc
@@ -373,7 +390,9 @@ class __$$RevenueCatConfigModelImplCopyWithImpl<$Res>
     Object? revenueAndroidApiKey = null,
     Object? defaultEntitlementIdentifier = null,
     Object? freeLimit = null,
+    Object? closeButtonDelay = null,
     Object? showDiscountAfterPaywall = null,
+    Object? hideDiscountPaywallForVersion = null,
   }) {
     return _then(_$RevenueCatConfigModelImpl(
       revenueIOSApiKey: null == revenueIOSApiKey
@@ -392,10 +411,18 @@ class __$$RevenueCatConfigModelImplCopyWithImpl<$Res>
           ? _value.freeLimit
           : freeLimit // ignore: cast_nullable_to_non_nullable
               as int,
+      closeButtonDelay: null == closeButtonDelay
+          ? _value.closeButtonDelay
+          : closeButtonDelay // ignore: cast_nullable_to_non_nullable
+              as int,
       showDiscountAfterPaywall: null == showDiscountAfterPaywall
           ? _value.showDiscountAfterPaywall
           : showDiscountAfterPaywall // ignore: cast_nullable_to_non_nullable
               as bool,
+      hideDiscountPaywallForVersion: null == hideDiscountPaywallForVersion
+          ? _value.hideDiscountPaywallForVersion
+          : hideDiscountPaywallForVersion // ignore: cast_nullable_to_non_nullable
+              as String,
     ));
   }
 }
@@ -408,7 +435,9 @@ class _$RevenueCatConfigModelImpl implements _RevenueCatConfigModel {
       this.revenueAndroidApiKey = '',
       this.defaultEntitlementIdentifier = 'pro',
       this.freeLimit = 1,
-      this.showDiscountAfterPaywall = false});
+      this.closeButtonDelay = 5,
+      this.showDiscountAfterPaywall = false,
+      this.hideDiscountPaywallForVersion = ''});
 
   factory _$RevenueCatConfigModelImpl.fromJson(Map<String, dynamic> json) =>
       _$$RevenueCatConfigModelImplFromJson(json);
@@ -427,11 +456,17 @@ class _$RevenueCatConfigModelImpl implements _RevenueCatConfigModel {
   final int freeLimit;
   @override
   @JsonKey()
+  final int closeButtonDelay;
+  @override
+  @JsonKey()
   final bool showDiscountAfterPaywall;
+  @override
+  @JsonKey()
+  final String hideDiscountPaywallForVersion;
 
   @override
   String toString() {
-    return 'RevenueCatConfigModel(revenueIOSApiKey: $revenueIOSApiKey, revenueAndroidApiKey: $revenueAndroidApiKey, defaultEntitlementIdentifier: $defaultEntitlementIdentifier, freeLimit: $freeLimit, showDiscountAfterPaywall: $showDiscountAfterPaywall)';
+    return 'RevenueCatConfigModel(revenueIOSApiKey: $revenueIOSApiKey, revenueAndroidApiKey: $revenueAndroidApiKey, defaultEntitlementIdentifier: $defaultEntitlementIdentifier, freeLimit: $freeLimit, closeButtonDelay: $closeButtonDelay, showDiscountAfterPaywall: $showDiscountAfterPaywall, hideDiscountPaywallForVersion: $hideDiscountPaywallForVersion)';
   }
 
   @override
@@ -449,9 +484,15 @@ class _$RevenueCatConfigModelImpl implements _RevenueCatConfigModel {
                     defaultEntitlementIdentifier) &&
             (identical(other.freeLimit, freeLimit) ||
                 other.freeLimit == freeLimit) &&
+            (identical(other.closeButtonDelay, closeButtonDelay) ||
+                other.closeButtonDelay == closeButtonDelay) &&
             (identical(
                     other.showDiscountAfterPaywall, showDiscountAfterPaywall) ||
-                other.showDiscountAfterPaywall == showDiscountAfterPaywall));
+                other.showDiscountAfterPaywall == showDiscountAfterPaywall) &&
+            (identical(other.hideDiscountPaywallForVersion,
+                    hideDiscountPaywallForVersion) ||
+                other.hideDiscountPaywallForVersion ==
+                    hideDiscountPaywallForVersion));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
@@ -462,7 +503,9 @@ class _$RevenueCatConfigModelImpl implements _RevenueCatConfigModel {
       revenueAndroidApiKey,
       defaultEntitlementIdentifier,
       freeLimit,
-      showDiscountAfterPaywall);
+      closeButtonDelay,
+      showDiscountAfterPaywall,
+      hideDiscountPaywallForVersion);
 
   /// Create a copy of RevenueCatConfigModel
   /// with the given fields replaced by the non-null parameter values.
@@ -483,11 +526,14 @@ class _$RevenueCatConfigModelImpl implements _RevenueCatConfigModel {
 
 abstract class _RevenueCatConfigModel implements RevenueCatConfigModel {
   const factory _RevenueCatConfigModel(
-      {final String revenueIOSApiKey,
-      final String revenueAndroidApiKey,
-      final String defaultEntitlementIdentifier,
-      final int freeLimit,
-      final bool showDiscountAfterPaywall}) = _$RevenueCatConfigModelImpl;
+          {final String revenueIOSApiKey,
+          final String revenueAndroidApiKey,
+          final String defaultEntitlementIdentifier,
+          final int freeLimit,
+          final int closeButtonDelay,
+          final bool showDiscountAfterPaywall,
+          final String hideDiscountPaywallForVersion}) =
+      _$RevenueCatConfigModelImpl;
 
   factory _RevenueCatConfigModel.fromJson(Map<String, dynamic> json) =
       _$RevenueCatConfigModelImpl.fromJson;
@@ -501,7 +547,11 @@ abstract class _RevenueCatConfigModel implements RevenueCatConfigModel {
   @override
   int get freeLimit;
   @override
+  int get closeButtonDelay;
+  @override
   bool get showDiscountAfterPaywall;
+  @override
+  String get hideDiscountPaywallForVersion;
 
   /// Create a copy of RevenueCatConfigModel
   /// with the given fields replaced by the non-null parameter values.

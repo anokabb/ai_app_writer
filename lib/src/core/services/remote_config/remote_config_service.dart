@@ -64,6 +64,8 @@ class RemoteConfigService {
       RemoteConfigKeys.revenueAndroidApiKey: '',
       RemoteConfigKeys.freeLimit: 1,
       RemoteConfigKeys.showDiscountAfterPaywall: false,
+      RemoteConfigKeys.closeButtonDelay: 5,
+      RemoteConfigKeys.hideDiscountPaywallForVersion: '',
     };
 
     await _remoteConfig.setDefaults(defaultValues);
@@ -97,7 +99,9 @@ class RemoteConfigService {
         revenueIOSApiKey: _remoteConfig.getString(RemoteConfigKeys.revenueIOSApiKey),
         revenueAndroidApiKey: _remoteConfig.getString(RemoteConfigKeys.revenueAndroidApiKey),
         freeLimit: _remoteConfig.getInt(RemoteConfigKeys.freeLimit),
+        closeButtonDelay: _remoteConfig.getInt(RemoteConfigKeys.closeButtonDelay),
         showDiscountAfterPaywall: _remoteConfig.getBool(RemoteConfigKeys.showDiscountAfterPaywall),
+        hideDiscountPaywallForVersion: _remoteConfig.getString(RemoteConfigKeys.hideDiscountPaywallForVersion),
       ),
     );
   }

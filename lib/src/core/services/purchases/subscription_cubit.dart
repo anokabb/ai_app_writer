@@ -1,22 +1,25 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 import 'package:phrasly_ai_tools/src/core/constants/hive_config.dart';
+import 'package:phrasly_ai_tools/src/core/routing/app_router.dart';
 import 'package:phrasly_ai_tools/src/core/services/logger/logger.dart';
 import 'package:phrasly_ai_tools/src/core/services/purchases/revenue_cat_service.dart';
 import 'package:phrasly_ai_tools/src/core/services/remote_config/models/remote_config_models.dart';
 import 'package:phrasly_ai_tools/src/core/services/remote_config/remote_config_service.dart';
+import 'package:phrasly_ai_tools/src/features/paywall/presentation/pages/paywall_page.dart';
 import 'package:purchases_flutter/purchases_flutter.dart';
 
 part 'subscription_state.dart';
 
 class SubscriptionCubit extends Cubit<SubscriptionState> {
-  final RevenueCatService _revenueCatService;
   final RemoteConfigService _remoteConfigService;
   final _logger = getLogger('SubscriptionCubit');
 
   // Usage tracking keys
   static const String _freeLimitKey = RemoteConfigKeys.freeLimit;
 
-  SubscriptionCubit(this._revenueCatService, this._remoteConfigService) : super(const SubscriptionState.initial()) {
+  SubscriptionCubit(this._remoteConfigService) : super(const SubscriptionState.initial()) {
     _initializeUsageTracking();
   }
 
@@ -30,6 +33,36 @@ class SubscriptionCubit extends Cubit<SubscriptionState> {
     final freeLimit = purchasesBox.get(_freeLimitKey, defaultValue: 0) as int;
 
     emit(state.copyWith(freeLimit: freeLimit));
+  }
+
+  /// Check if discount paywall should be shown based on app version
+  /// Returns true if discount should be shown, false if it should be hidden
+  Future<bool> _shouldShowDiscountPaywall() async {
+    try {
+      final config = _remoteConfigService.data.revenueCat;
+
+      // If showDiscountAfterPaywall is false, don't show it
+      if (!config.showDiscountAfterPaywall) return false;
+
+      // If hideDiscountPaywallForVersion is empty, show the discount
+      if (config.hideDiscountPaywallForVersion.trim().isEmpty) return true;
+
+      // Get current app version
+      final packageInfo = await PackageInfo.fromPlatform();
+      final currentVersion = packageInfo.version;
+
+      // Check if current version exactly matches the version to hide
+      final shouldHide = currentVersion == config.hideDiscountPaywallForVersion;
+
+      _logger.i(
+          'Current version: $currentVersion, Hide for version: ${config.hideDiscountPaywallForVersion}, Should hide: $shouldHide');
+
+      return !shouldHide;
+    } catch (e) {
+      _logger.e('Error checking discount paywall eligibility: $e');
+      // If error occurs, default to showing the discount
+      return _remoteConfigService.data.revenueCat.showDiscountAfterPaywall;
+    }
   }
 
   /// Check subscription status
@@ -70,16 +103,23 @@ class SubscriptionCubit extends Cubit<SubscriptionState> {
     try {
       emit(state.copyWith(isLoading: true, error: null));
 
-      // Present paywall
-      await _revenueCatService.presentPaywallIfNeeded(paywallOffer);
+      final context = rootNavigatorKey.currentContext;
+      if (context != null) {
+        await context.push(PaywallPage.routeName, extra: paywallOffer);
 
-      // Check status after paywall interaction
-      await checkSubscriptionStatus();
+        // Check status after paywall interaction
+        await checkSubscriptionStatus();
 
-      if (!state.isSubscriber &&
-          paywallOffer != PaywallOffers.second_offer &&
-          _remoteConfigService.data.revenueCat.showDiscountAfterPaywall) {
-        await showPaywall(PaywallOffers.second_offer);
+        // If user is not subscriber and paywall offer is not second offer, check if discount should be shown
+        if (!state.isSubscriber && paywallOffer != PaywallOffers.second_offer && await _shouldShowDiscountPaywall()) {
+          await showPaywall(PaywallOffers.second_offer);
+        }
+      } else {
+        _logger.e('No context available for navigation');
+        emit(state.copyWith(
+          isLoading: false,
+          error: 'Navigation context not available',
+        ));
       }
     } catch (e) {
       _logger.e('Failed to present paywall: $e');

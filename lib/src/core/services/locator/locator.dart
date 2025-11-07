@@ -75,8 +75,7 @@ void setupLocator() {
   locator.registerLazySingleton<HistoryCubit>(() => HistoryCubit(locator<HistoryRepo>(), locator<AiRepo>()));
   locator.registerLazySingleton<SettingsCubit>(() => SettingsCubit());
   locator.registerLazySingleton<AuthCubit>(() => AuthCubit(locator<AuthRepo>()));
-  locator.registerLazySingleton<SubscriptionCubit>(
-      () => SubscriptionCubit(locator<RevenueCatService>(), locator<RemoteConfigService>()));
+  locator.registerLazySingleton<SubscriptionCubit>(() => SubscriptionCubit(locator<RemoteConfigService>()));
 }
 
 void onLoggedIn(GetIt instance) async {

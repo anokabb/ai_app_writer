@@ -7,6 +7,7 @@ import 'package:phrasly_ai_tools/src/core/routing/tabs/documents_tab.dart';
 import 'package:phrasly_ai_tools/src/core/routing/tabs/home_tab.dart';
 import 'package:phrasly_ai_tools/src/core/routing/tabs/profile_tab.dart';
 import 'package:phrasly_ai_tools/src/core/services/logger/logger.dart';
+import 'package:phrasly_ai_tools/src/core/services/purchases/revenue_cat_service.dart';
 import 'package:phrasly_ai_tools/src/features/detector/presentation/pages/detector_page.dart';
 import 'package:phrasly_ai_tools/src/features/dev/presentation/views/dev_mode_view.dart';
 import 'package:phrasly_ai_tools/src/features/documents/data/models/history_item.dart';
@@ -19,6 +20,7 @@ import 'package:phrasly_ai_tools/src/features/languages/presentation/pages/langu
 import 'package:phrasly_ai_tools/src/features/onboarding/presentation/pages/onboarding_page.dart';
 import 'package:phrasly_ai_tools/src/features/onboarding/presentation/pages/reviews_page.dart';
 import 'package:phrasly_ai_tools/src/features/onboarding/presentation/pages/splash_page.dart';
+import 'package:phrasly_ai_tools/src/features/paywall/presentation/pages/paywall_page.dart';
 import 'package:phrasly_ai_tools/src/features/theme/presentation/pages/theme_page.dart';
 
 final GlobalKey<NavigatorState> rootNavigatorKey = GlobalKey<NavigatorState>(debugLabel: 'root');
@@ -119,6 +121,15 @@ class AppRouter {
       GoRoute(
         path: ReviewsPage.routeName,
         pageBuilder: (context, state) => CupertinoPage(child: ReviewsPage()),
+      ),
+      GoRoute(
+        path: PaywallPage.routeName,
+        pageBuilder: (context, state) {
+          final paywallOffer = state.extra as PaywallOffers? ?? PaywallOffers.first_offer;
+          return PageTransitions.fadeTransition(
+            child: PaywallPage(paywallOffer: paywallOffer),
+          );
+        },
       ),
     ];
   }
