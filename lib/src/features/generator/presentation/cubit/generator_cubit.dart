@@ -33,29 +33,29 @@ class GeneratorCubit extends Cubit<GeneratorState> {
 
     emit(const GeneratorState.loading());
 
-    await for (final result in _generatorRepo.generateContent(
+    final result = await _generatorRepo.generateContent(
       text: text,
       typeOfWriting: typeOfWriting,
       tone: tone,
       wordCount: wordCount,
       language: language,
-    )) {
-      result.fold(
-        (error) => emit(GeneratorState.error(error)),
-        (generatorResult) {
-          emit(GeneratorState.loaded(generatorResult));
-          if (!firstLoaded) {
-            onFirstLoad?.call();
-            firstLoaded = true;
-          }
-        },
-      );
-    }
+    );
+
+    result.fold(
+      (error) => emit(GeneratorState.error(error)),
+      (generatorResult) {
+        emit(GeneratorState.loaded(generatorResult));
+        if (!firstLoaded) {
+          onFirstLoad?.call();
+          firstLoaded = true;
+        }
+      },
+    );
 
     if (state is GeneratorStateLoaded && locator<SettingsCubit>().state.settings.autoSaveEnabled) {
-      final result = (state as GeneratorStateLoaded).result;
+      final loadedResult = (state as GeneratorStateLoaded).result;
       if (locator<SettingsCubit>().state.settings.autoSaveEnabled) {
-        locator<HistoryCubit>().saveGeneratedContent(result: result, originalText: result.originalText);
+        locator<HistoryCubit>().saveGeneratedContent(result: loadedResult, originalText: loadedResult.originalText);
       }
     }
   }

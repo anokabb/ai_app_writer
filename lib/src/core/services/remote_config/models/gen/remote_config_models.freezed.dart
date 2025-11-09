@@ -570,6 +570,10 @@ mixin _$ApiConfigModel {
   String get openaiApiKey => throw _privateConstructorUsedError;
   String get openaiBaseUrl => throw _privateConstructorUsedError;
   String get defaultModel => throw _privateConstructorUsedError;
+  String get backendBaseUrlBeta => throw _privateConstructorUsedError;
+  String get backendBaseUrlProduction => throw _privateConstructorUsedError;
+  String get backendApiKeyBeta => throw _privateConstructorUsedError;
+  String get backendApiKeyProduction => throw _privateConstructorUsedError;
 
   /// Serializes this ApiConfigModel to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -587,7 +591,14 @@ abstract class $ApiConfigModelCopyWith<$Res> {
           ApiConfigModel value, $Res Function(ApiConfigModel) then) =
       _$ApiConfigModelCopyWithImpl<$Res, ApiConfigModel>;
   @useResult
-  $Res call({String openaiApiKey, String openaiBaseUrl, String defaultModel});
+  $Res call(
+      {String openaiApiKey,
+      String openaiBaseUrl,
+      String defaultModel,
+      String backendBaseUrlBeta,
+      String backendBaseUrlProduction,
+      String backendApiKeyBeta,
+      String backendApiKeyProduction});
 }
 
 /// @nodoc
@@ -608,6 +619,10 @@ class _$ApiConfigModelCopyWithImpl<$Res, $Val extends ApiConfigModel>
     Object? openaiApiKey = null,
     Object? openaiBaseUrl = null,
     Object? defaultModel = null,
+    Object? backendBaseUrlBeta = null,
+    Object? backendBaseUrlProduction = null,
+    Object? backendApiKeyBeta = null,
+    Object? backendApiKeyProduction = null,
   }) {
     return _then(_value.copyWith(
       openaiApiKey: null == openaiApiKey
@@ -622,6 +637,22 @@ class _$ApiConfigModelCopyWithImpl<$Res, $Val extends ApiConfigModel>
           ? _value.defaultModel
           : defaultModel // ignore: cast_nullable_to_non_nullable
               as String,
+      backendBaseUrlBeta: null == backendBaseUrlBeta
+          ? _value.backendBaseUrlBeta
+          : backendBaseUrlBeta // ignore: cast_nullable_to_non_nullable
+              as String,
+      backendBaseUrlProduction: null == backendBaseUrlProduction
+          ? _value.backendBaseUrlProduction
+          : backendBaseUrlProduction // ignore: cast_nullable_to_non_nullable
+              as String,
+      backendApiKeyBeta: null == backendApiKeyBeta
+          ? _value.backendApiKeyBeta
+          : backendApiKeyBeta // ignore: cast_nullable_to_non_nullable
+              as String,
+      backendApiKeyProduction: null == backendApiKeyProduction
+          ? _value.backendApiKeyProduction
+          : backendApiKeyProduction // ignore: cast_nullable_to_non_nullable
+              as String,
     ) as $Val);
   }
 }
@@ -634,7 +665,14 @@ abstract class _$$ApiConfigModelImplCopyWith<$Res>
       __$$ApiConfigModelImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({String openaiApiKey, String openaiBaseUrl, String defaultModel});
+  $Res call(
+      {String openaiApiKey,
+      String openaiBaseUrl,
+      String defaultModel,
+      String backendBaseUrlBeta,
+      String backendBaseUrlProduction,
+      String backendApiKeyBeta,
+      String backendApiKeyProduction});
 }
 
 /// @nodoc
@@ -653,6 +691,10 @@ class __$$ApiConfigModelImplCopyWithImpl<$Res>
     Object? openaiApiKey = null,
     Object? openaiBaseUrl = null,
     Object? defaultModel = null,
+    Object? backendBaseUrlBeta = null,
+    Object? backendBaseUrlProduction = null,
+    Object? backendApiKeyBeta = null,
+    Object? backendApiKeyProduction = null,
   }) {
     return _then(_$ApiConfigModelImpl(
       openaiApiKey: null == openaiApiKey
@@ -667,6 +709,22 @@ class __$$ApiConfigModelImplCopyWithImpl<$Res>
           ? _value.defaultModel
           : defaultModel // ignore: cast_nullable_to_non_nullable
               as String,
+      backendBaseUrlBeta: null == backendBaseUrlBeta
+          ? _value.backendBaseUrlBeta
+          : backendBaseUrlBeta // ignore: cast_nullable_to_non_nullable
+              as String,
+      backendBaseUrlProduction: null == backendBaseUrlProduction
+          ? _value.backendBaseUrlProduction
+          : backendBaseUrlProduction // ignore: cast_nullable_to_non_nullable
+              as String,
+      backendApiKeyBeta: null == backendApiKeyBeta
+          ? _value.backendApiKeyBeta
+          : backendApiKeyBeta // ignore: cast_nullable_to_non_nullable
+              as String,
+      backendApiKeyProduction: null == backendApiKeyProduction
+          ? _value.backendApiKeyProduction
+          : backendApiKeyProduction // ignore: cast_nullable_to_non_nullable
+              as String,
     ));
   }
 }
@@ -677,7 +735,11 @@ class _$ApiConfigModelImpl implements _ApiConfigModel {
   const _$ApiConfigModelImpl(
       {this.openaiApiKey = '',
       this.openaiBaseUrl = 'https://api.openai.com/v1',
-      this.defaultModel = 'gpt-3.5-turbo'});
+      this.defaultModel = 'gpt-3.5-turbo',
+      this.backendBaseUrlBeta = 'https://beta.aiadmin.pro',
+      this.backendBaseUrlProduction = 'https://aiadmin.pro',
+      this.backendApiKeyBeta = '',
+      this.backendApiKeyProduction = ''});
 
   factory _$ApiConfigModelImpl.fromJson(Map<String, dynamic> json) =>
       _$$ApiConfigModelImplFromJson(json);
@@ -691,10 +753,22 @@ class _$ApiConfigModelImpl implements _ApiConfigModel {
   @override
   @JsonKey()
   final String defaultModel;
+  @override
+  @JsonKey()
+  final String backendBaseUrlBeta;
+  @override
+  @JsonKey()
+  final String backendBaseUrlProduction;
+  @override
+  @JsonKey()
+  final String backendApiKeyBeta;
+  @override
+  @JsonKey()
+  final String backendApiKeyProduction;
 
   @override
   String toString() {
-    return 'ApiConfigModel(openaiApiKey: $openaiApiKey, openaiBaseUrl: $openaiBaseUrl, defaultModel: $defaultModel)';
+    return 'ApiConfigModel(openaiApiKey: $openaiApiKey, openaiBaseUrl: $openaiBaseUrl, defaultModel: $defaultModel, backendBaseUrlBeta: $backendBaseUrlBeta, backendBaseUrlProduction: $backendBaseUrlProduction, backendApiKeyBeta: $backendApiKeyBeta, backendApiKeyProduction: $backendApiKeyProduction)';
   }
 
   @override
@@ -707,13 +781,30 @@ class _$ApiConfigModelImpl implements _ApiConfigModel {
             (identical(other.openaiBaseUrl, openaiBaseUrl) ||
                 other.openaiBaseUrl == openaiBaseUrl) &&
             (identical(other.defaultModel, defaultModel) ||
-                other.defaultModel == defaultModel));
+                other.defaultModel == defaultModel) &&
+            (identical(other.backendBaseUrlBeta, backendBaseUrlBeta) ||
+                other.backendBaseUrlBeta == backendBaseUrlBeta) &&
+            (identical(
+                    other.backendBaseUrlProduction, backendBaseUrlProduction) ||
+                other.backendBaseUrlProduction == backendBaseUrlProduction) &&
+            (identical(other.backendApiKeyBeta, backendApiKeyBeta) ||
+                other.backendApiKeyBeta == backendApiKeyBeta) &&
+            (identical(
+                    other.backendApiKeyProduction, backendApiKeyProduction) ||
+                other.backendApiKeyProduction == backendApiKeyProduction));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  int get hashCode =>
-      Object.hash(runtimeType, openaiApiKey, openaiBaseUrl, defaultModel);
+  int get hashCode => Object.hash(
+      runtimeType,
+      openaiApiKey,
+      openaiBaseUrl,
+      defaultModel,
+      backendBaseUrlBeta,
+      backendBaseUrlProduction,
+      backendApiKeyBeta,
+      backendApiKeyProduction);
 
   /// Create a copy of ApiConfigModel
   /// with the given fields replaced by the non-null parameter values.
@@ -736,7 +827,11 @@ abstract class _ApiConfigModel implements ApiConfigModel {
   const factory _ApiConfigModel(
       {final String openaiApiKey,
       final String openaiBaseUrl,
-      final String defaultModel}) = _$ApiConfigModelImpl;
+      final String defaultModel,
+      final String backendBaseUrlBeta,
+      final String backendBaseUrlProduction,
+      final String backendApiKeyBeta,
+      final String backendApiKeyProduction}) = _$ApiConfigModelImpl;
 
   factory _ApiConfigModel.fromJson(Map<String, dynamic> json) =
       _$ApiConfigModelImpl.fromJson;
@@ -747,6 +842,14 @@ abstract class _ApiConfigModel implements ApiConfigModel {
   String get openaiBaseUrl;
   @override
   String get defaultModel;
+  @override
+  String get backendBaseUrlBeta;
+  @override
+  String get backendBaseUrlProduction;
+  @override
+  String get backendApiKeyBeta;
+  @override
+  String get backendApiKeyProduction;
 
   /// Create a copy of ApiConfigModel
   /// with the given fields replaced by the non-null parameter values.

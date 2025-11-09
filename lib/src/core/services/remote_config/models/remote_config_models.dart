@@ -38,6 +38,10 @@ class ApiConfigModel with _$ApiConfigModel {
     @Default('') String openaiApiKey,
     @Default('https://api.openai.com/v1') String openaiBaseUrl,
     @Default('gpt-3.5-turbo') String defaultModel,
+    @Default('https://beta.aiadmin.pro') String backendBaseUrlBeta,
+    @Default('https://aiadmin.pro') String backendBaseUrlProduction,
+    @Default('') String backendApiKeyBeta,
+    @Default('') String backendApiKeyProduction,
   }) = _ApiConfigModel;
 
   factory ApiConfigModel.fromJson(Map<String, dynamic> json) => _$ApiConfigModelFromJson(json);
@@ -72,6 +76,10 @@ class RemoteConfigKeys {
   static const String openaiApiKey = 'openai_api_key';
   static const String openaiBaseUrl = 'openai_base_url';
   static const String defaultModel = 'default_model';
+  static const String backendBaseUrlBeta = 'backend_base_url_beta';
+  static const String backendBaseUrlProduction = 'backend_base_url_production';
+  static const String backendApiKeyBeta = 'backend_api_key_beta';
+  static const String backendApiKeyProduction = 'backend_api_key_production';
   static const String maxTokens = 'max_tokens';
   static const String temperature = 'temperature';
 

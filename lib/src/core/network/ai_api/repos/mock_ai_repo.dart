@@ -148,10 +148,10 @@ class MockAiRepo implements AiRepo {
   }
 
   @override
-  Stream<Either<AppError, HumanizationResult>> humanizeText(String text,
-      {double? humanLike, double? creativity}) async* {
-    // Simulate streaming humanization
-    await Future.delayed(const Duration(milliseconds: 500));
+  Future<Either<AppError, HumanizationResult>> humanizeText(String text,
+      {double? humanLike, double? creativity}) async {
+    // Simulate API delay
+    await Future.delayed(const Duration(seconds: 2));
 
     const fullText = '''
 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
@@ -165,48 +165,7 @@ At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praese
 Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo minus id quod maxime placeat facere possimus, omnis voluptas assumenda est, omnis dolor repellendus. Temporibus autem quibusdam et aut officiis debitis aut rerum necessitatibus saepe eveniet ut et voluptates repudiandae sint et molestiae non recusandae. Itaque earum rerum hic tenetur a sapiente delectus, ut aut reiciendis voluptatibus maiores alias consequatur aut perferendis doloribus asperiores repellat.
 ''';
 
-    // Split text into words
-    final words = fullText.split(' ');
-    String currentText = '';
-    double currentHumanLike = 0.0;
-
-    for (int i = 0; i < words.length; i++) {
-      // Add current word to the text
-      if (currentText.isNotEmpty) {
-        currentText += ' ';
-      }
-      currentText += words[i];
-
-      // Calculate progress-based human-like score
-      currentHumanLike = 0.3 + (0.65 * (i / words.length));
-
-      // Create changes list based on progress
-      final changes = <String>[];
-      if (i > words.length * 0.25) {
-        changes.add('Generated human-like text');
-      }
-      if (i > words.length * 0.5) {
-        changes.add('Applied natural language patterns');
-      }
-      if (i > words.length * 0.75) {
-        changes.add('Enhanced readability');
-      }
-
-      // Yield current state
-      yield right(HumanizationResult(
-        originalText: text,
-        humanizedText: currentText,
-        humanLike: currentHumanLike,
-        changes: changes,
-        explanation: 'Text is being humanized word by word...',
-      ));
-
-      // Small delay between words to simulate streaming
-      await Future.delayed(const Duration(milliseconds: 50));
-    }
-
-    // Final yield with complete text
-    yield right(HumanizationResult(
+    return right(HumanizationResult(
       originalText: text,
       humanizedText: fullText,
       humanLike: 0.95,
@@ -220,15 +179,15 @@ Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo
   }
 
   @override
-  Stream<Either<AppError, ContentGenerationResult>> generateContent({
+  Future<Either<AppError, ContentGenerationResult>> generateContent({
     required String text,
     required String typeOfWriting,
     required String tone,
     required int wordCount,
     required String language,
-  }) async* {
-    // Simulate streaming content generation
-    await Future.delayed(const Duration(milliseconds: 500));
+  }) async {
+    // Simulate API delay
+    await Future.delayed(const Duration(seconds: 2));
 
     const fullContent = '''
 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
@@ -242,47 +201,7 @@ At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praese
 Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo minus id quod maxime placeat facere possimus, omnis voluptas assumenda est, omnis dolor repellendus. Temporibus autem quibusdam et aut officiis debitis aut rerum necessitatibus saepe eveniet ut et voluptates repudiandae sint et molestiae non recusandae. Itaque earum rerum hic tenetur a sapiente delectus, ut aut reiciendis voluptatibus maiores alias consequatur aut perferendis doloribus asperiores repellat.
 ''';
 
-    // Split content into words
-    final words = fullContent.split(' ');
-    String currentContent = '';
-
-    for (int i = 0; i < words.length; i++) {
-      // Add current word to the content
-      if (currentContent.isNotEmpty) {
-        currentContent += ' ';
-      }
-      currentContent += words[i];
-
-      // Create suggestions list based on progress
-      final suggestions = <String>[];
-      if (i > words.length * 0.25) {
-        suggestions.add('Content generated successfully');
-      }
-      if (i > words.length * 0.5) {
-        suggestions.add('Follows specified tone and style');
-      }
-      if (i > words.length * 0.75) {
-        suggestions.add('Meets word count requirements');
-      }
-
-      // Yield current state
-      yield right(ContentGenerationResult(
-        originalText: text,
-        generatedContent: currentContent,
-        typeOfWriting: typeOfWriting,
-        tone: tone,
-        wordCount: wordCount,
-        language: language,
-        suggestions: suggestions,
-        explanation: 'Content is being generated word by word...',
-      ));
-
-      // Small delay between words to simulate streaming
-      await Future.delayed(const Duration(milliseconds: 50));
-    }
-
-    // Final yield with complete content
-    yield right(ContentGenerationResult(
+    return right(ContentGenerationResult(
       originalText: text,
       generatedContent: fullContent,
       typeOfWriting: typeOfWriting,

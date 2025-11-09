@@ -206,15 +206,13 @@ HUMAN-LIKE TEXT (HIGH human_probability 0.7-1.0):
   }
 
   @override
-  Stream<Either<AppError, HumanizationResult>> humanizeText(String text,
-      {double? humanLike, double? creativity}) async* {
+  Future<Either<AppError, HumanizationResult>> humanizeText(String text, {double? creativity}) async {
     try {
       // Use creativity parameter to adjust temperature (0.3 to 1.0 range)
       final temperature = creativity != null ? (0.3 + (creativity * 0.7)).clamp(0.3, 1.0) : 0.7;
 
       // Get creativity prompt
       final creativityPrompt = _getCreativityPrompt(creativity);
-      final creativityLevel = creativity != null ? (creativity * 100).round() : 0;
 
       final requestBody = {
         'model': model,
@@ -224,7 +222,7 @@ HUMAN-LIKE TEXT (HIGH human_probability 0.7-1.0):
             'content': '''
 You are an expert at humanizing AI-generated text. Your task is to transform robotic, formal text into natural, human-like writing.
 
-**CREATIVITY LEVEL: $creativityLevel%**
+**CREATIVITY LEVEL: $creativity%**
 $creativityPrompt
 
 Humanization techniques to apply:
@@ -248,82 +246,36 @@ Provide the humanized version that sounds like it was written by a real person.
         ],
         'temperature': temperature,
         'max_tokens': 2000,
-        'stream': true,
       };
 
       if (apiKey.isEmpty) {
-        yield Left(AppError.server(message: 'API key not found'));
-        return;
+        return Left(AppError.server(message: 'API key not found'));
       }
 
-      // Get the streaming response
-      final responseBody = await _api.streamHumanizeText('Bearer $apiKey', requestBody);
+      // Get the non-streaming response
+      final data = await _api.humanizeText('Bearer $apiKey', requestBody);
+      final humanizedText = data['choices'][0]['message']['content'];
 
-      String accumulatedText = '';
-      double humanLikeScore = 0.0;
-      List<String> changes = [];
+      final humanLikeScore = _calculateHumanLikeScore(humanizedText, originalText: text);
 
-      log('Starting to process streaming response');
-
-      // Process the actual streaming response from OpenAI
-      String buffer = '';
-      await for (final chunk in responseBody.stream) {
-        final chunkStr = utf8.decode(chunk);
-        buffer += chunkStr;
-
-        final lines = buffer.split('\n');
-        buffer = lines.removeLast(); // Keep incomplete line in buffer
-
-        for (final line in lines) {
-          if (line.startsWith('data: ')) {
-            final jsonStr = line.substring(6); // Remove 'data: ' prefix
-            if (jsonStr.trim() == '[DONE]') {
-              log('Stream completed, final text: $accumulatedText');
-              break;
-            }
-
-            try {
-              final jsonData = jsonDecode(jsonStr);
-              if (jsonData['choices'] != null &&
-                  jsonData['choices'].isNotEmpty &&
-                  jsonData['choices'][0]['delta'] != null &&
-                  jsonData['choices'][0]['delta']['content'] != null) {
-                final content = jsonData['choices'][0]['delta']['content'] as String;
-                accumulatedText += content;
-                humanLikeScore = _calculateHumanLikeScore(accumulatedText, originalText: text);
-
-                changes = [
-                  'Converting to conversational tone',
-                  'Adding personal elements',
-                  'Making language more natural',
-                  'Removing robotic patterns'
-                ];
-
-                // Yield progress update
-                yield Right(HumanizationResult(
-                  originalText: text,
-                  humanizedText: accumulatedText,
-                  humanLike: humanLikeScore,
-                  changes: changes,
-                ));
-              }
-            } catch (e) {
-              log('Error parsing JSON chunk: $e');
-            }
-          }
-        }
-      }
-
-      if (accumulatedText.isEmpty) {
-        log('No content received from streaming response');
-        yield Left(AppError.server(message: 'No content received from AI service'));
-        return;
-      }
+      final changes = [
+        'Converting to conversational tone',
+        'Adding personal elements',
+        'Making language more natural',
+        'Removing robotic patterns'
+      ];
 
       log('Humanization completed successfully');
+
+      return Right(HumanizationResult(
+        originalText: text,
+        humanizedText: humanizedText,
+        humanLike: humanLikeScore,
+        changes: changes,
+      ));
     } catch (e) {
       log('Error humanizing text: $e');
-      yield Left(AppError.fromException(e));
+      return Left(AppError.fromException(e));
     }
   }
 
@@ -392,13 +344,13 @@ Provide the humanized version that sounds like it was written by a real person.
   }
 
   @override
-  Stream<Either<AppError, ContentGenerationResult>> generateContent({
+  Future<Either<AppError, ContentGenerationResult>> generateContent({
     required String text,
     required String typeOfWriting,
     required String tone,
     required int wordCount,
     required String language,
-  }) async* {
+  }) async {
     try {
       // Get tone-specific prompt
       final tonePrompt = _getTonePrompt(tone);
@@ -442,84 +394,38 @@ Generate content that is well-structured, engaging, and meets all the specified 
         ],
         'temperature': 0.7,
         'max_tokens': (wordCount * 1.5).round(), // Approximate token count
-        'stream': true,
       };
 
       if (apiKey.isEmpty) {
-        yield Left(AppError.server(message: 'API key not found'));
-        return;
+        return Left(AppError.server(message: 'API key not found'));
       }
 
-      // Get the streaming response
-      final responseBody = await _api.streamGenerateContent('Bearer $apiKey', requestBody);
+      // Get the non-streaming response
+      final data = await _api.generateContent('Bearer $apiKey', requestBody);
+      final generatedContent = data['choices'][0]['message']['content'];
 
-      String accumulatedText = '';
-      List<String> suggestions = [];
-
-      log('Starting to process content generation streaming response');
-
-      // Process the actual streaming response from OpenAI
-      String buffer = '';
-      await for (final chunk in responseBody.stream) {
-        final chunkStr = utf8.decode(chunk);
-        buffer += chunkStr;
-
-        final lines = buffer.split('\n');
-        buffer = lines.removeLast(); // Keep incomplete line in buffer
-
-        for (final line in lines) {
-          if (line.startsWith('data: ')) {
-            final jsonStr = line.substring(6); // Remove 'data: ' prefix
-            if (jsonStr.trim() == '[DONE]') {
-              log('Stream completed, final content: $accumulatedText');
-              break;
-            }
-
-            try {
-              final jsonData = jsonDecode(jsonStr);
-              if (jsonData['choices'] != null &&
-                  jsonData['choices'].isNotEmpty &&
-                  jsonData['choices'][0]['delta'] != null &&
-                  jsonData['choices'][0]['delta']['content'] != null) {
-                final content = jsonData['choices'][0]['delta']['content'] as String;
-                accumulatedText += content;
-
-                suggestions = [
-                  'Content generated successfully',
-                  'Follows specified tone and style',
-                  'Meets word count requirements',
-                  'Well-structured and engaging'
-                ];
-
-                // Yield progress update
-                yield Right(ContentGenerationResult(
-                  originalText: text,
-                  generatedContent: accumulatedText,
-                  typeOfWriting: typeOfWriting,
-                  tone: tone,
-                  wordCount: wordCount,
-                  language: language,
-                  suggestions: suggestions,
-                  explanation: 'Content generated based on your specifications',
-                ));
-              }
-            } catch (e) {
-              log('Error parsing JSON chunk: $e');
-            }
-          }
-        }
-      }
-
-      if (accumulatedText.isEmpty) {
-        log('No content received from streaming response');
-        yield Left(AppError.server(message: 'No content received from AI service'));
-        return;
-      }
+      final suggestions = [
+        'Content generated successfully',
+        'Follows specified tone and style',
+        'Meets word count requirements',
+        'Well-structured and engaging'
+      ];
 
       log('Content generation completed successfully');
+
+      return Right(ContentGenerationResult(
+        originalText: text,
+        generatedContent: generatedContent,
+        typeOfWriting: typeOfWriting,
+        tone: tone,
+        wordCount: wordCount,
+        language: language,
+        suggestions: suggestions,
+        explanation: 'Content generated based on your specifications',
+      ));
     } catch (e) {
       log('Error generating content: $e');
-      yield Left(AppError.fromException(e));
+      return Left(AppError.fromException(e));
     }
   }
 

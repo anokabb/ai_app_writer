@@ -11,35 +11,35 @@ class GeneratorRepoImpl implements GeneratorRepo {
   GeneratorRepoImpl(this._aiRepo);
 
   @override
-  Stream<Either<AppError, GeneratorModel>> generateContent({
+  Future<Either<AppError, GeneratorModel>> generateContent({
     required String text,
     required String typeOfWriting,
     required String tone,
     required int wordCount,
     required String language,
-  }) {
-    return _aiRepo
-        .generateContent(
-          text: text,
-          typeOfWriting: typeOfWriting,
-          tone: tone,
-          wordCount: wordCount,
-          language: language,
-        )
-        .map((result) => result.fold(
-              (error) => left(error),
-              (contentResult) => right(GeneratorModel(
-                id: DateTime.now().millisecondsSinceEpoch.toString(),
-                originalText: contentResult.originalText,
-                generatedContent: contentResult.generatedContent,
-                typeOfWriting: contentResult.typeOfWriting,
-                tone: contentResult.tone,
-                wordCount: contentResult.wordCount,
-                language: contentResult.language,
-                suggestions: contentResult.suggestions,
-                explanation: contentResult.explanation,
-                createdAt: DateTime.now(),
-              )),
-            ));
+  }) async {
+    final result = await _aiRepo.generateContent(
+      text: text,
+      typeOfWriting: typeOfWriting,
+      tone: tone,
+      wordCount: wordCount,
+      language: language,
+    );
+
+    return result.fold(
+      (error) => left(error),
+      (contentResult) => right(GeneratorModel(
+        id: DateTime.now().millisecondsSinceEpoch.toString(),
+        originalText: contentResult.originalText,
+        generatedContent: contentResult.generatedContent,
+        typeOfWriting: contentResult.typeOfWriting,
+        tone: contentResult.tone,
+        wordCount: contentResult.wordCount,
+        language: contentResult.language,
+        suggestions: contentResult.suggestions,
+        explanation: contentResult.explanation,
+        createdAt: DateTime.now(),
+      )),
+    );
   }
 }

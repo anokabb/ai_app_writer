@@ -11,7 +11,7 @@ class HumanizerRepoImpl implements HumanizerRepo {
   HumanizerRepoImpl(this.repo);
 
   @override
-  Stream<Either<AppError, HumanizationResult>> humanizeText(String text, {double? humanLike, double? creativity}) {
-    return repo.humanizeText(text, humanLike: humanLike, creativity: creativity);
+  Future<Either<AppError, HumanizationResult>> humanizeText(String text, {double? creativity}) {
+    return repo.humanizeText(text, creativity: creativity);
   }
 }

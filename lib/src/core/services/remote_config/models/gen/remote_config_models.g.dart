@@ -64,6 +64,14 @@ _$ApiConfigModelImpl _$$ApiConfigModelImplFromJson(Map<String, dynamic> json) =>
       openaiBaseUrl:
           json['openai_base_url'] as String? ?? 'https://api.openai.com/v1',
       defaultModel: json['default_model'] as String? ?? 'gpt-3.5-turbo',
+      backendBaseUrlBeta: json['backend_base_url_beta'] as String? ??
+          'https://beta.aiadmin.pro',
+      backendBaseUrlProduction:
+          json['backend_base_url_production'] as String? ??
+              'https://aiadmin.pro',
+      backendApiKeyBeta: json['backend_api_key_beta'] as String? ?? '',
+      backendApiKeyProduction:
+          json['backend_api_key_production'] as String? ?? '',
     );
 
 Map<String, dynamic> _$$ApiConfigModelImplToJson(
@@ -72,6 +80,10 @@ Map<String, dynamic> _$$ApiConfigModelImplToJson(
       'openai_api_key': instance.openaiApiKey,
       'openai_base_url': instance.openaiBaseUrl,
       'default_model': instance.defaultModel,
+      'backend_base_url_beta': instance.backendBaseUrlBeta,
+      'backend_base_url_production': instance.backendBaseUrlProduction,
+      'backend_api_key_beta': instance.backendApiKeyBeta,
+      'backend_api_key_production': instance.backendApiKeyProduction,
     };
 
 _$SettingsConfigModelImpl _$$SettingsConfigModelImplFromJson(

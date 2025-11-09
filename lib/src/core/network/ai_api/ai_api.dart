@@ -7,9 +7,7 @@ abstract class AiApi {
 
   Future<Map<String, dynamic>> analyzeText(String authorization, Map<String, dynamic> request);
 
-  Future<ResponseBody> streamHumanizeText(String authorization, Map<String, dynamic> request);
+  Future<Map<String, dynamic>> humanizeText(String authorization, Map<String, dynamic> request);
 
-  Future<ResponseBody> streamGenerateContent(String authorization, Map<String, dynamic> request);
-
-  Future<Response<Map<String, dynamic>>> generateTitle(String authorization, Map<String, dynamic> request);
+  Future<Map<String, dynamic>> generateContent(String authorization, Map<String, dynamic> request);
 }

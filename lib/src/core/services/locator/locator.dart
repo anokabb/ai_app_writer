@@ -7,6 +7,8 @@ import 'package:get_it/get_it.dart';
 import 'package:phrasly_ai_tools/src/core/network/ai_api/ai_api.dart';
 import 'package:phrasly_ai_tools/src/core/network/ai_api/openai_api.dart';
 import 'package:phrasly_ai_tools/src/core/network/ai_api/repos/ai_repo.dart';
+import 'package:phrasly_ai_tools/src/core/network/ai_api/repos/ai_repo_impl.dart';
+import 'package:phrasly_ai_tools/src/core/network/ai_api/repos/backend_ai_repo.dart';
 import 'package:phrasly_ai_tools/src/core/network/ai_api/repos/mock_ai_repo.dart';
 import 'package:phrasly_ai_tools/src/core/network/ai_api/repos/openai_repo.dart';
 import 'package:phrasly_ai_tools/src/core/network/client/dio_factory.dart';
@@ -60,11 +62,18 @@ void setupLocator() {
   locator.registerLazySingleton<HistoryRepo>(() => HistoryRepo());
   locator.registerLazySingleton<AuthRepo>(() => FirebaseAuthRepo());
 
+  // Register main AI repository with fallback mechanism
   if (isMockTesting) {
     locator.registerLazySingleton<AiRepo>(() => MockAiRepo());
   } else {
-    locator.registerLazySingleton<AiRepo>(() => OpenAIRepo(api: locator<AiApi>()));
+    locator.registerLazySingleton<AiRepo>(
+      () => AiRepoImpl(
+        backendRepo: BackendAiRepo(),
+        openaiRepo: OpenAIRepo(api: locator<AiApi>()),
+      ),
+    );
   }
+
   locator.registerLazySingleton<DetectorRepo>(() => DetectorRepoImpl(locator<AiRepo>()));
   locator.registerLazySingleton<HumanizerRepo>(() => HumanizerRepoImpl(locator<AiRepo>()));
   locator.registerLazySingleton<GeneratorRepo>(() => GeneratorRepoImpl(locator<AiRepo>()));

@@ -5,8 +5,8 @@ import 'package:phrasly_ai_tools/src/features/detector/presentation/pages/detect
 
 abstract class AiRepo {
   Future<Either<AppError, TextAnalysisResult>> analyzeText({required String text, required DetectorModes mode});
-  Stream<Either<AppError, HumanizationResult>> humanizeText(String text, {double? humanLike, double? creativity});
-  Stream<Either<AppError, ContentGenerationResult>> generateContent({
+  Future<Either<AppError, HumanizationResult>> humanizeText(String text, {double? creativity});
+  Future<Either<AppError, ContentGenerationResult>> generateContent({
     required String text,
     required String typeOfWriting,
     required String tone,

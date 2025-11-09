@@ -20,7 +20,7 @@ class HumanizerCubit extends Cubit<HumanizerState> {
 
   bool firstLoaded = false;
 
-  Future<void> humanizeText(String text, {double? humanLike, double? creativity, Function()? onFirstLoad}) async {
+  Future<void> humanizeText(String text, {double? creativity, Function()? onFirstLoad}) async {
     firstLoaded = false;
     if (text.trim().isEmpty) {
       emit(HumanizerState.error(AppError.server(message: 'Please enter some text to humanize')));
@@ -29,35 +29,35 @@ class HumanizerCubit extends Cubit<HumanizerState> {
 
     emit(const HumanizerState.loading());
 
-    await for (final result in _humanizerRepo.humanizeText(text, humanLike: humanLike, creativity: creativity)) {
-      result.fold(
-        (error) => emit(HumanizerState.error(error)),
-        (humanizationResult) {
-          emit(HumanizerState.loaded(humanizationResult));
-          if (!firstLoaded) {
-            onFirstLoad?.call();
-            firstLoaded = true;
-          }
-        },
-      );
-    }
+    final result = await _humanizerRepo.humanizeText(text, creativity: creativity);
+
+    result.fold(
+      (error) => emit(HumanizerState.error(error)),
+      (humanizationResult) {
+        emit(HumanizerState.loaded(humanizationResult));
+        if (!firstLoaded) {
+          onFirstLoad?.call();
+          firstLoaded = true;
+        }
+      },
+    );
 
     if (state is HumanizerStateLoaded) {
       double humanPercentage = (90.0 + (Random().nextDouble() * 10.0));
-      final result = (state as HumanizerStateLoaded).result.copyWith(humanLike: humanPercentage / 100);
+      final loadedResult = (state as HumanizerStateLoaded).result.copyWith(humanLike: humanPercentage / 100);
 
       // Save the humanized text to cache for future detection
       // Use a high human percentage (97-100%) since the text has been humanized
 
       await HumanizedTextStorageService.saveDetectionResult(
-        humanizedText: result.humanizedText,
+        humanizedText: loadedResult.humanizedText,
         humanPercentage: humanPercentage,
       );
 
       if (locator<SettingsCubit>().state.settings.autoSaveEnabled) {
         locator<HistoryCubit>().save(
-          result: result,
-          originalText: result.originalText,
+          result: loadedResult,
+          originalText: loadedResult.originalText,
         );
       }
     }

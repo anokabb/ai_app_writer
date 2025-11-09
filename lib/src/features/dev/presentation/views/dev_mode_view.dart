@@ -6,7 +6,10 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:package_info_plus/package_info_plus.dart';
+import 'package:phrasly_ai_tools/src/core/components/dropdown_button/app_dropdown_menu.dart';
+import 'package:phrasly_ai_tools/src/core/components/dropdown_button/dropdown_model.dart';
 import 'package:phrasly_ai_tools/src/core/components/layouts/buttons/app_button.dart';
+import 'package:phrasly_ai_tools/src/core/constants/env_config.dart';
 import 'package:phrasly_ai_tools/src/core/constants/hive_config.dart';
 import 'package:phrasly_ai_tools/src/core/services/locator/locator.dart';
 import 'package:phrasly_ai_tools/src/core/services/notifications/notification_service.dart';
@@ -30,6 +33,7 @@ class _DevModeViewState extends State<DevModeView> {
 
   bool debugUpgrader = devBox.get('debugUpgrader', defaultValue: false);
   bool isPro = devBox.get('isDevPro', defaultValue: false);
+  Environment currentEnvironment = EnvConfig.currentEnvironment;
 
   @override
   void initState() {
@@ -52,12 +56,19 @@ class _DevModeViewState extends State<DevModeView> {
   }
 
   String getDetails(PackageInfo info) {
+    final remoteConfig = locator<RemoteConfigService>().data;
+    final backendUrl = EnvConfig.getBackendBaseUrl(
+      betaUrl: remoteConfig.api.backendBaseUrlBeta,
+      productionUrl: remoteConfig.api.backendBaseUrlProduction,
+    );
+
     return [
       'Version: ${info.version}',
       'Build Number: ${info.buildNumber}',
       'Package Name: ${info.packageName}',
       'Device: ${Platform.isAndroid ? 'Android' : 'iOS'}',
-      'Open Ai Model: ${locator<RemoteConfigService>().data.api.defaultModel}',
+      'Backend URL: $backendUrl',
+      'Open Ai Model: ${remoteConfig.api.defaultModel}',
       'FCM TOKEN: $fcmToken',
     ].join('\n');
   }
@@ -114,6 +125,34 @@ class _DevModeViewState extends State<DevModeView> {
               },
             ),
             SizedBox(height: 16),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  'Backend Environment',
+                  style: context.theme.appTextTheme.body1.copyWith(fontSize: 16, fontWeight: FontWeight.bold),
+                ),
+                SizedBox(height: 8),
+                AppDropdownMenu(
+                    initialSelection: currentEnvironment.name,
+                    width: double.infinity,
+                    entries: Environment.values
+                        .map((env) => DropdownModel(id: env.name, title: env.name.toUpperCase()))
+                        .toList(),
+                    onSelected: (value) {
+                      if (value != null) {
+                        EnvConfig.setEnvironment(Environment.values.firstWhere((env) => env.name == value));
+                        setState(() {
+                          currentEnvironment = Environment.values.firstWhere((env) => env.name == value);
+                        });
+                        if (kReleaseMode) {
+                          Restart.restartApp();
+                        }
+                      }
+                    }),
+                SizedBox(height: 16),
+              ],
+            ),
             ListTile(
               title: const Text('Enable Debug Upgrader'),
               contentPadding: EdgeInsets.zero,

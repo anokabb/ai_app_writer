@@ -47,6 +47,10 @@ class RemoteConfigService {
       RemoteConfigKeys.openaiApiKey: '',
       RemoteConfigKeys.openaiBaseUrl: 'https://api.openai.com/v1',
       RemoteConfigKeys.defaultModel: 'gpt-3.5-turbo',
+      RemoteConfigKeys.backendBaseUrlBeta: 'https://beta.aiadmin.pro',
+      RemoteConfigKeys.backendBaseUrlProduction: 'https://aiadmin.pro',
+      RemoteConfigKeys.backendApiKeyBeta: '',
+      RemoteConfigKeys.backendApiKeyProduction: '',
 
       // Settings Config defaults
       RemoteConfigKeys.privacyPolicyUrl: '',
@@ -83,6 +87,10 @@ class RemoteConfigService {
         openaiApiKey: _remoteConfig.getString(RemoteConfigKeys.openaiApiKey),
         openaiBaseUrl: _remoteConfig.getString(RemoteConfigKeys.openaiBaseUrl),
         defaultModel: _remoteConfig.getString(RemoteConfigKeys.defaultModel),
+        backendBaseUrlBeta: _remoteConfig.getString(RemoteConfigKeys.backendBaseUrlBeta),
+        backendBaseUrlProduction: _remoteConfig.getString(RemoteConfigKeys.backendBaseUrlProduction),
+        backendApiKeyBeta: _remoteConfig.getString(RemoteConfigKeys.backendApiKeyBeta),
+        backendApiKeyProduction: _remoteConfig.getString(RemoteConfigKeys.backendApiKeyProduction),
       ),
       settings: SettingsConfigModel(
         privacyPolicyUrl: _remoteConfig.getString(RemoteConfigKeys.privacyPolicyUrl),

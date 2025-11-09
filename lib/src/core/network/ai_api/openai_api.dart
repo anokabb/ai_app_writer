@@ -20,42 +20,32 @@ class OpenAIApi extends AiApi {
   }
 
   @override
-  Future<ResponseBody> streamHumanizeText(String authorization, Map<String, dynamic> request) async {
-    final response = await dio.post(
-      '$baseUrl/chat/completions',
-      data: request,
-      options: Options(
-        headers: {'Authorization': authorization},
-        responseType: ResponseType.stream,
-      ),
-    );
-
-    // Return the ResponseBody directly for streaming
-    return response.data as ResponseBody;
-  }
-
-  @override
-  Future<ResponseBody> streamGenerateContent(String authorization, Map<String, dynamic> request) async {
-    final response = await dio.post(
-      '$baseUrl/chat/completions',
-      data: request,
-      options: Options(
-        headers: {'Authorization': authorization},
-        responseType: ResponseType.stream,
-      ),
-    );
-
-    // Return the ResponseBody directly for streaming
-    return response.data as ResponseBody;
-  }
-
-  @override
-  Future<Response<Map<String, dynamic>>> generateTitle(String authorization, Map<String, dynamic> request) async {
+  Future<Map<String, dynamic>> humanizeText(String authorization, Map<String, dynamic> request) async {
     final response = await dio.post(
       '$baseUrl/chat/completions',
       data: request,
       options: Options(headers: {'Authorization': authorization}),
     );
-    return response as Response<Map<String, dynamic>>;
+    return response.data as Map<String, dynamic>;
   }
+
+  @override
+  Future<Map<String, dynamic>> generateContent(String authorization, Map<String, dynamic> request) async {
+    final response = await dio.post(
+      '$baseUrl/chat/completions',
+      data: request,
+      options: Options(headers: {'Authorization': authorization}),
+    );
+    return response.data as Map<String, dynamic>;
+  }
+
+  // @override
+  // Future<Response<Map<String, dynamic>>> generateTitle(String authorization, Map<String, dynamic> request) async {
+  //   final response = await dio.post(
+  //     '$baseUrl/chat/completions',
+  //     data: request,
+  //     options: Options(headers: {'Authorization': authorization}),
+  //   );
+  //   return response as Response<Map<String, dynamic>>;
+  // }
 }
