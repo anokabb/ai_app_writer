@@ -5,7 +5,10 @@ import 'package:phrasly_ai_tools/src/core/services/remote_config/models/remote_c
 class RemoteConfigService {
   final _logger = getLogger('RemoteConfigService');
   late final FirebaseRemoteConfig _remoteConfig;
-  late final RemoteConfigModel data;
+
+  /// Defaults to a const config so the app keeps working even when Remote
+  /// Config can't initialize (e.g. on web without a Firebase config).
+  RemoteConfigModel data = const RemoteConfigModel();
 
   bool get isForceUpdate => data.settings.forceUpdate;
 
