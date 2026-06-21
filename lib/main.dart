@@ -6,6 +6,7 @@ import 'package:appsflyer_sdk/appsflyer_sdk.dart';
 import 'package:clarity_flutter/clarity_flutter.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 import 'package:mixpanel_flutter/mixpanel_flutter.dart';
 import 'package:phrasly_ai_tools/firebase_options.dart';
@@ -21,30 +22,55 @@ import 'package:phrasly_ai_tools/src/features/auth/presentation/cubit/auth_cubit
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+  // Firebase has no web configuration yet, so initialization can fail on web.
+  // Guard it so a failure never blocks the app from rendering.
+  try {
+    await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+  } catch (e) {
+    log('Firebase initialization skipped/failed: $e');
+  }
+
   await initHive();
 
-  _initializeAppTrackingTransparency();
+  // Native-only SDKs (ATT, AppsFlyer, RevenueCat) are not supported on web.
+  if (!kIsWeb) {
+    _initializeAppTrackingTransparency();
+  }
 
   setupLocator();
   await locator.allReady();
 
   // Initialize Remote Config
-  await locator<RemoteConfigService>().initialize();
-  await locator<RemoteConfigService>().fetchAndActivate();
+  try {
+    await locator<RemoteConfigService>().initialize();
+    await locator<RemoteConfigService>().fetchAndActivate();
+  } catch (e) {
+    log('Remote Config initialization failed: $e');
+  }
 
-  // Initialize RevenueCat
-  await _initializeRevenueCat();
+  // Initialize RevenueCat (mobile only)
+  if (!kIsWeb) {
+    await _initializeRevenueCat();
+  }
 
-  await locator<AuthCubit>().checkAuthStatus();
+  try {
+    await locator<AuthCubit>().checkAuthStatus();
+  } catch (e) {
+    log('Auth status check failed: $e');
+  }
+
+  final app = App(
+    routerConfig: AppRouter().createRouter(),
+  );
 
   runApp(
-    ClarityWidget(
-      clarityConfig: ClarityConfig(projectId: "tcxd2t2e13"),
-      app: App(
-        routerConfig: AppRouter().createRouter(),
-      ),
-    ),
+    // Microsoft Clarity is a mobile-only wrapper; use the app directly on web.
+    kIsWeb
+        ? app
+        : ClarityWidget(
+            clarityConfig: ClarityConfig(projectId: "tcxd2t2e13"),
+            app: app,
+          ),
   );
 }
 
