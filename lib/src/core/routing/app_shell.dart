@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
@@ -34,7 +35,10 @@ class _AppShellState extends State<AppShell> with SingleTickerProviderStateMixin
     WidgetsBinding.instance.addPostFrameCallback((_) => _insertOverlay(context));
 
     locator<SubscriptionCubit>().showAppOpenPaywall().then((value) {
-      NotificationService().initialize();
+      // Firebase Messaging / local notifications are not supported on web.
+      if (!kIsWeb) {
+        NotificationService().initialize();
+      }
     });
   }
 

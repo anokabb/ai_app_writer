@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -46,6 +47,12 @@ class App extends StatelessWidget {
                 supportedLocales: AppLocalizations.supportedLocales,
                 locale: locale,
                 builder: (context, child) {
+                  // The upgrader package relies on Platform/app stores and is
+                  // not supported on web, so skip it there.
+                  if (kIsWeb) {
+                    return child ?? const SizedBox.shrink();
+                  }
+
                   Widget upgraderChild = UpgradeAlert(
                     navigatorKey: rootNavigatorKey,
                     barrierDismissible: !locator<RemoteConfigService>().isForceUpdate,

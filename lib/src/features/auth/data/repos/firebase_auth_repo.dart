@@ -7,7 +7,10 @@ import 'package:phrasly_ai_tools/src/core/network/models/app_error.dart';
 import 'package:phrasly_ai_tools/src/features/auth/data/repos/auth_repo.dart';
 
 class FirebaseAuthRepo implements AuthRepo {
-  final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
+  // Accessed lazily so constructing the repo doesn't throw when Firebase is
+  // unavailable (e.g. on web without a Firebase config). The throw is then
+  // surfaced only when an auth method is actually called, where it's handled.
+  FirebaseAuth get _firebaseAuth => FirebaseAuth.instance;
   final GoogleSignIn _googleSignIn = GoogleSignIn();
 
   @override

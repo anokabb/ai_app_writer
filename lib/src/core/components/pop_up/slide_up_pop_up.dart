@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'dart:ui';
 
+import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 import 'package:phrasly_ai_tools/src/core/routing/app_router.dart';
 
@@ -109,7 +110,7 @@ class SlideUpPopUp extends StatelessWidget {
     return Align(
       alignment: Alignment.bottomCenter,
       child: Padding(
-        padding: EdgeInsets.only(bottom: Platform.isAndroid ? 24 : 0),
+        padding: EdgeInsets.only(bottom: !kIsWeb && Platform.isAndroid ? 24 : 0),
         child: Container(
           width: width,
           margin: margin,

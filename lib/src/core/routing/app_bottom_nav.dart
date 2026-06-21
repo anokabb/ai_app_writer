@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:phrasly_ai_tools/src/core/extensions/context_extension.dart';
@@ -41,11 +42,11 @@ class _AppBottomNavigationBarState extends State<AppBottomNavigationBar> {
       child: ClipPath(
         clipper: _BottomNavClipper(),
         child: Container(
-          height: kBottomNavigationBarHeight + MediaQuery.of(context).padding.bottom + (Platform.isAndroid ? 16 : 0),
+          height: kBottomNavigationBarHeight + MediaQuery.of(context).padding.bottom + (!kIsWeb && Platform.isAndroid ? 16 : 0),
           decoration: BoxDecoration(
             color: context.appColors.secondaryBackground,
           ),
-          padding: EdgeInsets.only(bottom: Platform.isAndroid ? 0 : 20),
+          padding: EdgeInsets.only(bottom: !kIsWeb && Platform.isAndroid ? 0 : 20),
           child: Row(
             children: [
               Expanded(
